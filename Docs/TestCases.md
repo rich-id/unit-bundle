@@ -78,7 +78,7 @@ The ControllerTestCase provides a set of useful functions. Note that for this te
 
 ### RepositoryTestCase
 
-In the following list, it is the only test case that relies on fixtures. The entity linked to repository must be set using the `public const ENTITY`. Moreover, the `beforeTest()` function will be executed after the initialization of the repository.
+The entity linked to repository must be set using the `public const ENTITY`. Moreover, the `beforeTest()` function will be executed after the initialization of the repository. You need to at least use `@WithContainer` annotation, and we recommand to use `@WithFixtures` to test your functions with the fixtures.
 
 ```php
 use RichCongress\Bundle\UnitBundle\TestCase\RepositoryTestCase;
