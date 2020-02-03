@@ -37,7 +37,7 @@ class VoterTestCaseTest extends VoterTestCase
         $token = $this->getToken($user, ['ROLE_ADMIN']);
 
         self::assertSame($user, $token->getUser());
-        self::assertContains('ROLE_ADMIN', $token->getRoles());
+        self::assertContains('ROLE_ADMIN', $token->getRoleNames());
     }
 
     /**
