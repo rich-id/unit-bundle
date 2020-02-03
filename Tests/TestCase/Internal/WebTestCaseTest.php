@@ -3,6 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use GuzzleHttp\Client;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
@@ -12,11 +13,9 @@ use RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Command\DummyCommand;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Validator\Tests\DummyConstraint;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class WebTestCaseTest
@@ -69,7 +68,7 @@ class WebTestCaseTest extends WebTestCase
     {
         $mockedService = $this->getContainer()->get('security.token_storage');
 
-        self::assertInstanceOf(TokenStorage::class, $mockedService);
+        self::assertInstanceOf(TokenStorageInterface::class, $mockedService);
     }
 
     /**
@@ -82,7 +81,7 @@ class WebTestCaseTest extends WebTestCase
         self::$container = null;
         $mockedService = $this->getContainer()->get('security.token_storage');
 
-        self::assertInstanceOf(TokenStorage::class, $mockedService);
+        self::assertInstanceOf(TokenStorageInterface::class, $mockedService);
     }
 
     /**
@@ -204,7 +203,7 @@ class WebTestCaseTest extends WebTestCase
         $webTestCase->setUp();
 
         $container = \Mockery::mock(ContainerInterface::class);
-        $registry = \Mockery::mock(RegistryInterface::class);
+        $registry = \Mockery::mock(ManagerRegistry::class);
         $entityManager = \Mockery::mock(EntityManagerInterface::class);
 
         $container->shouldReceive('get')

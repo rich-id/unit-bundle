@@ -14,7 +14,7 @@ use RichCongress\Bundle\UnitBundle\Mock\MockedServiceOnSetUpInterface;
 use RichCongress\Bundle\UnitBundle\TestTrait\CommonTestCaseTrait;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 use RichCongress\Bundle\UnitBundle\Utility\TestConfigurationExtractor;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -197,7 +197,7 @@ class WebTestCase extends BaseWebTestCase
 
             return $entityManager;
         } catch (\Exception $e) {
-            /** @var RegistryInterface $doctrine */
+            /** @var ManagerRegistry $doctrine */
             $doctrine = $container->get('doctrine');
             /** @var EntityManagerInterface $entityManager */
             $entityManager = $doctrine->getManager();
