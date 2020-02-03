@@ -1,0 +1,15 @@
+parameters:
+    request_listener.http_port: 80
+    request_listener.https_port: 443
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    RichCongress\Bundle\UnitBundle\Tests\Resources\config\MockedServices: ~
+    RichCongress\Bundle\UnitBundle\Tests\Resources\Command\DummyCommand: ~
+
+    RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\:
+        resource: '../../Resources/DataFixture/*'

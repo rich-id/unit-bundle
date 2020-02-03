@@ -1,0 +1,48 @@
+framework:
+    secret: 'SECRET'
+    test: true
+    session:
+        storage_id: session.storage.mock_file
+        name: MOCKSESSION
+
+doctrine:
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        entity_managers:
+            default:
+                mappings:
+                    RichCongressUnitBundle:
+                        type: annotation
+                        prefix: RichCongress\Bundle\UnitBundle\Tests\Resources\Entity
+                        dir: '%kernel.root_dir%/../Entity'
+                        is_bundle: false
+
+security:
+    encoders:
+        RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User: bcrypt
+    providers:
+        users:
+            entity:
+                class: RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User
+                property: username
+    firewalls:
+        main:
+            http_basic: ~
+
+liip_functional_test: ~
+
+rich_congress_unit:
+    mocked_services: RichCongress\Bundle\UnitBundle\Tests\Resources\config\MockedServices
+    enable_db_caching: true
+    public_services:
+        - 'monolog.logger'
+    default_stubs:
+        logger: true
+    test_roles:
+        User1: 'user_1'
+        User2: 'user_2'
+
+eight_points_guzzle:
+    clients:
+        dummy_api: ~
+        dummy_api_2: ~
