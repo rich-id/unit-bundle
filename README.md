@@ -183,20 +183,17 @@ As a reminder, all contributors are expected to follow our [Code of Conduct](COD
 You might use Docker and `docker-compose` to hack the project. Check out the following commands.
 
 ```bash
-# Create the proxy
-docker network create proxy
-
-# Create a nginx-proxy (makes sure the port 80 is available)
-docker run -d -p 80:80 -v /var/run/docker.sock:/tmp/docker.sock:ro --name nginx-proxy --net proxy --privileged --userns=host richcongress/nginx-proxy
-
 # Start the project
 docker-compose up -d
 
 # Install dependencies
-composer install
+docker-compose exec application composer install
 
 # Run tests
-bin/phpunit
+docker-compose exec application bin/phpunit
+
+# Run a bash within the container
+docker-compose exec application bash
 ```
 
 

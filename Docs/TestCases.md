@@ -4,10 +4,7 @@ In the following TestCase, it is recommanded to avoid overriding `setUp()` and `
 
 Moreover, each test case uses from the MockeryPHPUnitIntegration so no need to use the integration trait.
 
-
-### MockeryTestCase
-
-The MockeryTestCase is almost the same as the initial except the `setUp()` and `tearDown()` management which is replaced in the test by `beforeTest()` and `afterTest()`.
+To use a container or fixtures, please follow this [documentation](Annotations.md).
 
 
 ### CommandTestCase
@@ -75,6 +72,26 @@ The ControllerTestCase provides a set of useful functions. Note that for this te
 
 - `getJsonContent()`: Returns an array or object corresponding to the JSON response linked to the client.
 
+```php
+/**
+ * @WithFixtures
+ */
+class ExampleControllerTest extends ControllerTestCase
+{
+    public function testRoute(): void
+    {
+        $client = self::createClient();
+        $client->request('POST', '/post/route', [
+            '_token' => self::getCsrfToken('csrf_token_id', $client),
+            // ...
+        ]);
+        
+        self::assertStatusCode(Response::HTTP_CREATED, $client);
+        self::assertArrayKeyExists('id', self::getJsonContent($client));
+    }
+}
+```
+
 
 ### RepositoryTestCase
 
@@ -83,6 +100,9 @@ The entity linked to repository must be set using the `public const ENTITY`. Mor
 ```php
 use RichCongress\Bundle\UnitBundle\TestCase\RepositoryTestCase;
 
+/**
+ * @WithFixtures
+ */
 class UserRepositoryTest extends RepositoryTestCase
 {
     public const ENTITY = User::class;
