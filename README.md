@@ -3,7 +3,7 @@ Getting Started With RichCongressUnitBundle
 
 This version of the bundle requires Symfony 4.4+ and PHP 7.3+.
 
-[![Package version](https://img.shields.io/packagist/v/richcongress/unit-bundle.svg)](https://packagist.org/packages/richcongress/unit-bundle)
+[![Package version](https://img.shields.io/packagist/v/richcongress/unit-bundle)](https://packagist.org/packages/richcongress/unit-bundle)
 [![Build Status](https://img.shields.io/travis/richcongress/unit-bundle.svg?branch=master)](https://travis-ci.org/richcongress/unit-bundle?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/richcongress/unit-bundle/badge.svg?branch=master)](https://coveralls.io/github/richcongress/unit-bundle?branch=master)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/richcongress/unit-bundle/issues)
