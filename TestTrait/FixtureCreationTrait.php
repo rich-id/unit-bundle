@@ -1,8 +1,4 @@
-<?php
-/** @noinspection PhpUnhandledExceptionInspection */
-/** @noinspection PhpDocMissingThrowsInspection */
-/** @noinspection CallableParameterUseCaseInTypeContextInspection */
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RichCongress\Bundle\UnitBundle\TestTrait;
 
