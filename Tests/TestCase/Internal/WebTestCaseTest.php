@@ -257,4 +257,15 @@ class WebTestCaseTest extends WebTestCase
 
         $this->checkContainerEnabled();
     }
+
+    /**
+     * @return void
+     */
+    public function testGetContainerWithoutAnnotation(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('You did not mentionned that you want to load a container. Add the annotation @WithContainer into the class or test PHP Doc.');
+
+        $this->getContainer();
+    }
 }

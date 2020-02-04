@@ -102,9 +102,9 @@ class WebTestCase extends BaseWebTestCase
             }
 
             self::mockServices(self::$container);
-            self::$isTestInititialized = true;
         }
 
+        self::$isTestInititialized = true;
         $this->executeBeforeTest();
     }
 
