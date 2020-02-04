@@ -26,7 +26,7 @@ class TranslatorStub implements TranslatorInterface
      *
      * @return string|void
      */
-    public function trans($id, array $parameters = [], $domain = null, $locale = null): string
+    public function trans($id, array $parameters = [], string $domain = null, string $locale = null): string
     {
         if (!array_key_exists($id, $this->translations)) {
             return '';

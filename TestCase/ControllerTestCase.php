@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpDeprecationInspection */
+<?php /** @noinspection NullPointerExceptionInspection */
+/** @noinspection PhpDeprecationInspection */
 
 declare(strict_types=1);
 

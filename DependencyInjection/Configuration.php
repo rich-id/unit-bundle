@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection NullPointerExceptionInspection */
 
 namespace RichCongress\Bundle\UnitBundle\DependencyInjection;
 

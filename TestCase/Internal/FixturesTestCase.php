@@ -1,6 +1,5 @@
 <?php
 /** @noinspection PhpDeprecationInspection */
-/** @noinspection TraitsPropertiesConflictsInspection */
 /** @noinspection PhpDocMissingThrowsInspection */
 /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);

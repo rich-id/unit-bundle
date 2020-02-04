@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection ProperNullCoalescingOperatorUsageInspection */
+declare(strict_types=1);
 
 namespace RichCongress\Bundle\UnitBundle\TestCase;
 

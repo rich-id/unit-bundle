@@ -60,7 +60,6 @@ class MainControllerTest extends ControllerTestCase
 2. [Getting started](#2-getting-started)
     - [Configuration](Docs/Configuration.md)
     - [Available test cases](Docs/TestCases.md)
-        - [MockeryTestCase](Docs/TestCases.md#mockerytestcase)
         - [CommandTestCase](Docs/TestCases.md#commandtestcase)
         - [ConstraintTestCase](Docs/TestCases.md#constrainttestcase)
         - [ControllerTestCase](Docs/TestCases.md#controllertestcase)
@@ -71,7 +70,7 @@ class MainControllerTest extends ControllerTestCase
     - [Overriding services with stub services](Docs/OverrideServices.md#overriding-services-with-stub-services)
     - [Use dynamic mocks (legacy)](Docs/OverrideServices.md#use-dynamic-mocks-legacy)
     - [Available default service stubs](Docs/OverrideServices.md#available-default-service-stubs)
-    - [Role provider](Docs/RoleProvider.md)
+    - [Role provider](Docs/RolesProvider.md)
 4. [Versioning](#3-versioning)
 5. [Contributing](#4-contributing)
 6. [Hacking](#5-hacking)
@@ -143,7 +142,6 @@ doctrine:
 
 - [Configuration](Docs/Configuration.md)
 - [Available test cases](Docs/TestCases.md)
-    - [MockeryTestCase](Docs/TestCases.md#mockerytestcase)
     - [CommandTestCase](Docs/TestCases.md#commandtestcase)
     - [ConstraintTestCase](Docs/TestCases.md#constrainttestcase)
     - [ControllerTestCase](Docs/TestCases.md#controllertestcase)
@@ -154,7 +152,7 @@ doctrine:
 - [Overriding services with stub services](Docs/OverrideServices.md#overriding-services-with-stub-services)
 - [Use dynamic mocks (legacy)](Docs/OverrideServices.md#use-dynamic-mocks-legacy)
 - [Available default service stubs](Docs/OverrideServices.md#available-default-service-stubs)
-- [Role provider](Docs/RoleProvider.md)
+- [Role provider](Docs/RolesProvider.md)
 
 
 # 3. Versioning

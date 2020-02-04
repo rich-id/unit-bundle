@@ -39,7 +39,11 @@
     "autoload": {
         "psr-4": {
             "RichCongress\\Bundle\\UnitBundle\\": ""
-        }
+        },
+        "files": [
+            "./TestConfiguration/Annotation/WithContainer.php",
+            "./TestConfiguration/Annotation/WithFixtures.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
