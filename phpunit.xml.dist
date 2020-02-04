@@ -11,7 +11,7 @@
 >
     <php>
         <ini name="error_reporting" value="-1" />
-        <server name="KERNEL_CLASS" value="RichCongress\Bundle\UnitBundle\Tests\AppKernel" />
+        <server name="KERNEL_CLASS" value="RichCongress\Bundle\UnitBundle\Tests\TestKernel" />
         <server name="KERNEL_DIR" value="Tests/Resources/config" />
         <server name="CONFIG_TYPE" value="default" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>

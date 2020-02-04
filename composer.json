@@ -50,7 +50,7 @@
             "Tests\\RichCongress\\Bundle\\UnitBundle\\": "Tests/"
         },
         "classmap": [
-            "Tests/Resources/config/AppKernel.php"
+            "Tests/Resources/config/TestKernel.php"
         ]
     },
     "config": {
