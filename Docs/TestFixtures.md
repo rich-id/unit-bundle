@@ -19,14 +19,21 @@ class LoadUserData extends AbstractFixture
             'roles'    => ['ROLE_ADMIN', 'ROLE_USER'],
         ]);
     
-        self::createObject('user-2', User::class, [
-            'username' => 'username_2',
-            'password' => 'unicorn_2',
-            'roles'    => ['ROLE_USER'],
-        ]);
+        self::createObject(
+            ['user-2', 'second-unicorn'], 
+            User::class, 
+            [
+                'username' => 'username_2',
+                'password' => 'unicorn_2',
+                'roles'    => ['ROLE_USER'],
+            ]
+        );
     }
 }
 ```
+
+The `createObject()` function is provided by the `AbstractFixture`. It creates an instance of the input class, set all the properties given in the input data, persist it and finally set the appropriate references. 
+We strongly recommand you to use this function as it avoids to create or use setters only for tests, where this approach gives a lot of flexibility instead.
 
 You can also get an entity with a reference initialized from another fixture. Doctrine provided a handy interface that can manage to load fixtures in the approriated order.
 
@@ -37,7 +44,11 @@ use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadUserData;
 
 class LoadDummyEntityData extends AbstractFixture implements DependentFixtureInterface
 {
-    // ...
+    public function loadFixtures() : void{
+        /** @var User $user */
+        $user = $this->getReference('user-1');
+        // ...
+    }
     
     public function getDependencies(): array
     {
