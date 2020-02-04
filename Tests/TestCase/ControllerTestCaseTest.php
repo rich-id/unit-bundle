@@ -1,7 +1,5 @@
 <?php declare(strict_types=1);
 
-declare(strict_types=1);
-
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase;
 
 use Doctrine\Common\Annotations\Annotation\IgnoreAnnotation;
