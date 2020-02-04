@@ -39,4 +39,4 @@ This is a list of default stubs provided by the unit-bundle. Find out the availa
 
 - `test_roles`
 
-This is a list of available roles for the DataProvider. Check out the [documentation](RoleProvider.md) to learn more about this feature.
+This is a list of available roles for the DataProvider. Check out the [documentation](RolesProvider.md) to learn more about this feature.

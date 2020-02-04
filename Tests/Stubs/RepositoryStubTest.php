@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
 use RichCongress\Bundle\UnitBundle\Stubs\RepositoryStub;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
-use Symfony\Bundle\FrameworkBundle\Tests\Functional\Dummy;
 
 /**
  * Class RepositoryStubTest

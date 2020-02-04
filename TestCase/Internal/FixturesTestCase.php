@@ -1,9 +1,4 @@
-<?php
-/** @noinspection PhpDeprecationInspection */
-/** @noinspection TraitsPropertiesConflictsInspection */
-/** @noinspection PhpDocMissingThrowsInspection */
-/** @noinspection PhpUnhandledExceptionInspection */
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RichCongress\Bundle\UnitBundle\TestCase\Internal;
 

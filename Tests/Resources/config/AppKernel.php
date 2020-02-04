@@ -74,9 +74,13 @@ class AppKernel extends Kernel
     }
 
     /**
-     * @inheritDoc
+     * @param LoaderInterface $loader
+     *
+     * @return void
+     *
+     * @throws \Exception
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/config.yml');
         $loader->load(__DIR__ . '/services.yml');

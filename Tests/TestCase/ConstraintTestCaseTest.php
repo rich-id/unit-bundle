@@ -6,7 +6,6 @@ use RichCongress\Bundle\UnitBundle\Stubs\ValidationContextStub;
 use RichCongress\Bundle\UnitBundle\TestCase\ConstraintTestCase;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Validator\DummyConstraint;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Validator\DummyConstraintValidator;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 /**
  * Class ConstraintTestCaseTest

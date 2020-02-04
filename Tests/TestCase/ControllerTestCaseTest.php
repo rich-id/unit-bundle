@@ -1,6 +1,4 @@
-<?php /** @noinspection PhpDeprecationInspection */
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase;
 
