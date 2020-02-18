@@ -36,6 +36,7 @@
                 <directory>app</directory>
                 <directory>bin</directory>
                 <directory>DependencyInjection</directory>
+                <directory>DoctrineFunctions</directory>
                 <directory>PHPUnit</directory>
                 <directory>Resources</directory>
                 <directory>Tests</directory>

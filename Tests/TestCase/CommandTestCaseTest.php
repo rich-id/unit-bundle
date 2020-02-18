@@ -3,6 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase;
 
 use RichCongress\Bundle\UnitBundle\TestCase\CommandTestCase;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Command\DummyCommand;
 use Symfony\Component\Console\Command\Command;
 
@@ -28,7 +29,19 @@ class CommandTestCaseTest extends CommandTestCase
     /**
      * @return void
      */
-    public function testExecute(): void
+    public function testExecuteWithoutContainer(): void
+    {
+        $output = $this->execute();
+
+        self::assertStringContainsString('DummyCommand', $output);
+    }
+
+    /**
+     * @WithContainer
+     *
+     * @return void
+     */
+    public function testExecuteWithContainer(): void
     {
         $output = $this->execute();
 

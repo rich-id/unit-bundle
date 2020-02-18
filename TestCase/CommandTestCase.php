@@ -2,6 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestCase;
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -34,6 +35,13 @@ class CommandTestCase extends TestCase
         parent::setUp();
 
         if ($this->command !== null) {
+            // Declare the command within the application first
+            if (self::doesTestNeedsContainer()) {
+                $kernel = $this->getContainer()->get('kernel');
+                $application = new Application($kernel);
+                $application->add($this->command);
+            }
+
             $this->commandTester = new CommandTester($this->command);
         }
     }

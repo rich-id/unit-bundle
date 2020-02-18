@@ -7,6 +7,7 @@ use Liip\TestFixturesBundle\Factory\ConnectionFactory;
 use RichCongress\Bundle\UnitBundle\DataFixture\DataFixtureInterface;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
+use RichCongress\Bundle\UnitBundle\DoctrineFunctions\Sqlite\DateFormatFunction;
 use RichCongress\Bundle\UnitBundle\OverrideService\LoggerStub;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -74,6 +75,17 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
                     'path'   => '%kernel.cache_dir%/__DBNAME__.db',
                     'url'    => null,
                     'memory' => false,
+                ],
+                'orm' => [
+                    'entity_managers' => [
+                        'app' => [
+                            'dql' => [
+                                'datetime_functions' => [
+                                    'DATE_FORMAT' => DateFormatFunction::class,
+                                ]
+                            ]
+                        ]
+                    ]
                 ]
             ]
         );

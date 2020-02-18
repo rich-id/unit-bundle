@@ -23,6 +23,11 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
     protected $manager;
 
     /**
+     * @var integer
+     */
+    protected $count = 0;
+
+    /**
      * Loads the fixtures. All persisted data will be flushed at the end of the function.
      *
      * The recommanded way to create an object is to use the following function :
@@ -40,9 +45,7 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
-
         $this->loadFixtures();
-
         $manager->flush();
     }
 
@@ -56,15 +59,54 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
     protected function createObject($references, string $class, array $data)
     {
         $object = self::buildObject($class, $data);
+        $this->referenceAndPersist($references, $object);
 
+        return $object;
+    }
+
+    /**
+     * @param string       $baseReference
+     * @param string|array $references
+     * @param array        $data
+     *
+     * @return object|mixed
+     */
+    protected function createFrom(string $baseReference, $references, array $data = [])
+    {
+        $object = $baseReference === 'default'
+            ? $this->generateDefaultEntity()
+            : clone $this->getReference($baseReference);
+
+        self::setValue($object, 'id', null);
+        self::setValues($object, $data);
+        $this->referenceAndPersist($references, $object);
+
+        return $object;
+    }
+
+    /**
+     * @return object|mixed
+     */
+    protected function generateDefaultEntity()
+    {
+        throw new \LogicException('You must override "generateDefaultEntity" to generate the default entity.');
+    }
+
+    /**
+     * @param string|array $references
+     * @param object       $object
+     *
+     * @return void
+     */
+    private function referenceAndPersist($references, $object): void
+    {
         foreach ((array) $references as $reference) {
             $this->setReference($reference, $object);
         }
 
         if ($this->manager !== null) {
             $this->manager->persist($object);
+            $this->count++;
         }
-
-        return $object;
     }
 }
