@@ -131,8 +131,7 @@ doctrine:
     dbal:
         driver: pdo_sqlite
         user: test
-        dbname: test
-        path: '%kernel.cache_dir%/__DBNAME__.db'
+        path: '%kernel.cache_dir%/test.db'
         url: null
         memory: false
 ```

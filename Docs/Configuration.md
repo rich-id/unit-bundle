@@ -40,3 +40,19 @@ This is a list of default stubs provided by the unit-bundle. Find out the availa
 - `test_roles`
 
 This is a list of available roles for the DataProvider. Check out the [documentation](RolesProvider.md) to learn more about this feature.
+
+
+
+## Enable Doctrine functions
+
+The Unit bundle provides SQLite functions that behave like the MySQL one. The following configuration can be add to your doctrine configuration to enable the functions:
+
+```yaml
+doctrine:
+    orm:
+        entity_managers:
+            app:
+                dql:
+                    datetime_functions:
+                        DATE_FORMAT: RichCongress\Bundle\UnitBundle\DoctrineFunctions\Sqlite\DateFormatFunction
+```
