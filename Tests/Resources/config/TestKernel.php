@@ -26,16 +26,16 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
- * Class AppKernel
+ * Class TestKernel
  *
  * @package   RichCongress\Bundle\UnitBundle\Tests
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  */
-class AppKernel extends Kernel
+class TestKernel extends Kernel
 {
     /**
-     * AppKernel constructor.
+     * TestKernel constructor.
      *
      * @param string  $environment
      * @param boolean $debug
