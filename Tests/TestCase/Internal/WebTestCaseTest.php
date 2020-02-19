@@ -25,6 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  *
  * @covers    \RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase
+ * @covers    \RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility
  */
 class WebTestCaseTest extends WebTestCase
 {

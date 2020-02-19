@@ -2,6 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\Utility;
 
+use RichCongress\Bundle\UnitBundle\Mock\MockedServiceOnSetUpInterface;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -71,14 +72,12 @@ class OverrideServicesUtility
 
     /**
      * @return void
-     *
-     * @throws \ReflectionException
      */
     public function overrideServices(): void
     {
         /** @var OverrideServiceInterface $overrideService */
         foreach ($this->newServices as $serviceId => $overrideService) {
-            WebTestCase::overrideService($this->container, $serviceId, $overrideService);
+            self::overrideService($this->container, $serviceId, $overrideService);
         }
     }
 
@@ -99,6 +98,53 @@ class OverrideServicesUtility
     {
         foreach ($this->newServices as $overrideService) {
             $overrideService->tearDown();
+        }
+    }
+
+    /**
+     * Override the services with a mocked version
+     *
+     * @param ContainerInterface $container
+     *
+     * @return void
+     */
+    public static function mockServices(ContainerInterface $container): void
+    {
+        /** @var OverrideServicesUtility $overrideServicesUtility */
+        $overrideServicesUtility = $container->get(OverrideServicesUtility::class);
+        $overrideServicesUtility->overrideServices();
+        $overridenServices = $overrideServicesUtility->getOverridenServiceIds();
+
+        /** @var MockedServiceOnSetUpInterface $mockedServicesProvider */
+        $mockedServicesProvider = $container->getParameter('rich_congress_unit.mocked_services');
+        $mockedServices = $mockedServicesProvider !== null ? $mockedServicesProvider::getMockedServices() : [];
+
+        foreach ($mockedServices as $service => $mock) {
+            self::overrideService($container, $service, $mock);
+        }
+
+        $overrideServicesUtility->executeSetUps();
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param string             $overridenService
+     * @param                    $newService
+     *
+     * @return void
+     */
+    public static function overrideService(ContainerInterface $container, string $overridenService, $newService): void
+    {
+        try {
+            $container->set($overridenService, $newService);
+        } catch (\InvalidArgumentException $e) {
+            // Force overriding
+            $reflectionClass = new \ReflectionClass(\get_class($container));
+            $property = $reflectionClass->getProperty('services');
+            $property->setAccessible(true);
+            $services = $property->getValue($container);
+            $services[$overridenService] = $newService;
+            $property->setValue($container, $services);
         }
     }
 }

@@ -101,7 +101,7 @@ class WebTestCase extends BaseWebTestCase
                 self::$container = parent::getContainer();
             }
 
-            self::mockServices(self::$container);
+            OverrideServicesUtility::mockServices(self::$container);
         }
 
         self::$isTestInititialized = true;
@@ -148,7 +148,7 @@ class WebTestCase extends BaseWebTestCase
 
         self::$client = parent::createClient($options, $server);
 
-        self::mockServices(self::$client->getContainer());
+        OverrideServicesUtility::mockServices(self::$client->getContainer());
 
         return self::$client;
     }
@@ -219,33 +219,6 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * Override the services with a mocked version
-     *
-     * @internal
-     *
-     * @param ContainerInterface $container
-     *
-     * @return void
-     */
-    private static function mockServices(ContainerInterface $container): void
-    {
-        /** @var OverrideServicesUtility $overrideServicesUtility */
-        $overrideServicesUtility = $container->get(OverrideServicesUtility::class);
-        $overrideServicesUtility->overrideServices();
-        $overridenServices = $overrideServicesUtility->getOverridenServiceIds();
-
-        /** @var MockedServiceOnSetUpInterface $mockedServicesProvider */
-        $mockedServicesProvider = $container->getParameter('rich_congress_unit.mocked_services');
-        $mockedServices = $mockedServicesProvider !== null ? $mockedServicesProvider::getMockedServices() : [];
-
-        foreach ($mockedServices as $service => $mock) {
-            self::overrideService($container, $service, $mock);
-        }
-
-        $overrideServicesUtility->executeSetUps();
-    }
-
-    /**
      * Mock a service by overriding the previous one
      *
      * @param string                  $service
@@ -253,7 +226,6 @@ class WebTestCase extends BaseWebTestCase
      * @param ContainerInterface|null $inputContainer
      *
      * @return object
-     * @throws \ReflectionException
      */
     protected function mockService(string $service, $mockService = null, ContainerInterface $inputContainer = null)
     {
@@ -266,35 +238,9 @@ class WebTestCase extends BaseWebTestCase
             $mockService = \Mockery::mock($mockService ?? $service);
         }
 
-        self::overrideService($container, $service, $mockService);
+        OverrideServicesUtility::overrideService($container, $service, $mockService);
 
         return $mockService;
-    }
-
-    /**
-     * @internal
-     *
-     * @param ContainerInterface $container
-     * @param string             $overridenService
-     * @param                    $newService
-     *
-     * @return void
-     *
-     * @throws \ReflectionException
-     */
-    public static function overrideService(ContainerInterface $container, string $overridenService, $newService): void
-    {
-        try {
-            $container->set($overridenService, $newService);
-        } catch (\InvalidArgumentException $e) {
-            // Force overriding
-            $reflectionClass = new \ReflectionClass(\get_class($container));
-            $property = $reflectionClass->getProperty('services');
-            $property->setAccessible(true);
-            $services = $property->getValue($container);
-            $services[$overridenService] = $newService;
-            $property->setValue($container, $services);
-        }
     }
 
     /**
