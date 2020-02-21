@@ -1,6 +1,6 @@
 <?php
 
-namespace RichCongress\Bundle\UnitBundle\DoctrineFunctions\Sqlite;
+namespace RichCongress\Bundle\UnitBundle\Doctrine\Functions\Sqlite;
 
 use Doctrine\ORM\Query\AST\ArithmeticExpression;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
@@ -13,7 +13,7 @@ use Doctrine\ORM\Query\SqlWalker;
 /**
  * Class DateFormatFunction
  *
- * @package   RichCongress\Bundle\UnitBundle\DoctrineFunctions\Sqlite
+ * @package   RichCongress\Bundle\UnitBundle\Doctrine\Functions\Sqlite
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  */

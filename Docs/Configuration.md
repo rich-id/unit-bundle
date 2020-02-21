@@ -54,5 +54,5 @@ doctrine:
             app:
                 dql:
                     datetime_functions:
-                        DATE_FORMAT: RichCongress\Bundle\UnitBundle\DoctrineFunctions\Sqlite\DateFormatFunction
+                        DATE_FORMAT: RichCongress\Bundle\UnitBundle\Doctrine\Functions\Sqlite\DateFormatFunction
 ```

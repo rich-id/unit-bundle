@@ -13,6 +13,7 @@
 
 - Add handy functions for the fixture creation.
 - Add the `DATE_FORMAT` function to the SQLite language that behave like MySQL function.
+- Add better `ConnectionFactory`
 
 
 
