@@ -58,8 +58,10 @@ class DefaultTestKernel extends Kernel
      */
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load([$this, 'configureContainer']);
         $confDir = $this->getConfigurationDir();
+        $loader->load(
+            \Closure::fromCallable([$this, 'configureContainer'])
+        );
 
         if ($confDir === null) {
             return;
