@@ -35,6 +35,6 @@ class LoadUserData extends AbstractFixture
      */
     public function badLoadFixtures(): void
     {
-        $this->createFrom('default', 'bad_entity', []);
+        $this->createFromDefault('bad_entity', []);
     }
 }

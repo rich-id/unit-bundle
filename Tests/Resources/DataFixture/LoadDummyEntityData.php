@@ -29,7 +29,7 @@ class LoadDummyEntityData extends AbstractFixture
             $dummyEntity = $this->createObject('entity_' . $i, DummyEntity::class, $data);
         }
 
-        $this->createFrom('default', 'entity_from_default', [
+        $this->createFromDefault('entity_from_default', [
             'name' => 'From Default',
         ]);
 

@@ -65,17 +65,34 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
     }
 
     /**
-     * @param string       $baseReference
      * @param string|array $references
      * @param array        $data
      *
      * @return object|mixed
      */
-    protected function createFrom(string $baseReference, $references, array $data = [])
+    protected function createFromDefault($references, array $data = [])
     {
-        $object = $baseReference === 'default'
-            ? $this->generateDefaultEntity()
-            : clone $this->getReference($baseReference);
+        $object = $this->generateDefaultEntity();
+
+        self::setValue($object, 'id', null);
+        self::setValues($object, $data);
+        $this->referenceAndPersist($references, $object);
+
+        return $object;
+    }
+
+    /**
+     * @param string|object $base
+     * @param string|array  $references
+     * @param array         $data
+     *
+     * @return object|mixed
+     */
+    protected function createFrom($base, $references, array $data = [])
+    {
+        $object = \is_string($base)
+            ? clone $this->getReference($base)
+            : clone $base;
 
         self::setValue($object, 'id', null);
         self::setValues($object, $data);

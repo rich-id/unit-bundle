@@ -72,7 +72,7 @@ class LoadDummyEntityData extends AbstractFixture
     public function loadFixtures() : void 
     {
         // Based on the entity returned by generateDefaultEntity
-        $this->createFrom('default', 'dummy-entity-1', [
+        $this->createFromDefault('dummy-entity-1', [
             'name' => 'Entity 1',
         ]);
 
@@ -104,6 +104,8 @@ In this case, populating an object works also for private and protected properti
 
 - `setValue()`: Set the input value of the input property for the input object.
 
-- `createFrom()`: Creates a copy of the reference and overrides the properties with the input data, persists it and attaches the input reference on it.
+- `createFrom()`: Creates a copy of the object or the reference and overrides the properties with the input data, persists it and attaches the input reference on it.
 
-- `generateDefaultEntity()`: When copying the `default` reference from the `¢reateFrom()` method, the entity copyed is the one returned by this method.
+- `createFromDefault()`: Generates an entity from the `generateDefaultEntity` method and overrides its properties with the input data, persists it and attaches the input reference on it.
+
+- `generateDefaultEntity()`: When using `createFromDefault`, the entity returned by this function is used.
