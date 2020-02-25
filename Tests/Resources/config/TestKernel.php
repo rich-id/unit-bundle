@@ -3,7 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\Tests;
 
 use EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle;
-use RichCongress\Bundle\UnitBundle\Kernel\AbstractTestKernel;
+use RichCongress\Bundle\UnitBundle\Kernel\DefaultTestKernel;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  */
-class TestKernel extends AbstractTestKernel
+class TestKernel extends DefaultTestKernel
 {
     /**
      * TestKernel constructor.
@@ -51,15 +51,10 @@ class TestKernel extends AbstractTestKernel
     }
 
     /**
-     * @param LoaderInterface $loader
-     *
-     * @return void
-     *
-     * @throws \Exception
+     * @return string|null
      */
-    public function registerContainerConfiguration(LoaderInterface $loader): void
+    public function getConfigurationDir(): ?string
     {
-        $loader->load(__DIR__ . '/config.yml');
-        $loader->load(__DIR__ . '/services.yml');
+        return $this->getProjectDir() . '/Tests/Resources/config';
     }
 }

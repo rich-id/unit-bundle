@@ -9,9 +9,11 @@ use Liip\FunctionalTestBundle\LiipFunctionalTestBundle;
 use Liip\TestFixturesBundle\LiipTestFixturesBundle;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
-use RichCongress\Bundle\UnitBundle\Kernel\AbstractTestKernel;
+use RichCongress\Bundle\UnitBundle\Kernel\DefaultTestKernel;
 use RichCongress\Bundle\UnitBundle\RichCongressUnitBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -21,18 +23,29 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  *
- * @covers \RichCongress\Bundle\UnitBundle\Kernel\AbstractTestKernel
+ * @covers \RichCongress\Bundle\UnitBundle\Kernel\DefaultTestKernel
  */
 class AbstractTestKernelTest extends MockeryTestCase
 {
+    /**
+     * @var DefaultTestKernel|MockInterface
+     */
+    protected $kernel;
+
+    /**
+     * @return void
+     */
+    public function setUp(): void
+    {
+        $this->kernel = \Mockery::mock(DefaultTestKernel::class)->makePartial();
+    }
+
     /**
      * @return void
      */
     public function testRegisterBundles(): void
     {
-        /** @var AbstractTestKernel|MockInterface $kernel */
-        $kernel = \Mockery::mock(AbstractTestKernel::class)->makePartial();
-        $bundles = $kernel->registerBundles();
+        $bundles = $this->kernel->registerBundles();
 
         self::assertCount(7, $bundles);
         self::assertContainsOnlyInstancesOf(BundleInterface::class, $bundles);
@@ -43,5 +56,50 @@ class AbstractTestKernelTest extends MockeryTestCase
         self::assertInstanceOf(LiipTestFixturesBundle::class, $bundles[4]);
         self::assertInstanceOf(DAMADoctrineTestBundle::class, $bundles[5]);
         self::assertInstanceOf(RichCongressUnitBundle::class, $bundles[6]);
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function testRegisterContainerConfigurationWithNoConfigurationDirectory(): void
+    {
+        self::assertNull($this->kernel->getConfigurationDir());
+
+        $loader = \Mockery::mock(LoaderInterface::class);
+        $loader->shouldReceive('load')->once();
+
+        $this->kernel->registerContainerConfiguration($loader);
+    }
+
+    /**
+     * @return void
+     *
+     * @throws \Exception
+     */
+    public function testRegisterContainerConfigurationWithConfigurationDirectory(): void
+    {
+        $loader = \Mockery::mock(LoaderInterface::class);
+        $loader->shouldReceive('load')->times(5);
+
+        $this->kernel
+            ->shouldReceive('getConfigurationDir')
+            ->once()
+            ->andReturn('../');
+
+        $this->kernel->registerContainerConfiguration($loader);
+    }
+
+    /**
+     * @return void
+     */
+    public function testConfigureContainer(): void
+    {
+        $container = \Mockery::mock(ContainerBuilder::class);
+        $container->shouldReceive('setParameter')->once();
+        $container->shouldReceive('addObjectResource')->once();
+
+        $this->kernel->configureContainer($container);
     }
 }

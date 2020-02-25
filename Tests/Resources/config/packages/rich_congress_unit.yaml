@@ -1,0 +1,10 @@
+rich_congress_unit:
+    mocked_services: RichCongress\Bundle\UnitBundle\Tests\Resources\config\MockedServices
+    enable_db_caching: true
+    public_services:
+        - 'monolog.logger'
+    default_stubs:
+        logger: true
+    test_roles:
+        User1: 'user_1'
+        User2: 'user_2'
