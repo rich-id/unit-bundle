@@ -10,6 +10,7 @@ use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadDummyEntityDa
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadUserData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
+use RichCongress\Bundle\UnitBundle\TestTrait\FixtureCreationTrait;
 
 /**
  * Class AbstractFixtureTest
@@ -112,5 +113,31 @@ class AbstractFixtureTest extends MockeryTestCase
 
         $abstractFixture = new LoadUserData();
         $abstractFixture->badLoadFixtures();
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetValueParentProperty(): void
+    {
+        /** @var DummyEntity $result */
+        $result = AbstractFixture::buildObject(DummyEntity::class, [
+            'parentProperty' => true,
+        ]);
+
+        self::assertTrue($result->parentProperty);
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetValueOnNonExistingProperty(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The property "nonExistingProperty" does not exist for the entity ' . DummyEntity::class);
+
+        AbstractFixture::buildObject(DummyEntity::class, [
+            'nonExistingProperty' => true,
+        ]);
     }
 }

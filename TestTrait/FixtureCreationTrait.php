@@ -70,7 +70,7 @@ trait FixtureCreationTrait
     {
         $originalClass = $reflectionClass->getName();
 
-        while ($reflectionClass !== null) {
+        while ($reflectionClass instanceof \ReflectionClass) {
             if ($reflectionClass->hasProperty($property)) {
                 return $reflectionClass->getProperty($property);
             }
