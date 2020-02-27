@@ -204,6 +204,16 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
+     * @param string $service
+     *
+     * @return object|null
+     */
+    public function getService(string $service)
+    {
+        return $this->getContainer()->get($service);
+    }
+
+    /**
      * @param string $name
      * @param array  $params
      *

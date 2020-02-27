@@ -53,8 +53,8 @@ class WebTestCaseTest extends WebTestCase
     {
         $client = self::createClient();
 
-        $mockedService = $this->getContainer()->get('dummy_entity');
-        $mockedGuzzleClient = $this->getContainer()->get('eight_points_guzzle.client.dummy_api');
+        $mockedService = $this->getService('dummy_entity');
+        $mockedGuzzleClient = $this->getService('eight_points_guzzle.client.dummy_api');
 
         self::assertInstanceOf(MockInterface::class, $mockedService);
         self::assertInstanceOf(MockInterface::class, $mockedGuzzleClient);
@@ -67,7 +67,7 @@ class WebTestCaseTest extends WebTestCase
      */
     public function testGetContainerFromOriginalWebTestCase(): void
     {
-        $mockedService = $this->getContainer()->get('security.token_storage');
+        $mockedService = $this->getService('security.token_storage');
 
         self::assertInstanceOf(TokenStorageInterface::class, $mockedService);
     }
@@ -80,7 +80,7 @@ class WebTestCaseTest extends WebTestCase
     public function testGetContainerCreation(): void
     {
         self::$container = null;
-        $mockedService = $this->getContainer()->get('security.token_storage');
+        $mockedService = $this->getService('security.token_storage');
 
         self::assertInstanceOf(TokenStorageInterface::class, $mockedService);
     }
