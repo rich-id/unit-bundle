@@ -2,7 +2,7 @@
 
 In the following TestCase, it is recommanded to avoid overriding `setUp()` and `tearDown()` and to use respectively `beforeTest()` and `afterTest()` instead. This makes sure that no initialization nor finalization action is missing. Moreover, it can insert an action managed by the test case to respect the workflow. For instance, loading the container before the `beforeTest()`.
 
-Moreover, each test case uses from the MockeryPHPUnitIntegration so no need to use the integration trait.
+Moreover, each test case uses from the `MockeryPHPUnitIntegration` and the `FixturesCreationTrait` so no need to use the integration trait. It means you can either use Mocks in the test or the `buildObject` function to create an object.
 
 To use a container or fixtures, please follow this [documentation](Annotations.md).
 

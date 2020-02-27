@@ -7,13 +7,15 @@
 - Handles errors for the AbstractCommand.
 - Fix CommandTestCase bugs related to the usage of Helpers withing the command.
 - Fix not mocked services during the fixture loading.
+- Fix Fixtures creation when the property is inherited.
 
 
 #### New features
 
 - Add handy functions for the fixture creation.
 - Add the `DATE_FORMAT` function to the SQLite language that behave like MySQL function.
-- Add better `ConnectionFactory`
+- Add better `ConnectionFactory`.
+- Add the `buildObject` function for all tests.
 
 
 

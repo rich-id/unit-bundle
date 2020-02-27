@@ -3,6 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\TestCase;
 
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\FixturesTestCase;
+use RichCongress\Bundle\UnitBundle\TestTrait\FixtureCreationTrait;
 
 /**
  * Class TestCase
@@ -13,4 +14,5 @@ use RichCongress\Bundle\UnitBundle\TestCase\Internal\FixturesTestCase;
  */
 class TestCase extends FixturesTestCase
 {
+    use FixtureCreationTrait;
 }
