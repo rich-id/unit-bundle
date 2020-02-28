@@ -47,10 +47,10 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\RichCongress\\Bundle\\UnitBundle\\": "Tests/"
+            "RichCongress\\Bundle\\UnitBundle\\Tests\\": "Tests/"
         },
         "classmap": [
-            "Tests/Resources/config/AppKernel.php"
+            "Tests/Resources/config/TestKernel.php"
         ]
     },
     "config": {

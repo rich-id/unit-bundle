@@ -25,6 +25,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  *
  * @covers    \RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase
+ * @covers    \RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility
  */
 class WebTestCaseTest extends WebTestCase
 {
@@ -52,8 +53,8 @@ class WebTestCaseTest extends WebTestCase
     {
         $client = self::createClient();
 
-        $mockedService = $this->getContainer()->get('dummy_entity');
-        $mockedGuzzleClient = $this->getContainer()->get('eight_points_guzzle.client.dummy_api');
+        $mockedService = $this->getService('dummy_entity');
+        $mockedGuzzleClient = $this->getService('eight_points_guzzle.client.dummy_api');
 
         self::assertInstanceOf(MockInterface::class, $mockedService);
         self::assertInstanceOf(MockInterface::class, $mockedGuzzleClient);
@@ -66,7 +67,7 @@ class WebTestCaseTest extends WebTestCase
      */
     public function testGetContainerFromOriginalWebTestCase(): void
     {
-        $mockedService = $this->getContainer()->get('security.token_storage');
+        $mockedService = $this->getService('security.token_storage');
 
         self::assertInstanceOf(TokenStorageInterface::class, $mockedService);
     }
@@ -79,7 +80,7 @@ class WebTestCaseTest extends WebTestCase
     public function testGetContainerCreation(): void
     {
         self::$container = null;
-        $mockedService = $this->getContainer()->get('security.token_storage');
+        $mockedService = $this->getService('security.token_storage');
 
         self::assertInstanceOf(TokenStorageInterface::class, $mockedService);
     }
@@ -256,5 +257,16 @@ class WebTestCaseTest extends WebTestCase
         $this->expectExceptionMessage('You did not mentionned that you want to load a container. Add the annotation @WithContainer into the class or test PHP Doc.');
 
         $this->checkContainerEnabled();
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetContainerWithoutAnnotation(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('You did not mentionned that you want to load a container. Add the annotation @WithContainer into the class or test PHP Doc.');
+
+        $this->getContainer();
     }
 }

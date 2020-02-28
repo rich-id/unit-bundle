@@ -1,0 +1,11 @@
+security:
+    encoders:
+        RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User: bcrypt
+    providers:
+        users:
+            entity:
+                class: RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User
+                property: username
+    firewalls:
+        main:
+            http_basic: ~

@@ -17,6 +17,8 @@ To use `@WithContainer`, add it to the class PHP Doc or the test PHP Doc. It wil
 
 - `getManager()`: Returns the default EntityManager from the default container.
 
+- `getService()`: Returns the desired service from the default container.
+
 - `executeCommand()`: Execute a command using the default container and returns the display.
 
 - `mockService()`: Replace the target service with the mentioned service for the specified container or the default container as a fallback. If the service is an object, it will just replace it. If the service is a string, it will create a `Mockery\Mock` of it. If no mock service is set, it will try to mock the overriden service.

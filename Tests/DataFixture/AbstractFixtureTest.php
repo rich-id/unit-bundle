@@ -7,8 +7,10 @@ use Doctrine\Persistence\ObjectManager;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadDummyEntityData;
+use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadUserData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
+use RichCongress\Bundle\UnitBundle\TestTrait\FixtureCreationTrait;
 
 /**
  * Class AbstractFixtureTest
@@ -30,16 +32,21 @@ class AbstractFixtureTest extends MockeryTestCase
         $manager = \Mockery::mock(ObjectManager::class);
         $manager->shouldReceive('flush')->once();
         $manager->shouldReceive('persist')
-            ->times(20)
+            ->times(22)
             ->with(\Mockery::type(DummyEntity::class));
 
         $repository = \Mockery::mock(ReferenceRepository::class);
         $repository->shouldReceive('setReference')
-            ->times(20)
+            ->times(22)
             ->with(
                 \Mockery::type('string'),
                 \Mockery::type(DummyEntity::class)
             );
+
+        $repository->shouldReceive('getReference')
+            ->once()
+            ->with('entity_1')
+            ->andReturn(new DummyEntity());
 
         /** @var AbstractFixture|MockInterface $abstractFixture */
         $abstractFixture = new LoadDummyEntityData();
@@ -94,5 +101,43 @@ class AbstractFixtureTest extends MockeryTestCase
         $result = $fixture->getReference('entity_1');
 
         self::assertSame($object, $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateFromDefaultFailure(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('You must override "generateDefaultEntity" to generate the default entity.');
+
+        $abstractFixture = new LoadUserData();
+        $abstractFixture->badLoadFixtures();
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetValueParentProperty(): void
+    {
+        /** @var DummyEntity $result */
+        $result = AbstractFixture::buildObject(DummyEntity::class, [
+            'parentProperty' => true,
+        ]);
+
+        self::assertTrue($result->parentProperty);
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetValueOnNonExistingProperty(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('The property "nonExistingProperty" does not exist for the entity ' . DummyEntity::class);
+
+        AbstractFixture::buildObject(DummyEntity::class, [
+            'nonExistingProperty' => true,
+        ]);
     }
 }

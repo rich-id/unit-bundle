@@ -1,0 +1,4 @@
+eight_points_guzzle:
+    clients:
+        dummy_api: ~
+        dummy_api_2: ~

@@ -87,7 +87,7 @@ This version of the bundle requires Symfony 4.4+ and PHP 7.3+.
 composer require richcongress/unit-bundle
 ```
 
-### 1.2 AppKernel.php
+### 1.2 Bundles declaration
 
 After the installation, make sure that those 4 bundles are declared correctly within the Kernel's bundles list.
 
@@ -131,8 +131,7 @@ doctrine:
     dbal:
         driver: pdo_sqlite
         user: test
-        dbname: test
-        path: '%kernel.cache_dir%/__DBNAME__.db'
+        path: '%kernel.cache_dir%/test.db'
         url: null
         memory: false
 ```

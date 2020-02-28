@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  */
-class DummyEntity
+class DummyEntity extends AbstractDummyEntity
 {
     /**
      * @var integer

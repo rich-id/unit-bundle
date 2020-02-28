@@ -16,7 +16,7 @@ use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
 class LoadUserData extends AbstractFixture
 {
     /**
-     * @inheritDoc
+     * @return void
      */
     protected function loadFixtures(): void
     {
@@ -28,5 +28,13 @@ class LoadUserData extends AbstractFixture
 
             $user = $this->createObject('user_' . $i, User::class, $data);
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function badLoadFixtures(): void
+    {
+        $this->createFromDefault('bad_entity', []);
     }
 }

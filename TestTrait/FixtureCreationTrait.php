@@ -53,10 +53,33 @@ trait FixtureCreationTrait
             $reflectionClass = new \ReflectionClass(\get_class($object));
         }
 
-        $property = $reflectionClass->getProperty($property);
-        $property->setAccessible(true);
-        $property->setValue($object, $value);
+        $reflectionProperty = static::getProperty($reflectionClass, $property);
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($object, $value);
 
         return $object;
+    }
+
+    /**
+     * @param \ReflectionClass $reflectionClass
+     * @param string           $property
+     *
+     * @return \ReflectionProperty|null
+     */
+    private static function getProperty(\ReflectionClass $reflectionClass, string $property): ?\ReflectionProperty
+    {
+        $originalClass = $reflectionClass->getName();
+
+        while ($reflectionClass instanceof \ReflectionClass) {
+            if ($reflectionClass->hasProperty($property)) {
+                return $reflectionClass->getProperty($property);
+            }
+
+            $reflectionClass = $reflectionClass->getParentClass();
+        }
+
+        throw new \LogicException(
+            sprintf('The property "%s" does not exist for the entity %s', $property, $originalClass)
+        );
     }
 }

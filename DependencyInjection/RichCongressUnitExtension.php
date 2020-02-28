@@ -3,10 +3,11 @@
 namespace RichCongress\Bundle\UnitBundle\DependencyInjection;
 
 use Doctrine\Bundle\FixturesBundle\DependencyInjection\CompilerPass\FixturesCompilerPass;
-use Liip\TestFixturesBundle\Factory\ConnectionFactory;
 use RichCongress\Bundle\UnitBundle\DataFixture\DataFixtureInterface;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
+use RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory\TestConnectionFactory;
+use RichCongress\Bundle\UnitBundle\Doctrine\Functions\Sqlite\DateFormatFunction;
 use RichCongress\Bundle\UnitBundle\OverrideService\LoggerStub;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -61,7 +62,7 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
 
         $container->setParameter(
             'doctrine.dbal.connection_factory.class',
-            ConnectionFactory::class
+            TestConnectionFactory::class
         );
 
         $container->prependExtensionConfig(
@@ -70,11 +71,10 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
                 'dbal' => [
                     'driver' => 'pdo_sqlite',
                     'user'   => 'test',
-                    'dbname' => 'test',
-                    'path'   => '%kernel.cache_dir%/__DBNAME__.db',
+                    'path'   => '%kernel.cache_dir%/test.db',
                     'url'    => null,
                     'memory' => false,
-                ]
+                ],
             ]
         );
     }

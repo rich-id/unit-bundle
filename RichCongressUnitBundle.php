@@ -6,6 +6,7 @@ use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\PublicServicesPass;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
+use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -36,6 +37,9 @@ class RichCongressUnitBundle extends Bundle
     public function boot(): void
     {
         parent::boot();
+
+        // Mock services for the main container before loading fixtures
+        OverrideServicesUtility::mockServices($this->container);
 
         // Autowire everything for the FixturesManager before the first test
         $this->container->get(FixturesManager::class);

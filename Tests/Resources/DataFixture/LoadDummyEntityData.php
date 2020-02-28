@@ -16,7 +16,7 @@ use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
 class LoadDummyEntityData extends AbstractFixture
 {
     /**
-     * @inheritDoc
+     * @return void
      */
     protected function loadFixtures(): void
     {
@@ -28,5 +28,30 @@ class LoadDummyEntityData extends AbstractFixture
 
             $dummyEntity = $this->createObject('entity_' . $i, DummyEntity::class, $data);
         }
+
+        $this->createFromDefault('entity_from_default', [
+            'name' => 'From Default',
+        ]);
+
+        $this->createFrom('entity_1', 'entity_1_copy', [
+            'name' => 'Copy',
+        ]);
+    }
+
+    /**
+     * @return DummyEntity
+     */
+    protected function generateDefaultEntity(): DummyEntity
+    {
+        $id = $this->count + 1;
+        $data = [
+            'name'    => 'Name ' . $id,
+            'keyname' => 'keyname_' . $id,
+        ];
+
+        /** @var DummyEntity $dummyEntity */
+        $dummyEntity = $this->buildObject(DummyEntity::class, $data);
+
+        return $dummyEntity;
     }
 }
