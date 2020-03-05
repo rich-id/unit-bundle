@@ -49,22 +49,6 @@ class WebTestCaseTest extends WebTestCase
      *
      * @return void
      */
-    public function testCreateClientAndMockServices(): void
-    {
-        $client = self::createClient();
-
-        $mockedService = $this->getService('dummy_entity');
-        $mockedGuzzleClient = $this->getService('eight_points_guzzle.client.dummy_api');
-
-        self::assertInstanceOf(MockInterface::class, $mockedService);
-        self::assertInstanceOf(MockInterface::class, $mockedGuzzleClient);
-    }
-
-    /**
-     * @WithContainer
-     *
-     * @return void
-     */
     public function testGetContainerFromOriginalWebTestCase(): void
     {
         $mockedService = $this->getService('security.token_storage');
@@ -116,7 +100,6 @@ class WebTestCaseTest extends WebTestCase
      * @WithContainer
      *
      * @return void
-     * @throws \ReflectionException
      */
     public function testMockService(): void
     {

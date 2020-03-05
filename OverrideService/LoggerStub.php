@@ -3,6 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\OverrideService;
 
 use RichCongress\Bundle\UnitBundle\Stubs\LoggerStub as BaseLoggerStub;
+use RichCongress\Bundle\UnitBundle\TestTrait\OverrideServiceTrait;
 
 /**
  * Class LoggerStub
@@ -13,18 +14,14 @@ use RichCongress\Bundle\UnitBundle\Stubs\LoggerStub as BaseLoggerStub;
  */
 class LoggerStub extends BaseLoggerStub implements OverrideServiceInterface
 {
+    public static $overridenServices = 'logger';
+
+    use OverrideServiceTrait;
+
     /**
      * @var array
      */
     public static $logs;
-
-    /**
-     * @inheritDoc
-     */
-    public function getOverridenServiceName(): ?string
-    {
-        return 'logger';
-    }
 
     /**
      * @param mixed  $level
@@ -59,9 +56,9 @@ class LoggerStub extends BaseLoggerStub implements OverrideServiceInterface
     }
 
     /**
-     * @inheritDoc
+     * @return void
      */
-    public function tearDown(): void
+    public function __destruct()
     {
         $this->clearLogs();
     }

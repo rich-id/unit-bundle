@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Log\Logger;
 
 class LoggerStub extends Logger implements OverrideServiceInterface
 {
-    public function getOverridenServiceName(): ?string
+    public static function getOverridenServiceNames(): ?string
     {
         return 'logger';
     }
@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionStub extends AbstractOverrideService implements SessionInterface
 {
-    public const OVERRIDEN_SERVICE = 'session';
+    public const OVERRIDEN_SERVICES = 'session';
 
     public function set()
     {

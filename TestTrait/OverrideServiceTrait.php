@@ -12,16 +12,18 @@ namespace RichCongress\Bundle\UnitBundle\TestTrait;
 trait OverrideServiceTrait
 {
     /**
-     * @return string|null
+     * @return array
      */
-    public function getOverridenServiceName(): ?string
+    public static function getOverridenServiceNames(): array
     {
-        return static::OVERRIDEN_SERVICE !== ''
-            ? static::OVERRIDEN_SERVICE
-            : null;
+        return isset(static::$overridenServices)
+            ? (array) static::$overridenServices
+            : [];
     }
 
     /**
+     * Executed before each test, when the service is instanciated
+     *
      * @return void
      */
     public function setUp(): void
@@ -30,9 +32,9 @@ trait OverrideServiceTrait
     }
 
     /**
-     * @return void
+     * Executed after each test, when the service is destroyed
      */
-    public function tearDown(): void
+    public function __destruct()
     {
         // Do nothing, override this function if needed.
     }

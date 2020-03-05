@@ -12,21 +12,21 @@ namespace RichCongress\Bundle\UnitBundle\OverrideService;
 interface OverrideServiceInterface
 {
     /**
-     * @return string|null
+     * @return array
      */
-    public function getOverridenServiceName(): ?string;
+    public static function getOverridenServiceNames(): array;
 
     /**
-     * Executed before each test
+     * Executed before each test, when the service is instanciated
      *
      * @return void
      */
     public function setUp(): void;
 
     /**
-     * Executed at the end of each test, when the service is destroyed
+     * Executed after each test, when the service is destroyed
      *
      * @return void
      */
-    public function tearDown(): void;
+    public function __destruct();
 }

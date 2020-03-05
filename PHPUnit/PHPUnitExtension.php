@@ -6,6 +6,7 @@ use DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension as DamaPHPUnitExtension;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
+use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 
 /**
  * Class PHPUnitExtension

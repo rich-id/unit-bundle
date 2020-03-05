@@ -17,7 +17,7 @@ abstract class AbstractOverrideService implements OverrideServiceInterface
      * /!\ Needs to be overriden
      * Name of the service to override
      */
-    public const OVERRIDEN_SERVICE = '';
+    public static $overridenServices = [];
 
     use OverrideServiceTrait;
 }

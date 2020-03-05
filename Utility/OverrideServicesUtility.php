@@ -2,9 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\Utility;
 
-use RichCongress\Bundle\UnitBundle\Mock\MockedServiceOnSetUpInterface;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
-use RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -17,49 +15,23 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OverrideServicesUtility
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * @var array|OverrideServiceInterface[]
      */
-    protected $newServices = [];
+    protected static $overrideServices = [];
 
     /**
-     * $serviceId => $priority
-     *
-     * @var array|int[]
+     * @var array|null
      */
-    protected $priorities = [];
-
-    /**
-     * OverrideServicesUtility constructor.
-     *
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    protected static $cacheOverridenServicesIds;
 
     /**
      * @param OverrideServiceInterface $overrideService
-     * @param integer                  $priority
      *
      * @return void
      */
-    public function addOverrideService(OverrideServiceInterface $overrideService, int $priority = 0): void
+    public function addOverrideService(OverrideServiceInterface $overrideService): void
     {
-        $serviceId = $overrideService->getOverridenServiceName();
-
-        // The service already registered has an higher priority
-        if ($serviceId === null || (array_key_exists($serviceId, $this->priorities) && $this->priorities[$serviceId] >= $priority)) {
-            return;
-        }
-
-        $this->priorities[$serviceId] = $priority;
-        $this->newServices[$serviceId] = $overrideService;
+        static::$overrideServices[] = $overrideService;
     }
 
     /**
@@ -67,63 +39,18 @@ class OverrideServicesUtility
      */
     public function getOverridenServiceIds(): array
     {
-        return array_keys($this->newServices);
-    }
+        if (static::$cacheOverridenServicesIds === null) {
+            static::$cacheOverridenServicesIds = [];
 
-    /**
-     * @return void
-     */
-    public function overrideServices(): void
-    {
-        /** @var OverrideServiceInterface $overrideService */
-        foreach ($this->newServices as $serviceId => $overrideService) {
-            self::overrideService($this->container, $serviceId, $overrideService);
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function executeSetUps(): void
-    {
-        foreach ($this->newServices as $overrideService) {
-            $overrideService->setUp();
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function executeTearDowns(): void
-    {
-        foreach ($this->newServices as $overrideService) {
-            $overrideService->tearDown();
-        }
-    }
-
-    /**
-     * Override the services with a mocked version
-     *
-     * @param ContainerInterface $container
-     *
-     * @return void
-     */
-    public static function mockServices(ContainerInterface $container): void
-    {
-        /** @var OverrideServicesUtility $overrideServicesUtility */
-        $overrideServicesUtility = $container->get(OverrideServicesUtility::class);
-        $overrideServicesUtility->overrideServices();
-        $overridenServices = $overrideServicesUtility->getOverridenServiceIds();
-
-        /** @var MockedServiceOnSetUpInterface $mockedServicesProvider */
-        $mockedServicesProvider = $container->getParameter('rich_congress_unit.mocked_services');
-        $mockedServices = $mockedServicesProvider !== null ? $mockedServicesProvider::getMockedServices() : [];
-
-        foreach ($mockedServices as $service => $mock) {
-            self::overrideService($container, $service, $mock);
+            foreach (static::$overrideServices as $service) {
+                static::$cacheOverridenServicesIds = array_merge(
+                    static::$cacheOverridenServicesIds,
+                    $service->getOverridenServiceNames()
+                );
+            }
         }
 
-        $overrideServicesUtility->executeSetUps();
+        return static::$cacheOverridenServicesIds;
     }
 
     /**
@@ -132,19 +59,25 @@ class OverrideServicesUtility
      * @param                    $newService
      *
      * @return void
+     *
+     * @deprecated Use regular stubs instead of this function, which is very brutal
      */
     public static function overrideService(ContainerInterface $container, string $overridenService, $newService): void
     {
         try {
             $container->set($overridenService, $newService);
         } catch (\InvalidArgumentException $e) {
-            // Force overriding
-            $reflectionClass = new \ReflectionClass(\get_class($container));
-            $property = $reflectionClass->getProperty('services');
-            $property->setAccessible(true);
-            $services = $property->getValue($container);
-            $services[$overridenService] = $newService;
-            $property->setValue($container, $services);
+            try {
+                // Force overriding
+                $reflectionClass = new \ReflectionClass(\get_class($container));
+                $property = $reflectionClass->getProperty('services');
+                $property->setAccessible(true);
+                $services = $property->getValue($container);
+                $services[$overridenService] = $newService;
+                $property->setValue($container, $services);
+            } catch (\Exception $e) {
+                throw new \RuntimeException('Impossible to override the service ' . $overridenService);
+            }
         }
     }
 }

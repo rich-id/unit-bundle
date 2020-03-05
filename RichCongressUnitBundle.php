@@ -38,9 +38,6 @@ class RichCongressUnitBundle extends Bundle
     {
         parent::boot();
 
-        // Mock services for the main container before loading fixtures
-        OverrideServicesUtility::mockServices($this->container);
-
         // Autowire everything for the FixturesManager before the first test
         $this->container->get(FixturesManager::class);
     }

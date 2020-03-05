@@ -20,11 +20,6 @@ use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 class OverrideServicesUtilityTest extends TestCase
 {
     /**
-     * @var ContainerStub
-     */
-    protected $containerStub;
-
-    /**
      * @var OverrideServicesUtility
      */
     protected $utility;
@@ -34,14 +29,11 @@ class OverrideServicesUtilityTest extends TestCase
      */
     protected function beforeTest(): void
     {
-        $this->containerStub = new ContainerStub();
-        $this->utility = new OverrideServicesUtility($this->containerStub);
+        $this->utility = new OverrideServicesUtility();
     }
 
     /**
      * @return void
-     *
-     * @throws \ReflectionException
      */
     public function testAddOverrideServiceAndOverrideServices(): void
     {
@@ -49,32 +41,11 @@ class OverrideServicesUtilityTest extends TestCase
         $service2 = new DummyOverrideService();
         $service3 = new DummyOverrideService();
 
-        $this->utility->addOverrideService($service1, -100);
-        $this->utility->addOverrideService($service2, 1);
+        $this->utility->addOverrideService($service1);
+        $this->utility->addOverrideService($service2);
         $this->utility->addOverrideService($service3);
-        $this->utility->overrideServices();
 
         self::assertContains('test.service', $this->utility->getOverridenServiceIds());
-        self::assertTrue($this->containerStub->has('test.service'));
-        self::assertSame($service2, $this->containerStub->get('test.service'));
-    }
-
-    /**
-     * @return void
-     */
-    public function testExecuteSetUpAndExecuteTearDown(): void
-    {
-        $service = new DummyOverrideService();
-        $this->utility->addOverrideService($service);
-
-        self::assertFalse($service->setUpExecuted);
-        self::assertFalse($service->tearDownExecuted);
-
-        $this->utility->executeSetUps();
-        $this->utility->executeTearDowns();
-
-        self::assertTrue($service->setUpExecuted);
-        self::assertTrue($service->tearDownExecuted);
     }
 }
 

@@ -35,16 +35,6 @@ class LoggerStubTest extends TestCase
     /**
      * @return void
      */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->logger->tearDown();
-    }
-
-    /**
-     * @return void
-     */
     public function testLog(): void
     {
         self::assertEmpty(LoggerStub::$logs);
@@ -57,8 +47,8 @@ class LoggerStubTest extends TestCase
     /**
      * @return void
      */
-    public function testGetOverridenServiceName(): void
+    public function testGetOverridenServiceNames(): void
     {
-        self::assertSame('logger', $this->logger->getOverridenServiceName());
+        self::assertContains('logger', LoggerStub::getOverridenServiceNames());
     }
 }

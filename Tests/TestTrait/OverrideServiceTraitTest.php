@@ -34,9 +34,9 @@ class OverrideServiceTraitTest extends TestCase
     /**
      * @return void
      */
-    public function testGetOverridenServiceName(): void
+    public function testGetOverridenServiceNames(): void
     {
-        self::assertSame('test.service', $this->service->getOverridenServiceName());
+        self::assertContains('test.service', DummyOverrideService::getOverridenServiceNames());
     }
 
     /**
@@ -44,8 +44,8 @@ class OverrideServiceTraitTest extends TestCase
      */
     public function testSetUpAndTearDownExists(): void
     {
-        self::assertSame('test.service', $this->service::OVERRIDEN_SERVICE);
+        self::assertContains('test.service', DummyOverrideService::$overridenServices);
         $this->service->setUp();
-        $this->service->tearDown();
+        $this->service->__destruct();
     }
 }

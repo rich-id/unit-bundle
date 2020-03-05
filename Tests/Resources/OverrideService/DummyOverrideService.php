@@ -13,7 +13,7 @@ use RichCongress\Bundle\UnitBundle\OverrideService\AbstractOverrideService;
  */
 class DummyOverrideService extends AbstractOverrideService
 {
-    public const OVERRIDEN_SERVICE = 'test.service';
+    public static $overridenServices = 'test.service';
 
     /**
      * @var boolean

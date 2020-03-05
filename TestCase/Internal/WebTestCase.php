@@ -3,17 +3,13 @@
 namespace RichCongress\Bundle\UnitBundle\TestCase\Internal;
 
 use Doctrine\ORM\EntityManagerInterface;
-use GuzzleHttp\Psr7\Response;
 use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\MockInterface;
-use RichCongress\Bundle\UnitBundle\Mock\MockedServiceOnSetUpInterface;
 use RichCongress\Bundle\UnitBundle\TestTrait\CommonTestCaseTrait;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 use RichCongress\Bundle\UnitBundle\Utility\TestConfigurationExtractor;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -100,8 +96,6 @@ class WebTestCase extends BaseWebTestCase
             if (self::$container === null) {
                 self::$container = parent::getContainer();
             }
-
-            OverrideServicesUtility::mockServices(self::$container);
         }
 
         self::$isTestInititialized = true;
@@ -118,12 +112,6 @@ class WebTestCase extends BaseWebTestCase
         $this->executeAfterTest();
 
         if ($this->doesTestNeedsContainer()) {
-            if (self::$container !== null && self::$container->has(OverrideServicesUtility::class)) {
-                /** @var OverrideServicesUtility $overrideServicesUtility */
-                $overrideServicesUtility = self::$container->get(OverrideServicesUtility::class);
-                $overrideServicesUtility->executeTearDowns();
-            }
-
             self::$client = null;
             self::$containerGetBeforeClient = false;
             self::$isTestInititialized = false;
@@ -147,8 +135,6 @@ class WebTestCase extends BaseWebTestCase
         }
 
         self::$client = parent::createClient($options, $server);
-
-        OverrideServicesUtility::mockServices(self::$client->getContainer());
 
         return self::$client;
     }
@@ -236,6 +222,8 @@ class WebTestCase extends BaseWebTestCase
      * @param ContainerInterface|null $inputContainer
      *
      * @return object
+     *
+     * @deprecated This is a very brutal method to mock services, please try to use OverrideServiceInterface instead
      */
     protected function mockService(string $service, $mockService = null, ContainerInterface $inputContainer = null)
     {
