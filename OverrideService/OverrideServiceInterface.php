@@ -8,6 +8,9 @@ namespace RichCongress\Bundle\UnitBundle\OverrideService;
  * @package   RichCongress\Bundle\UnitBundle\OverrideService
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
+ *
+ * To implement `setUp` and `tearDown` functions, you may respectively use `__construct` and `__destruct` as each
+ *  service is built if autowired and destroyed for each test
  */
 interface OverrideServiceInterface
 {
@@ -15,18 +18,4 @@ interface OverrideServiceInterface
      * @return array
      */
     public static function getOverridenServiceNames(): array;
-
-    /**
-     * Executed before each test, when the service is instanciated
-     *
-     * @return void
-     */
-    public function setUp(): void;
-
-    /**
-     * Executed after each test, when the service is destroyed
-     *
-     * @return void
-     */
-    public function __destruct();
 }

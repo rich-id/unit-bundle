@@ -144,16 +144,18 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
     protected function addDefaultOverrideServices(ContainerBuilder $container): void
     {
         foreach (static::DEFAULT_OVERRIDE_SERVICE as $overrideService) {
-            /** @var OverrideServiceInterface $service */
-            $service = new $overrideService();
-            $parameterKey = 'rich_congress_unit.default_stubs.'. $service->getOverridenServiceName();
+            $overridenServicesCallback = [$overrideService, 'getOverridenServiceNames'];
 
-            if ($container->hasParameter($parameterKey) && $container->getParameter($parameterKey)) {
-                $definition = new Definition($overrideService);
-                $definition->setPublic(true);
-                $definition->addTag(OverrideServicesPass::OVERRIDE_SERVICE_TAG);
+            foreach ($overridenServicesCallback() as $serviceName) {
+                $parameterKey = 'rich_congress_unit.default_stubs.'. $serviceName;
 
-                $container->setDefinition($overrideService, $definition);
+                if ($container->hasParameter($parameterKey) && $container->getParameter($parameterKey)) {
+                    $definition = new Definition($overrideService);
+                    $definition->setPublic(true);
+                    $definition->addTag(OverrideServicesPass::OVERRIDE_SERVICE_TAG);
+
+                    $container->setDefinition($overrideService, $definition);
+                }
             }
         }
     }

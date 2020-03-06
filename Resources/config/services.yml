@@ -5,10 +5,7 @@ services:
         public: true
 
     RichCongress\Bundle\UnitBundle\Command\DebugFixturesCommand: ~
-
-    RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility:
-        arguments:
-            $container: '@service_container'
+    RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility: ~
 
     RichCongress\Bundle\UnitBundle\Utility\FixturesManager:
         $databaseToolCollection: '@liip_test_fixtures.services.database_tool_collection'

@@ -66,7 +66,7 @@ class OverrideServicesUtility
     {
         try {
             $container->set($overridenService, $newService);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\Exception $e) {
             try {
                 // Force overriding
                 $reflectionClass = new \ReflectionClass(\get_class($container));
@@ -76,7 +76,9 @@ class OverrideServicesUtility
                 $services[$overridenService] = $newService;
                 $property->setValue($container, $services);
             } catch (\Exception $e) {
-                throw new \RuntimeException('Impossible to override the service ' . $overridenService);
+                throw new \RuntimeException(
+                    sprintf('Impossible to override the service "%s".', $overridenService)
+                );
             }
         }
     }

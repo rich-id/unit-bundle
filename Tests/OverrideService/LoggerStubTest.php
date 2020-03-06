@@ -29,7 +29,6 @@ class LoggerStubTest extends TestCase
         parent::setUp();
 
         $this->logger = new LoggerStub();
-        $this->logger->setUp();
     }
 
     /**

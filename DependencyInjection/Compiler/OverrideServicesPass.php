@@ -51,7 +51,6 @@ class OverrideServicesPass implements CompilerPassInterface
     {
         $serviceName = (string) $reference;
         $definition = $container->findDefinition($serviceName);
-        $definition->addMethodCall('setUp', []);
         $overrideServicesCallback = [$serviceName, 'getOverridenServiceNames'];
 
         foreach ($overrideServicesCallback() as $overridenServiceName) {

@@ -24,6 +24,22 @@ class LoggerStub extends BaseLoggerStub implements OverrideServiceInterface
     public static $logs;
 
     /**
+     * LoggerStub constructor.
+     */
+    public function __construct()
+    {
+       $this->clearLogs();
+    }
+
+    /**
+     * LoggerStub destructor.
+     */
+    public function __destruct()
+    {
+        $this->clearLogs();
+    }
+
+    /**
      * @param mixed  $level
      * @param string $message
      * @param array  $context
@@ -45,21 +61,5 @@ class LoggerStub extends BaseLoggerStub implements OverrideServiceInterface
         parent::clearLogs();
 
         static::$logs = [];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setUp(): void
-    {
-        $this->clearLogs();
-    }
-
-    /**
-     * @return void
-     */
-    public function __destruct()
-    {
-        $this->clearLogs();
     }
 }

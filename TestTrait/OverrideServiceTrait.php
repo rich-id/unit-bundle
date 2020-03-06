@@ -20,22 +20,4 @@ trait OverrideServiceTrait
             ? (array) static::$overridenServices
             : [];
     }
-
-    /**
-     * Executed before each test, when the service is instanciated
-     *
-     * @return void
-     */
-    public function setUp(): void
-    {
-        // Do nothing, override this function if needed.
-    }
-
-    /**
-     * Executed after each test, when the service is destroyed
-     */
-    public function __destruct()
-    {
-        // Do nothing, override this function if needed.
-    }
 }

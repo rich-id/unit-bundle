@@ -7,6 +7,7 @@ use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServices
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\PublicServicesPass;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -28,7 +29,7 @@ class RichCongressUnitBundle extends Bundle
     {
         $container->addCompilerPass(new DataFixturesPass());
         $container->addCompilerPass(new PublicServicesPass());
-        $container->addCompilerPass(new OverrideServicesPass());
+        $container->addCompilerPass(new OverrideServicesPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
     }
 
     /**
