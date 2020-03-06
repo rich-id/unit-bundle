@@ -17,7 +17,6 @@ use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  *
- * @WithFixtures
  * @covers \RichCongress\Bundle\UnitBundle\Command\DebugOverridenServicesCommand
  */
 class DebugOverridenServicesCommandTest extends CommandTestCase
@@ -32,7 +31,7 @@ class DebugOverridenServicesCommandTest extends CommandTestCase
      */
     public function beforeTest(): void
     {
-        $this->command = $this->getContainer()->get(DebugOverridenServicesCommand::class);
+        $this->command = new DebugOverridenServicesCommand();
     }
 
     /**
@@ -40,10 +39,9 @@ class DebugOverridenServicesCommandTest extends CommandTestCase
      */
     public function testExecute(): void
     {
-        $this->command->addOverrideServiceClass(DummyEntity::class);
+        $this->command->addOverrideServiceClass(new LoggerStub());
         $output = $this->execute();
 
-        self::assertStringNotContainsString(DummyEntity::class, $output);
         self::assertStringContainsString(LoggerStub::class, $output);
         self::assertStringContainsString('logger', $output);
     }

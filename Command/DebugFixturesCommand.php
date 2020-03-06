@@ -72,6 +72,7 @@ class DebugFixturesCommand extends Command
 
         foreach ($classReferences as $class => $references) {
             if (self::contains($class, $classToDisplay)) {
+                $prefix = "\n   - ";
                 $references = array_map(
                     static function (string $reference) {
                         return sprintf('   * %s', $reference);
@@ -80,7 +81,7 @@ class DebugFixturesCommand extends Command
                 );
 
                 $io->block(
-                    sprintf("%s\n\n%s", $class, implode("\n", $references)),
+                    $class . $prefix . implode("\n", $references),
                     null,
                     'fg=black;bg=blue',
                     ' ',

@@ -22,20 +22,16 @@ class DebugOverridenServicesCommand extends Command
     /**
      * @var array|OverrideServiceInterface
      */
-    protected $overrideServiceClasses = [];
+    protected $overrideService = [];
 
     /**
-     * @param string $overrideServiceClass
+     * @param OverrideServiceInterface $overrideServiceClass
      *
      * @return void
      */
-    public function addOverrideServiceClass(string $overrideServiceClass): void
+    public function addOverrideServiceClass(OverrideServiceInterface $overrideServiceClass): void
     {
-        if (!is_a($overrideServiceClass, OverrideServiceInterface::class, true)) {
-            return;
-        }
-
-        $this->overrideServiceClasses[] = $overrideServiceClass;
+        $this->overrideService[] = $overrideServiceClass;
     }
 
     /**
@@ -58,12 +54,13 @@ class DebugOverridenServicesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        foreach ($this->overrideServiceClasses as $overrideServiceClass) {
-            $callback = [$overrideServiceClass, 'getOverridenServiceNames'];
+        foreach ($this->overrideService as $overrideService) {
+            $callback = [$overrideService, 'getOverridenServiceNames'];
             $overridenServices = $callback();
+            $prefix = "\n   - ";
 
             $io->block(
-                sprintf("%s\n\n%s", $overrideServiceClass, implode("\n", $overridenServices)),
+                \get_class($overrideService) . $prefix . implode($prefix, $overridenServices),
                 null,
                 'fg=black;bg=blue',
                 ' ',
