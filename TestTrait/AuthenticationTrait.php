@@ -2,13 +2,11 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestTrait;
 
-use Mockery\Container;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\HttpKernelBrowser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -58,8 +56,6 @@ trait AuthenticationTrait
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $container->get('security.token_storage');
         $tokenStorage->setToken($token);
-
-        $tokenStorage = $container->get('security.token_storage');
 
         if ($client === null) {
             return;
@@ -121,7 +117,6 @@ trait AuthenticationTrait
 
         $countExpectations = count($expectations);
         $rolesNames = array_keys(self::$userRoles);
-        $rolesReferences = array_values(self::$userRoles);
 
         if ($countExpectations !== $rolesCount) {
             throw new \LogicException(

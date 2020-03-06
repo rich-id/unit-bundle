@@ -3,7 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\Stubs;
 
 use PHPUnit\Framework\TestCase;
-use RichCongress\Bundle\UnitBundle\OverrideService\LoggerStub;
+use RichCongress\Bundle\UnitBundle\Stubs\LoggerStub;
 
 /**
  * Class LoggerStubTest
@@ -13,7 +13,6 @@ use RichCongress\Bundle\UnitBundle\OverrideService\LoggerStub;
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  *
  * @covers \RichCongress\Bundle\UnitBundle\Stubs\LoggerStub
- * @covers \RichCongress\Bundle\UnitBundle\OverrideService\LoggerStub
  */
 class LoggerStubTest extends TestCase
 {
@@ -46,7 +45,7 @@ class LoggerStubTest extends TestCase
         $this->logger->info('message7', []);
         $this->logger->debug('message8', []);
 
-        $logs = $this->logger->getLogs();
+        $logs = LoggerStub::$logs;
 
         self::assertCount(8, $logs);
 

@@ -2,8 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\Stubs;
 
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\Query\ResultSetMapping;
 use PHPUnit\Framework\TestCase;
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
 use RichCongress\Bundle\UnitBundle\Stubs\EntityManagerStub;

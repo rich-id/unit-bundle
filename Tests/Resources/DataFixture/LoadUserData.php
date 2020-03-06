@@ -2,7 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture;
 
-use Doctrine\Persistence\ObjectManager;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
 
@@ -26,7 +25,7 @@ class LoadUserData extends AbstractFixture
                 'password' => 'password_' . $i,
             ];
 
-            $user = $this->createObject('user_' . $i, User::class, $data);
+            $this->createObject('user_' . $i, User::class, $data);
         }
     }
 

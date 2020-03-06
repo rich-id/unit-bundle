@@ -3,16 +3,12 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\Resources;
 
 use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Doctrine\Common\DataFixtures\ReferenceRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
-use Liip\TestFixturesBundle\Services\FixturesLoaderFactory;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadDummyEntityData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadUserData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Stub\ReferenceRepositoryStub;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class DummyDatabaseTool

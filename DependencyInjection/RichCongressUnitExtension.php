@@ -7,17 +7,14 @@ use RichCongress\Bundle\UnitBundle\DataFixture\DataFixtureInterface;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
 use RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory\TestConnectionFactory;
-use RichCongress\Bundle\UnitBundle\Doctrine\Functions\Sqlite\DateFormatFunction;
-use RichCongress\Bundle\UnitBundle\OverrideService\LoggerStub;
+use RichCongress\Bundle\UnitBundle\Stubs\LoggerStub;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * This is the class that loads and manages your bundle configuration

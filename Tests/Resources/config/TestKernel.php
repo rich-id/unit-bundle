@@ -5,7 +5,6 @@ namespace RichCongress\Bundle\UnitBundle\Tests;
 use EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle;
 use RichCongress\Bundle\UnitBundle\Kernel\DefaultTestKernel;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**

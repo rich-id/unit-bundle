@@ -5,14 +5,10 @@ namespace RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use GuzzleHttp\Client;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\MockInterface;
-use RichCongress\Bundle\UnitBundle\OverrideService\LoggerStub;
-use RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase;
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Command\DummyCommand;
-use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -103,7 +99,7 @@ class WebTestCaseTest extends WebTestCase
      */
     public function testMockService(): void
     {
-        $client = self::createClient();
+        self::createClient();
 
         $guzzleClient = $this->mockService('eight_points_guzzle.client.dummy_api', Client::class);
 

@@ -7,8 +7,6 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
-use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\MockInterface;
 use RichCongress\Bundle\UnitBundle\Stubs\ContainerStub;
 use RichCongress\Bundle\UnitBundle\TestCase\TestCase;

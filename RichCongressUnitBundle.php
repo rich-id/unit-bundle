@@ -6,7 +6,6 @@ use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\PublicServicesPass;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
-use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;

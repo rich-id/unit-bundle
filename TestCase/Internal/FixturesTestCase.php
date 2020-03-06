@@ -2,30 +2,11 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestCase\Internal;
 
-use Doctrine\Bundle\FixturesBundle\Loader\SymfonyFixturesLoader;
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Doctrine\Common\DataFixtures\ReferenceRepository;
-use Doctrine\Persistence\ObjectManager;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ConnectionException;
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
-use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use RichCongress\Bundle\UnitBundle\Mock\MockedServiceOnSetUpInterface;
-use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
 use RichCongress\Bundle\UnitBundle\TestTrait\AuthenticationTrait;
-use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadDummyEntityData;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 use RichCongress\Bundle\UnitBundle\Utility\TestConfigurationExtractor;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\HttpKernelBrowser;
-use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class FixtureTestCase

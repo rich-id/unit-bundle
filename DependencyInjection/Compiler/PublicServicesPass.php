@@ -54,8 +54,6 @@ class PublicServicesPass implements CompilerPassInterface
      */
     protected static function startsWith(string $string, string $startString): bool
     {
-        $len = strlen($startString);
-
         return strpos($string, $startString) === 0;
     }
 

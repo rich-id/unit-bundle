@@ -2,10 +2,8 @@
 
 namespace RichCongress\Bundle\UnitBundle\Stubs;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use UnexpectedValueException;
 
 /**
  * Class RepositoryStub
@@ -92,7 +90,6 @@ class RepositoryStub implements ObjectRepository
     public function findOneBy(array $criteria): ?object
     {
         $entities = $this->findAll();
-        $filteredEntities = [];
 
         foreach ($entities as $entity) {
             if ($this->checkCriteria($entity, $criteria)) {

@@ -10,7 +10,6 @@ use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadDummyEntityDa
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadUserData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
-use RichCongress\Bundle\UnitBundle\TestTrait\FixtureCreationTrait;
 
 /**
  * Class AbstractFixtureTest

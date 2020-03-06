@@ -2,10 +2,8 @@
 
 namespace RichCongress\Bundle\UnitBundle\Stubs;
 
-use Psr\Container\ContainerInterface;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;

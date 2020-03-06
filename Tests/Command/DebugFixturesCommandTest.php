@@ -4,11 +4,9 @@ namespace RichCongress\Bundle\UnitBundle\Tests\Command;
 
 use RichCongress\Bundle\UnitBundle\Command\DebugFixturesCommand;
 use RichCongress\Bundle\UnitBundle\TestCase\CommandTestCase;
-use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
-use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * Class DebugFixturesCommandTest

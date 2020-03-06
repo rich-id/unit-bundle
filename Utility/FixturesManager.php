@@ -8,8 +8,6 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use RichCongress\Bundle\UnitBundle\Resources\Stub\KernelTestCaseStub;
 use RichCongress\Bundle\UnitBundle\TextUi\Output;
 use RichCongress\Bundle\UnitBundle\TextUi\Timer;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * Class FixturesManager

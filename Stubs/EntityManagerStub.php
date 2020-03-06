@@ -2,19 +2,9 @@
 
 namespace RichCongress\Bundle\UnitBundle\Stubs;
 
-use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
-use Doctrine\ORM\NativeQuery;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\PessimisticLockException;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\UnitOfWork;
-use Doctrine\Persistence\Mapping\ClassMetadataFactory;
-use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Class EntityManagerStub

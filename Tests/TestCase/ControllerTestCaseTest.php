@@ -2,17 +2,11 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase;
 
-use Doctrine\Common\Annotations\Annotation\IgnoreAnnotation;
-use Doctrine\ORM\EntityManagerInterface;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
 use RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 

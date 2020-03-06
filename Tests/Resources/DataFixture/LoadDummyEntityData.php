@@ -2,7 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture;
 
-use Doctrine\Persistence\ObjectManager;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
 
@@ -26,7 +25,7 @@ class LoadDummyEntityData extends AbstractFixture
                 'keyname' => 'keyname_' . $i,
             ];
 
-            $dummyEntity = $this->createObject('entity_' . $i, DummyEntity::class, $data);
+            $this->createObject('entity_' . $i, DummyEntity::class, $data);
         }
 
         $this->createFromDefault('entity_from_default', [

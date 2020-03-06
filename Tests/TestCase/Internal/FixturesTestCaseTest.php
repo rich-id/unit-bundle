@@ -2,26 +2,11 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal;
 
-use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
-use Doctrine\Common\DataFixtures\ProxyReferenceRepository;
-use Doctrine\Persistence\ObjectManager;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
-use RichCongress\Bundle\UnitBundle\Resources\Stub\KernelTestCaseStub;
-use RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase;
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\FixturesTestCase;
-use RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
-use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Class FixtureTestCaseTest
@@ -58,7 +43,7 @@ class FixturesTestCaseTest extends FixturesTestCase
      */
     public function testGetReferenceWithoutCaching(): void
     {
-        $client = self::createClient();
+        self::createClient();
 
         /** @var DummyEntity $dummyEntity */
         $dummyEntity = $this->getReference('entity_2');
@@ -73,7 +58,7 @@ class FixturesTestCaseTest extends FixturesTestCase
      */
     public function testGetReferenceFromClient(): void
     {
-        $client = self::createClient();
+        self::createClient();
 
         /** @var DummyEntity $dummyEntity */
         $dummyEntity = $this->getReference('entity_2');
@@ -90,7 +75,6 @@ class FixturesTestCaseTest extends FixturesTestCase
     {
         /** @var DummyEntity $entity */
         $entity = $this->getReference('entity_1');
-        $id = $entity->getId();
 
         self::assertSame('Name 1', $entity->getName());
 

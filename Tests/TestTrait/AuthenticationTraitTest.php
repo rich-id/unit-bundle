@@ -2,10 +2,8 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\TestTrait;
 
-use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use RichCongress\Bundle\UnitBundle\TestCase\TestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
-use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadDummyEntityData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;

@@ -3,8 +3,6 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\Utility;
 
 use PHPUnit\Framework\TestCase;
-use RichCongress\Bundle\UnitBundle\TestCase\RepositoryTestCase;
-use RichCongress\Bundle\UnitBundle\Tests\Command\DebugFixturesCommandTest;
 use RichCongress\Bundle\UnitBundle\Tests\Mock\KernelTestCaseMockTest;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Proxy\TestConfigurationExtractorProxy;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\TestCase\BadDummyRepositoryTestCase;
@@ -13,8 +11,6 @@ use RichCongress\Bundle\UnitBundle\Tests\Resources\TestCase\DummyFixturesTestCas
 use RichCongress\Bundle\UnitBundle\Tests\Resources\TestCase\DummyTestWithFixtures;
 use RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal\FixturesTestCaseTest;
 use RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal\WebTestCaseTest;
-use RichCongress\Bundle\UnitBundle\Tests\TestCase\RepositoryTestCaseTest;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TestDependenciesUtilityTest

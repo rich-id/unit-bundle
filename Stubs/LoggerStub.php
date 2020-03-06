@@ -4,6 +4,7 @@ namespace RichCongress\Bundle\UnitBundle\Stubs;
 
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use RichCongress\Bundle\UnitBundle\TestTrait\OverrideServiceTrait;
 
 /**
  * Class LoggerStub
@@ -14,17 +15,29 @@ use Psr\Log\LoggerInterface;
  */
 class LoggerStub implements LoggerInterface
 {
+    protected static $overridenServices = 'logger';
+
+    use OverrideServiceTrait;
+
     /**
      * @var array
      */
-    protected $logEntries = [];
+    public static $logs;
 
     /**
-     * @return array Logs recorded.
+     * LoggerStub constructor.
      */
-    public function getLogs(): array
+    public function __construct()
     {
-        return $this->logEntries;
+        $this->clearLogs();
+    }
+
+    /**
+     * LoggerStub destructor.
+     */
+    public function __destruct()
+    {
+        $this->clearLogs();
     }
 
     /**
@@ -32,7 +45,7 @@ class LoggerStub implements LoggerInterface
      */
     public function clearLogs(): void
     {
-        $this->logEntries = [];
+        static::$logs = [];
     }
 
     /**
@@ -163,27 +176,6 @@ class LoggerStub implements LoggerInterface
      */
     public function log($level, $message, array $context = array()): void
     {
-        $this->logEntries[] = [$level, $message, $context];
-    }
-
-    /**
-     * @param $_
-     *
-     * @return self
-     *
-     * @codeCoverageIgnore
-     */
-    public function pushProcessor($_): self
-    {
-        return $this;
-    }
-
-    /**
-     * @return void
-     *
-     * @codeCoverageIgnore
-     */
-    public function popProcessor(): void
-    {
+        static::$logs[] = [$level, $message, $context];
     }
 }

@@ -2,9 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\Utility;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
-use Mockery\MockInterface;
-use RichCongress\Bundle\UnitBundle\Stubs\ContainerStub;
 use RichCongress\Bundle\UnitBundle\TestCase\TestCase;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\OverrideService\DummyOverrideService;

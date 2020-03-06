@@ -2,7 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler;
 
-use RichCongress\Bundle\UnitBundle\DependencyInjection\RichCongressUnitExtension;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

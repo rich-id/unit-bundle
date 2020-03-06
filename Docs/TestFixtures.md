@@ -65,7 +65,6 @@ Moreover, you can copy or use a default entity to build a new entity.
 
 ```php
 use RichCongress\Bundle\UnitBundle\DataFixture\AbstractFixture;
-use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadUserData;
 
 class LoadDummyEntityData extends AbstractFixture
 {
