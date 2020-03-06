@@ -2,10 +2,12 @@
 
 namespace RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler;
 
+use RichCongress\Bundle\UnitBundle\Command\DebugOverridenServicesCommand;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -33,25 +35,26 @@ class OverrideServicesPass implements CompilerPassInterface
         }
 
         $utilityDefinition = $container->findDefinition(OverrideServicesUtility::class);
+        $commandDefinition = $container->findDefinition(DebugOverridenServicesCommand::class);
         $taggedServices = $this->findAndSortTaggedServices(self::OVERRIDE_SERVICE_TAG, $container);
 
         foreach ($taggedServices as $service) {
+            $definition = $container->findDefinition($service);
+            static::decorateServices($definition);
+
             $utilityDefinition->addMethodCall('addOverrideService', [$service]);
-            static::decorateServices($container, $service);
+            $commandDefinition->addMethodCall('addOverrideServiceClass', [$definition->getClass()]);
         }
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param Reference        $reference
+     * @param Definition $definition
      *
      * @return void
      */
-    protected static function decorateServices(ContainerBuilder $container, Reference $reference): void
+    protected static function decorateServices(Definition $definition): void
     {
-        $serviceName = (string) $reference;
-        $definition = $container->findDefinition($serviceName);
-        $overrideServicesCallback = [$serviceName, 'getOverridenServiceNames'];
+        $overrideServicesCallback = [$definition->getClass(), 'getOverridenServiceNames'];
 
         foreach ($overrideServicesCallback() as $overridenServiceName) {
             $definition->setDecoratedService($overridenServiceName);

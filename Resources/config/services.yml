@@ -5,6 +5,7 @@ services:
         public: true
 
     RichCongress\Bundle\UnitBundle\Command\DebugFixturesCommand: ~
+    RichCongress\Bundle\UnitBundle\Command\DebugOverridenServicesCommand: ~
     RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility: ~
 
     RichCongress\Bundle\UnitBundle\Utility\FixturesManager:

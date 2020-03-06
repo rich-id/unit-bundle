@@ -4,6 +4,7 @@ namespace RichCongress\Bundle\UnitBundle\Stubs;
 
 use Psr\Log\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use RichCongress\Bundle\UnitBundle\TestTrait\OverrideServiceTrait;
 
 /**
@@ -13,7 +14,7 @@ use RichCongress\Bundle\UnitBundle\TestTrait\OverrideServiceTrait;
  * @author    Matthias Devlamynck <mdevlamynck@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  */
-class LoggerStub implements LoggerInterface
+class LoggerStub implements LoggerInterface, OverrideServiceInterface
 {
     protected static $overridenServices = 'logger';
 
