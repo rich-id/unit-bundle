@@ -18,4 +18,14 @@ interface OverrideServiceInterface
      * @return array
      */
     public static function getOverridenServiceNames(): array;
+
+    /**
+     * @return void
+     */
+    public static function setUp(): void;
+
+    /**
+     * @return void
+     */
+    public static function tearDown(): void;
 }

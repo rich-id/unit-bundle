@@ -4,7 +4,9 @@ namespace RichCongress\Bundle\UnitBundle\PHPUnit;
 
 use DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension as DamaPHPUnitExtension;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
+use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 
 /**
  * Class PHPUnitExtension
@@ -26,5 +28,30 @@ class PHPUnitExtension extends DamaPHPUnitExtension
 
         FixturesManager::loadFixtures();
         StaticDriver::commit();
+    }
+
+    /**
+     * @param string $test
+     *
+     * @return void
+     */
+    public function executeBeforeTest(string $test): void
+    {
+        parent::executeBeforeTest($test);
+
+        OverrideServicesUtility::executeSetUps();
+    }
+
+    /**
+     * @param string $test
+     * @param float  $time
+     *
+     * @return void
+     */
+    public function executeAfterTest(string $test, float $time): void
+    {
+        parent::executeAfterTest($test, $time);
+
+        OverrideServicesUtility::executeTearDowns();
     }
 }

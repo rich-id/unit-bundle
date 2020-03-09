@@ -18,19 +18,19 @@ class DummyOverrideService extends AbstractOverrideService
     /**
      * @var boolean
      */
-    public $setUpExecuted = false;
+    public static $setUpExecuted = false;
 
     /**
      * @var boolean
      */
-    public $tearDownExecuted = false;
+    public static $tearDownExecuted = false;
 
     /**
      * @return void
      */
-    public function setUp(): void
+    public static function setUp(): void
     {
-        $this->setUpExecuted = true;
+        static::$setUpExecuted = true;
 
         parent::setUp();
     }
@@ -38,9 +38,9 @@ class DummyOverrideService extends AbstractOverrideService
     /**
      * @return void
      */
-    public function tearDown(): void
+    public static function tearDown(): void
     {
-        $this->tearDownExecuted = true;
+        static::$tearDownExecuted = true;
 
         parent::tearDown();
     }

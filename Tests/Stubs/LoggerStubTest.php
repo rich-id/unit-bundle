@@ -49,7 +49,8 @@ class LoggerStubTest extends TestCase
 
         self::assertCount(8, $logs);
 
-        $this->logger->__destruct();
+        LoggerStub::setUp();
+        LoggerStub::tearDown();
         $logs = LoggerStub::$logs;
 
         self::assertEmpty($logs);

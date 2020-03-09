@@ -215,33 +215,6 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
-     * Mock a service by overriding the previous one
-     *
-     * @param string                  $service
-     * @param string|object|null                    $mockService
-     * @param ContainerInterface|null $inputContainer
-     *
-     * @return object
-     *
-     * @deprecated This is a very brutal method to mock services, please try to use OverrideServiceInterface instead
-     */
-    protected function mockService(string $service, $mockService = null, ContainerInterface $inputContainer = null)
-    {
-        $this->checkContainerEnabled();
-
-        /** @var ContainerInterface $container */
-        $container = $inputContainer ?? $this->getContainer();
-
-        if (\is_string($mockService)) {
-            $mockService = \Mockery::mock($mockService ?? $service);
-        }
-
-        OverrideServicesUtility::overrideService($container, $service, $mockService);
-
-        return $mockService;
-    }
-
-    /**
      * @return boolean
      */
     protected static function doesClassNeedsContainer(): bool

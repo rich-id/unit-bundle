@@ -54,6 +54,28 @@ class OverrideServicesUtility
     }
 
     /**
+     * @return void
+     */
+    public static function executeSetUps(): void
+    {
+        foreach (static::$overrideServices as $overrideService) {
+            $callback = [\get_class($overrideService), 'setUp'];
+            $callback();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public static function executeTearDowns(): void
+    {
+        foreach (static::$overrideServices as $overrideService) {
+            $callback = [\get_class($overrideService), 'tearDown'];
+            $callback();
+        }
+    }
+
+    /**
      * @param ContainerInterface $container
      * @param string             $overridenService
      * @param                    $newService

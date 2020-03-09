@@ -26,25 +26,25 @@ class LoggerStub implements LoggerInterface, OverrideServiceInterface
     public static $logs;
 
     /**
-     * LoggerStub constructor.
+     * @return void
      */
-    public function __construct()
+    public static function setUp(): void
     {
-        $this->clearLogs();
-    }
-
-    /**
-     * LoggerStub destructor.
-     */
-    public function __destruct()
-    {
-        $this->clearLogs();
+        static::clearLogs();
     }
 
     /**
      * @return void
      */
-    public function clearLogs(): void
+    public static function tearDown(): void
+    {
+        static::clearLogs();
+    }
+
+    /**
+     * @return void
+     */
+    public static function clearLogs(): void
     {
         static::$logs = [];
     }

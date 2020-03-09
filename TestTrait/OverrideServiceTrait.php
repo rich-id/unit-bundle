@@ -20,4 +20,20 @@ trait OverrideServiceTrait
             ? (array) static::$overridenServices
             : [];
     }
+
+    /**
+     * @return void
+     */
+    public static function setUp(): void
+    {
+        // Override to use this function
+    }
+
+    /**
+     * @return void
+     */
+    public static function tearDown(): void
+    {
+        // Override to use this function
+    }
 }

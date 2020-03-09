@@ -36,6 +36,9 @@ class OverrideServiceTraitTest extends TestCase
      */
     public function testGetOverridenServiceNames(): void
     {
+        $this->service->setUp();
+        $this->service->tearDown();
+
         self::assertContains('test.service', DummyOverrideService::getOverridenServiceNames());
     }
 }
