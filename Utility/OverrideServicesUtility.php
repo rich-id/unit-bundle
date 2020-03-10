@@ -2,7 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\Utility;
 
-use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -15,9 +14,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class OverrideServicesUtility
 {
     /**
-     * @var array|OverrideServiceInterface[]
+     * @var array|string[]
      */
-    protected static $overrideServices = [];
+    protected static $overrideServiceClasses = [];
 
     /**
      * @var array|null
@@ -25,13 +24,13 @@ class OverrideServicesUtility
     protected static $cacheOverridenServicesIds;
 
     /**
-     * @param OverrideServiceInterface $overrideService
+     * @param string $class
      *
      * @return void
      */
-    public function addOverrideService(OverrideServiceInterface $overrideService): void
+    public static function addOverrideServiceClass(string $class): void
     {
-        static::$overrideServices[] = $overrideService;
+        static::$overrideServiceClasses[] = $class;
     }
 
     /**
@@ -42,10 +41,12 @@ class OverrideServicesUtility
         if (static::$cacheOverridenServicesIds === null) {
             static::$cacheOverridenServicesIds = [];
 
-            foreach (static::$overrideServices as $service) {
+            foreach (static::$overrideServiceClasses as $class) {
+                $callback = [$class, 'getOverridenServiceNames'];
+
                 static::$cacheOverridenServicesIds = array_merge(
                     static::$cacheOverridenServicesIds,
-                    $service->getOverridenServiceNames()
+                    $callback()
                 );
             }
         }
@@ -58,8 +59,8 @@ class OverrideServicesUtility
      */
     public static function executeSetUps(): void
     {
-        foreach (static::$overrideServices as $overrideService) {
-            $callback = [\get_class($overrideService), 'setUp'];
+        foreach (static::$overrideServiceClasses as $class) {
+            $callback = [$class, 'setUp'];
             $callback();
         }
     }
@@ -69,8 +70,8 @@ class OverrideServicesUtility
      */
     public static function executeTearDowns(): void
     {
-        foreach (static::$overrideServices as $overrideService) {
-            $callback = [\get_class($overrideService), 'tearDown'];
+        foreach (static::$overrideServiceClasses as $class) {
+            $callback = [$class, 'tearDown'];
             $callback();
         }
     }

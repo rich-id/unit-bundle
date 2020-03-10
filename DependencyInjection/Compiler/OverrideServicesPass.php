@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class OverrideServicesPass
@@ -42,7 +41,7 @@ class OverrideServicesPass implements CompilerPassInterface
             $definition = $container->findDefinition($service);
             static::decorateServices($definition);
 
-            $utilityDefinition->addMethodCall('addOverrideService', [$service]);
+            $utilityDefinition->addMethodCall('addOverrideServiceClass', [$definition->getClass()]);
             $commandDefinition->addMethodCall('addOverrideServiceClass', [$definition->getClass()]);
         }
     }

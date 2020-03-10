@@ -6,6 +6,7 @@ use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\PublicServicesPass;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
+use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -39,6 +40,7 @@ class RichCongressUnitBundle extends Bundle
         parent::boot();
 
         // Autowire everything for the FixturesManager before the first test
+        $this->container->get(OverrideServicesUtility::class);
         $this->container->get(FixturesManager::class);
     }
 }
