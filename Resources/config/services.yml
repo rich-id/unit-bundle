@@ -8,5 +8,9 @@ services:
     RichCongress\Bundle\UnitBundle\Command\DebugOverridenServicesCommand: ~
     RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility: ~
 
+    RichCongress\Bundle\UnitBundle\DataFixture\SqliteDatabaseBackup:
+        arguments:
+            $sqliteDatabaseBackup: '@liip_test_fixtures.services_database_backup.sqlite'
+
     RichCongress\Bundle\UnitBundle\Utility\FixturesManager:
         $databaseToolCollection: '@liip_test_fixtures.services.database_tool_collection'

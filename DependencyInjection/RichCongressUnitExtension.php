@@ -4,6 +4,7 @@ namespace RichCongress\Bundle\UnitBundle\DependencyInjection;
 
 use Doctrine\Bundle\FixturesBundle\DependencyInjection\CompilerPass\FixturesCompilerPass;
 use RichCongress\Bundle\UnitBundle\DataFixture\DataFixtureInterface;
+use RichCongress\Bundle\UnitBundle\DataFixture\SqliteDatabaseBackup;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
 use RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory\TestConnectionFactory;
@@ -37,12 +38,12 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
         $configs = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        if ($config['enable_db_caching']) {
+        if ($config['db_cache']['enable']) {
             $container->prependExtensionConfig(
                 'liip_test_fixtures',
                 [
                     'cache_db' => [
-                        'sqlite' => 'liip_test_fixtures.services_database_backup.sqlite',
+                        'sqlite' => SqliteDatabaseBackup::class,
                     ]
                 ]
             );

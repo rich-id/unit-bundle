@@ -22,10 +22,14 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->booleanNode('enable_db_caching')->defaultValue(true)->end()
+                ->arrayNode('db_cache')
+                    ->children()
+                        ->booleanNode('enable')->defaultValue(true)->end()
+                        ->integerNode('lifetime')->defaultValue(60)->end()
+                ->end()
                 ->scalarNode('mocked_services')->defaultNull()->end()
 
-            ->arrayNode('default_stubs')
+                ->arrayNode('default_stubs')
                     ->children()
                         ->booleanNode('logger')->defaultFalse()->end()
                     ->end()
