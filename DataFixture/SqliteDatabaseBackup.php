@@ -4,6 +4,7 @@ namespace RichCongress\Bundle\UnitBundle\DataFixture;
 
 use Doctrine\Common\DataFixtures\Executor\AbstractExecutor;
 use Liip\TestFixturesBundle\Services\DatabaseBackup\DatabaseBackupInterface;
+use Liip\TestFixturesBundle\Services\DatabaseBackup\SqliteDatabaseBackup as BaseSqliteDatabaseBackup;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
@@ -31,7 +32,7 @@ class SqliteDatabaseBackup implements DatabaseBackupInterface
      * @param ParameterBagInterface $parameterBag
      * @param SqliteDatabaseBackup  $sqliteDatabaseBackup
      */
-    public function __construct(ParameterBagInterface $parameterBag, SqliteDatabaseBackup $sqliteDatabaseBackup)
+    public function __construct(ParameterBagInterface $parameterBag, BaseSqliteDatabaseBackup $sqliteDatabaseBackup)
     {
         $this->cacheLifetime = $parameterBag->get('rich_congress_unit.db_cache.lifetime');
         $this->innerDatabaseBackup = $sqliteDatabaseBackup;
