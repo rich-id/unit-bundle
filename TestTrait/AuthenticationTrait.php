@@ -2,7 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestTrait;
 
-use Symfony\Bundle\FrameworkBundle\Client;
+use RichCongress\Bundle\UnitBundle\Exception\FixturesNotEnabledException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,14 +28,31 @@ trait AuthenticationTrait
     protected static $userRoles;
 
     /**
+     * @return array
+     */
+    public function getUserRoles(): array
+    {
+        /** @var ContainerInterface $container */
+        $container = $this->getContainer();
+
+        if (self::$userRoles === null) {
+            self::$userRoles = $container->hasParameter('rich_congress_unit.test_roles')
+                ? $container->getParameter('rich_congress_unit.test_roles')
+                : [];
+        }
+
+        return self::$userRoles;
+    }
+
+    /**
      * @param UserInterface|string $user
-     * @param Client|null   $client
+     * @param KernelBrowser        $client
      *
      * @return void
      */
-    public function authenticate($user, Client $client = null): void
+    public function authenticate($user, KernelBrowser $client = null): void
     {
-        $this->checkFixturesEnabled();
+        FixturesNotEnabledException::checkAndThrow();
 
         if (!$user instanceof UserInterface && (!\is_string($user) || $user === '')) {
             return;
@@ -79,18 +96,16 @@ trait AuthenticationTrait
     /**
      * @param UserInterface|string|null $userReference
      *
-     * @return Client
+     * @return KernelBrowser
      */
-    public function createClientWith($user = null): KernelBrowser
+    public function createClientWith($userReference = null): KernelBrowser
     {
-        $this->checkFixturesEnabled();
-
+        FixturesNotEnabledException::checkAndThrow();
         $client = self::createClient();
 
-        if (is_string($user) && $user !== '') {
-            /** @var UserInterface $user */
-            $user = $this->getReference($user);
-        }
+        $user = (is_string($userReference) && $userReference !== '')
+            ? $this->getReference($userReference)
+            : $userReference;
 
         if ($user instanceof UserInterface) {
             $this->authenticate($user, $client);
@@ -107,30 +122,9 @@ trait AuthenticationTrait
      */
     public function rolesProvider(array $expectations, array $extraRoles = []): array
     {
-        $this->checkFixturesEnabled();
-
-        $rolesCount = count(self::$userRoles);
-
-        if ($rolesCount === 0) {
-            throw new \LogicException('You must define test_roles in the bundle configuration to use this function.');
-        }
-
-        $countExpectations = count($expectations);
-        $rolesNames = array_keys(self::$userRoles);
-
-        if ($countExpectations !== $rolesCount) {
-            throw new \LogicException(
-                sprintf(
-                    'The dataProvider has %d roles where the configuration waits for %d roles.',
-                    $countExpectations,
-                    $rolesCount
-                )
-            );
-        }
-
-        if ($rolesNames !== array_keys($expectations)) {
-            throw new \LogicException('The roles in the given expectations don\'t match the existing roles.');
-        }
+        FixturesNotEnabledException::checkAndThrow();
+        $userRoles = $this->getUserRoles();
+        $rolesNames = array_keys($userRoles);
 
         $mapUserExpectation = array_map(
             static function ($userReference, $expectation) {
@@ -142,7 +136,7 @@ trait AuthenticationTrait
 
                 return [$userReference, $expectation];
             },
-            array_values(self::$userRoles),
+            array_values($userRoles),
             array_values($expectations)
         );
 
@@ -156,6 +150,7 @@ trait AuthenticationTrait
      */
     protected function authenticationTearDown(): void
     {
+        /** @var ContainerInterface $container */
         $container = $this->getContainer();
 
         if ($container->has('security.token_storage')) {

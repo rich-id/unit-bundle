@@ -29,8 +29,8 @@ class SqliteDatabaseBackup implements DatabaseBackupInterface
     /**
      * SqliteDatabaseBackup constructor.
      *
-     * @param ParameterBagInterface $parameterBag
-     * @param SqliteDatabaseBackup  $sqliteDatabaseBackup
+     * @param ParameterBagInterface    $parameterBag
+     * @param BaseSqliteDatabaseBackup $sqliteDatabaseBackup
      */
     public function __construct(ParameterBagInterface $parameterBag, BaseSqliteDatabaseBackup $sqliteDatabaseBackup)
     {
@@ -69,7 +69,7 @@ class SqliteDatabaseBackup implements DatabaseBackupInterface
             return false;
         }
 
-        $backupLastModifiedDateTime = \DateTime::createFromFormat('U', filemtime($this->getBackupFilePath()));
+        $backupLastModifiedDateTime = \DateTime::createFromFormat('U', (string) filemtime($this->getBackupFilePath()));
         $minimumValidDate = new \DateTime('now - ' . $this->cacheLifetime . ' minutes');
 
         return $minimumValidDate < $backupLastModifiedDateTime;

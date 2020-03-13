@@ -3,11 +3,15 @@
 namespace RichCongress\Bundle\UnitBundle\TestCase\Internal;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use RichCongress\Bundle\UnitBundle\Exception\ContainerNotEnabledException;
+use RichCongress\Bundle\UnitBundle\Exception\DuplicatedContainersException;
+use RichCongress\Bundle\UnitBundle\Exception\EntityManagerNotFoundException;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfigurationExtractor;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestContext;
 use RichCongress\Bundle\UnitBundle\TestTrait\CommonTestCaseTrait;
-use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
-use RichCongress\Bundle\UnitBundle\Utility\TestConfigurationExtractor;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -57,29 +61,10 @@ class WebTestCase extends BaseWebTestCase
     public function __construct(string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
+        TestConfigurationExtractor::register(static::class);
 
-        if (self::$container === null && self::doesClassNeedsContainer()) {
+        if (TestConfigurationExtractor::doesClassNeedsContainer(static::class)) {
             self::$container = parent::getContainer();
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public static function setUpBeforeClass(): void
-    {
-        if (self::doesClassNeedsContainer()) {
-            parent::setUpBeforeClass();
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public static function tearDownAfterClass(): void
-    {
-        if (self::doesClassNeedsContainer()) {
-            parent::tearDownAfterClass();
         }
     }
 
@@ -90,12 +75,10 @@ class WebTestCase extends BaseWebTestCase
      */
     public function setUp(): void
     {
-        if ($this->doesTestNeedsContainer()) {
-            parent::setUp();
+        parent::setUp();
 
-            if (self::$container === null) {
-                self::$container = parent::getContainer();
-            }
+        if (self::$container === null && TestContext::$needContainer) {
+            self::$container = parent::getContainer();
         }
 
         self::$isTestInititialized = true;
@@ -111,17 +94,17 @@ class WebTestCase extends BaseWebTestCase
     {
         $this->executeAfterTest();
 
-        if ($this->doesTestNeedsContainer()) {
+        if (TestContext::$needContainer) {
             self::$client = null;
             self::$containerGetBeforeClient = false;
             self::$isTestInititialized = false;
-
-            parent::tearDown();
         }
+
+        parent::tearDown();
     }
 
     /**
-     * Creates a client
+     * Creates a client.
      *
      * @param array $options
      * @param array $server
@@ -130,10 +113,7 @@ class WebTestCase extends BaseWebTestCase
      */
     public static function createClient(array $options = [], array $server = []): KernelBrowser
     {
-        if (self::$containerGetBeforeClient) {
-            throw new \RuntimeException('You must create client before any service manipulation.');
-        }
-
+        DuplicatedContainersException::checkAndThrow(self::$containerGetBeforeClient, self::$client);
         self::$client = parent::createClient($options, $server);
 
         return self::$client;
@@ -147,7 +127,7 @@ class WebTestCase extends BaseWebTestCase
     protected function getContainer(): ContainerInterface
     {
         if (self::$isTestInititialized) {
-            $this->checkContainerEnabled();
+            ContainerNotEnabledException::checkAndThrow();
         }
 
         if (self::$client !== null) {
@@ -168,9 +148,9 @@ class WebTestCase extends BaseWebTestCase
     /**
      * Gets the entity manager
      *
-     * @return EntityManagerInterface|null
+     * @return EntityManagerInterface
      */
-    public function getManager(): ?EntityManagerInterface
+    public function getManager(): EntityManagerInterface
     {
         $container = $this->getContainer();
 
@@ -186,6 +166,8 @@ class WebTestCase extends BaseWebTestCase
             $entityManager = $doctrine->getManager();
         }
 
+        EntityManagerNotFoundException::checkAndThrow($entityManager);
+
         return $entityManager;
     }
 
@@ -200,6 +182,16 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
+     * @param string $entityClass
+     *
+     * @return ObjectRepository|null
+     */
+    public function getRepository(string $entityClass): ?ObjectRepository
+    {
+        return $this->getManager()->getRepository($entityClass);
+    }
+
+    /**
      * @param string $name
      * @param array  $params
      *
@@ -207,11 +199,9 @@ class WebTestCase extends BaseWebTestCase
      */
     protected function executeCommand(string $name, array $params = []): string
     {
-        $this->checkContainerEnabled();
+        ContainerNotEnabledException::checkAndThrow();
 
-        $commandTester = $this->runCommand($name, $params, true);
-
-        return $commandTester->getDisplay();
+        return $this->runCommand($name, $params, true)->getDisplay();
     }
 
     /**
@@ -220,23 +210,5 @@ class WebTestCase extends BaseWebTestCase
     protected static function doesClassNeedsContainer(): bool
     {
         return TestConfigurationExtractor::doesClassNeedsContainer(static::class);
-    }
-
-    /**
-     * @return boolean
-     */
-    protected function doesTestNeedsContainer(): bool
-    {
-        return TestConfigurationExtractor::doesTestNeedsContainer(static::class, $this->getName(false));
-    }
-
-    /**
-     * @return void
-     */
-    protected function checkContainerEnabled(): void
-    {
-        if (!$this->doesTestNeedsContainer()) {
-            throw new \LogicException('You did not mentionned that you want to load a container. Add the annotation @WithContainer into the class or test PHP Doc.');
-        }
     }
 }

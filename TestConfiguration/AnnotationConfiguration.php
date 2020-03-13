@@ -3,13 +3,13 @@
 namespace RichCongress\Bundle\UnitBundle\TestConfiguration;
 
 /**
- * Class TestConfiguration
+ * Class AnnotationConfiguration
  *
- * @package   RichCongress\Bundle\UnitBundle\TestConfiguration
+ * @package   RichCongress\Bundle\UnitBundle\AnnotationConfiguration
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  */
-class TestConfiguration
+class AnnotationConfiguration
 {
     /**
      * @var boolean

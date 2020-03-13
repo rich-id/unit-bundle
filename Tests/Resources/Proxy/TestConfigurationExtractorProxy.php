@@ -3,7 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\Resources\Proxy;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use RichCongress\Bundle\UnitBundle\Utility\TestConfigurationExtractor;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfigurationExtractor;
 
 /**
  * Class TestConfigurationExtractorProxy

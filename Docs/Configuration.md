@@ -4,7 +4,9 @@ The configuration can be edited from the `rich_congress_unit.yaml` file. Here is
 
 ```yaml
 rich_congress_unit:
-    enable_db_caching: true
+    db_cache:
+        enable: true
+        lifetime: 60
     mocked_services: Tests\App\Resources\MockedServices
     public_services:
         - 'monolog.logger'

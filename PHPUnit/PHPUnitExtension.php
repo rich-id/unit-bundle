@@ -4,7 +4,7 @@ namespace RichCongress\Bundle\UnitBundle\PHPUnit;
 
 use DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension as DamaPHPUnitExtension;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
-use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestContext;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
 
@@ -39,6 +39,7 @@ class PHPUnitExtension extends DamaPHPUnitExtension
     {
         parent::executeBeforeTest($test);
 
+        TestContext::parseTest($test);
         OverrideServicesUtility::executeSetUps();
     }
 

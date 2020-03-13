@@ -40,7 +40,7 @@ class RepositoryTestCase extends TestCase
             throw new \LogicException('No entity defined for ' . static::class);
         }
 
-        $this->repository = $this->getManager()->getRepository(static::ENTITY);
+        $this->repository = $this->getRepository(static::ENTITY);
 
         $this->executeBeforeTest();
     }

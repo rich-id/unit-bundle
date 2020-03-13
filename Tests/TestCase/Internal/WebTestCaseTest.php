@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use GuzzleHttp\Client;
 use Mockery\MockInterface;
+use RichCongress\Bundle\UnitBundle\Exception\ContainerNotEnabledException;
+use RichCongress\Bundle\UnitBundle\Exception\DuplicatedContainersException;
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Command\DummyCommand;
@@ -74,8 +76,21 @@ class WebTestCaseTest extends WebTestCase
     {
         $this->getContainer();
 
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('You must create client before any service manipulation.');
+        $this->expectException(DuplicatedContainersException::class);
+
+        self::createClient();
+    }
+
+    /**
+     * @WithContainer
+     *
+     * @return void
+     */
+    public function testCreateTwoClientsInSameTest(): void
+    {
+        self::createClient();
+
+        $this->expectException(DuplicatedContainersException::class);
 
         self::createClient();
     }
@@ -90,20 +105,6 @@ class WebTestCaseTest extends WebTestCase
         $output = $this->executeCommand(DummyCommand::$defaultName);
 
         self::assertStringContainsString('This is a DummyCommand', $output);
-    }
-
-    /**
-     * @WithContainer
-     *
-     * @return void
-     */
-    public function testMockService(): void
-    {
-        self::createClient();
-
-        $guzzleClient = $this->mockService('eight_points_guzzle.client.dummy_api', Client::class);
-
-        self::assertInstanceOf(Client::class, $guzzleClient);
     }
 
     /**
@@ -208,43 +209,11 @@ class WebTestCaseTest extends WebTestCase
     }
 
     /**
-     * @WithContainer
-     *
-     * @return void
-     */
-    public function testDoesClassAndTestNeedsContainer(): void
-    {
-        self::assertTrue(self::doesClassNeedsContainer());
-        self::assertTrue($this->doesTestNeedsContainer());
-    }
-
-    /**
-     * @return void
-     */
-    public function testDoesClassAndTestNeedsContainerWithNoContainer(): void
-    {
-        self::assertTrue(self::doesClassNeedsContainer());
-        self::assertFalse($this->doesTestNeedsContainer());
-    }
-
-    /**
-     * @return void
-     */
-    public function testCheckContainerEnabledWithoutContainer(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('You did not mentionned that you want to load a container. Add the annotation @WithContainer into the class or test PHP Doc.');
-
-        $this->checkContainerEnabled();
-    }
-
-    /**
      * @return void
      */
     public function testGetContainerWithoutAnnotation(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('You did not mentionned that you want to load a container. Add the annotation @WithContainer into the class or test PHP Doc.');
+        $this->expectException(ContainerNotEnabledException::class);
 
         $this->getContainer();
     }

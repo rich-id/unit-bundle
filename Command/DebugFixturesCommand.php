@@ -2,6 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\Command;
 
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestContext;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,7 +61,7 @@ class DebugFixturesCommand extends Command
         $classToDisplay = $input->getOption('class');
         $classReferences = [];
 
-        FixturesManager::$needFixturesLoading = true;
+        TestContext::$needFixtures = true;
         FixturesManager::loadFixtures();
 
         foreach (FixturesManager::getReferences() as $reference => $value) {

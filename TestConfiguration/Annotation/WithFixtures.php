@@ -2,12 +2,12 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation;
 
-use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfiguration;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\AnnotationConfiguration;
 
 /**
  * Class WithFixtures
  *
- * @package   RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation
+ * @package   RichCongress\Bundle\UnitBundle\AnnotationConfiguration\Annotation
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  *
@@ -16,11 +16,11 @@ use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfiguration;
 class WithFixtures implements TestAnnotationInterface
 {
     /**
-     * @return TestConfiguration
+     * @return AnnotationConfiguration
      */
-    public function getTestConfiguration(): TestConfiguration
+    public function getTestConfiguration(): AnnotationConfiguration
     {
-        $config = new TestConfiguration();
+        $config = new AnnotationConfiguration();
         $config->withContainer = true;
         $config->withFixtures = true;
 

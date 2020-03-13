@@ -2,13 +2,11 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase;
 
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
+use RichCongress\Bundle\UnitBundle\Tests\Resources\Form\DummyFormType;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Class ControllerTestCaseTest
@@ -16,8 +14,10 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
  * @package   RichCongress\Bundle\UnitBundle\Tests\TestCase
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
+ *
+ * @WithContainer
  */
-class ControllerTestCaseTest extends MockeryTestCase
+class ControllerTestCaseTest extends ControllerTestCase
 {
     /**
      * @covers \RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase::getCsrfToken()
@@ -26,37 +26,20 @@ class ControllerTestCaseTest extends MockeryTestCase
      */
     public function testGetCsrfTokenWithContainerHasIntention(): void
     {
-        $container = \Mockery::mock(ContainerInterface::class);
-        $client = \Mockery::mock(Client::class);
-        $tokenManager = \Mockery::mock(CsrfTokenManagerInterface::class);
+        $token = $this->getCsrfToken('dummy_form');
 
-        $client->shouldReceive('getContainer')
-            ->once()
-            ->andReturn($container);
+        self::assertNotNull($token);
+    }
+    /**
+     * @covers \RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase::getCsrfToken()
+     *
+     * @return void
+     */
+    public function testGetCsrfTokenWithContainerHasIntentioan(): void
+    {
+        $token = $this->getCsrfToken('dummy_form_type');
 
-        $container->shouldReceive('has')
-            ->once()
-            ->with('intention')
-            ->andReturnTrue();
-
-        $container->shouldReceive('get')
-            ->once()
-            ->with('intention')
-            ->andReturn(new FormType());
-
-        $container->shouldReceive('get')
-            ->once()
-            ->with('security.csrf.token_manager')
-            ->andReturn($tokenManager);
-
-        $tokenManager->shouldReceive('getToken')
-            ->once()
-            ->with('form')
-            ->andReturn('csrfToken');
-
-        $token = ControllerTestCase::getCsrfToken('intention', $client);
-
-        self::assertSame('csrfToken', $token);
+        self::assertNotNull($token);
     }
 
     /**
@@ -66,67 +49,9 @@ class ControllerTestCaseTest extends MockeryTestCase
      */
     public function testGetCsrfTokenWithContainerHasNotIntentionButSubclass(): void
     {
-        $container = \Mockery::mock(ContainerInterface::class);
-        $client = \Mockery::mock(Client::class);
-        $tokenManager = \Mockery::mock(CsrfTokenManagerInterface::class);
+        $token = $this->getCsrfToken(DummyFormType::class);
 
-        $client->shouldReceive('getContainer')
-            ->once()
-            ->andReturn($container);
-
-        $container->shouldReceive('has')
-            ->once()
-            ->with(FormType::class)
-            ->andReturnFalse();
-
-        $container->shouldReceive('get')
-            ->once()
-            ->with('security.csrf.token_manager')
-            ->andReturn($tokenManager);
-
-        $tokenManager->shouldReceive('getToken')
-            ->once()
-            ->with('form')
-            ->andReturn('csrfToken');
-
-        $token = ControllerTestCase::getCsrfToken(FormType::class, $client);
-
-        self::assertSame('csrfToken', $token);
-    }
-
-    /**
-     * @covers \RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase::getCsrfToken()
-     *
-     * @return void
-     */
-    public function testGetCsrfTokenWithContainerHasNotIntentionAndNotSubclass(): void
-    {
-        $container = \Mockery::mock(ContainerInterface::class);
-        $client = \Mockery::mock(Client::class);
-        $tokenManager = \Mockery::mock(CsrfTokenManagerInterface::class);
-
-        $client->shouldReceive('getContainer')
-            ->once()
-            ->andReturn($container);
-
-        $container->shouldReceive('has')
-            ->once()
-            ->with('intention')
-            ->andReturnFalse();
-
-        $container->shouldReceive('get')
-            ->once()
-            ->with('security.csrf.token_manager')
-            ->andReturn($tokenManager);
-
-        $tokenManager->shouldReceive('getToken')
-            ->once()
-            ->with('intention')
-            ->andReturn('csrfToken');
-
-        $token = ControllerTestCase::getCsrfToken('intention', $client);
-
-        self::assertSame('csrfToken', $token);
+        self::assertNotNull($token);
     }
 
     /**
@@ -166,7 +91,7 @@ class ControllerTestCaseTest extends MockeryTestCase
             ->once()
             ->andReturn('[{"test": true}]');
 
-        $client = \Mockery::mock(Client::class);
+        $client = \Mockery::mock(KernelBrowser::class);
         $client->shouldReceive('getResponse')
             ->once()
             ->andReturn($response);

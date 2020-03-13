@@ -82,7 +82,7 @@ class ExampleControllerTest extends ControllerTestCase
     {
         $client = self::createClient();
         $client->request('POST', '/post/route', [
-            '_token' => self::getCsrfToken('csrf_token_id', $client),
+            '_token' => $this->getCsrfToken('csrf_token_id'),
             // ...
         ]);
         

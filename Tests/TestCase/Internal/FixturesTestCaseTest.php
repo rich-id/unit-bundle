@@ -3,10 +3,8 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal;
 
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\FixturesTestCase;
-use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
-use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 
 /**
  * Class FixtureTestCaseTest
@@ -19,23 +17,6 @@ use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
  */
 class FixturesTestCaseTest extends FixturesTestCase
 {
-    /**
-     * @WithFixtures
-     *
-     * @return void
-     */
-    public function testConstructor(): void
-    {
-        FixturesManager::$needFixturesLoading = false;
-        self::$userRoles = null;
-        self::$isTestInititialized = false;
-
-        new self();
-
-        self::assertTrue(FixturesManager::$needFixturesLoading);
-        self::assertNotNull(self::$userRoles);
-    }
-
     /**
      * @WithFixtures
      *
@@ -122,38 +103,5 @@ class FixturesTestCaseTest extends FixturesTestCase
 
         /** @var DummyEntity $entity */
         $this->getReference('unknown_entity');
-    }
-
-    /**
-     * @WithFixtures
-     *
-     * @return void
-     */
-    public function testDoesClassAndTestNeedsFixtures(): void
-    {
-        self::assertTrue(self::doesClassNeedsFixtures());
-        self::assertTrue($this->doesTestNeedsFixtures());
-    }
-
-    /**
-     * @WithContainer
-     *
-     * @return void
-     */
-    public function testDoesClassAndTestNeedsFixturesWithNoFixtures(): void
-    {
-        self::assertTrue(self::doesClassNeedsFixtures());
-        self::assertFalse($this->doesTestNeedsFixtures());
-    }
-
-    /**
-     * @return void
-     */
-    public function testCheckFixturesEnabledWithoutFixtures(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('You did not mentionned that you want to load the fixtures. Add the annotation @WithFixtures into the class or test PHP Doc.');
-
-        $this->checkFixturesEnabled();
     }
 }

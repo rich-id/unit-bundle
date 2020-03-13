@@ -46,7 +46,7 @@ class VoterTestCaseTest extends VoterTestCase
     public function testVoteNoVoter(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The voter is not well initialized. Please check your setUp function.');
+        $this->expectExceptionMessage('The voter is not well initialized. Please check your "beforeTest" function and set the `voter` property.');
 
         $this->vote('', '');
     }

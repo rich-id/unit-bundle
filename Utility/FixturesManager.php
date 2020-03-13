@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use RichCongress\Bundle\UnitBundle\Resources\Stub\KernelTestCaseStub;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfigurationExtractor;
 use RichCongress\Bundle\UnitBundle\TextUi\Output;
 use RichCongress\Bundle\UnitBundle\TextUi\Timer;
 
@@ -32,11 +33,6 @@ class FixturesManager
      * @var array
      */
     protected static $fixturesClasses = [];
-
-    /**
-     * @var boolean
-     */
-    public static $needFixturesLoading = false;
 
     /**
      * FixturesManager constructor.
@@ -66,9 +62,9 @@ class FixturesManager
     public static function loadFixtures(): void
     {
         if (
-            !static::$needFixturesLoading
-            || static::$fixtures !== null
+            static::$fixtures !== null
             || count(static::$fixturesClasses) === 0
+            || !TestConfigurationExtractor::doesContextNeedsFixtures()
         ) {
             return;
         }

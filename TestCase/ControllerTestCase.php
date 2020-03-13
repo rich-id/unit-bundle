@@ -2,9 +2,11 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestCase;
 
-use Symfony\Bundle\FrameworkBundle\Client;
+use RichCongress\Bundle\UnitBundle\Exception\CsrfTokenManagerMissingException;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 /**
  * Class ControllerTestCase
@@ -19,21 +21,22 @@ class ControllerTestCase extends TestCase
      * Get the CSRF token from the Type and the Client
      *
      * @param string $intention
-     * @param Client $client
      *
      * @return string
      */
-    public static function getCsrfToken(string $intention, Client $client): string
+    public function getCsrfToken(string $intention): string
     {
         /** @var ContainerInterface $container */
-        $container = $client->getContainer();
+        $container = $this->getContainer();
         $class = null;
+
+        CsrfTokenManagerMissingException::checkAndThrow($container);
+        /** @var CsrfTokenManagerInterface $csrfTokenManager */
+        $csrfTokenManager = $container->get('security.csrf.token_manager');
 
         if ($container->has($intention)) {
             $class = $container->get($intention);
-        }
-
-        elseif (\is_subclass_of($intention, FormTypeInterface::class)) {
+        } elseif (\is_subclass_of($intention, FormTypeInterface::class)) {
             $class = new $intention();
         }
 
@@ -41,9 +44,7 @@ class ControllerTestCase extends TestCase
             $intention = $class->getBlockPrefix() ?? $intention;
         }
 
-        return (string) $container
-            ->get('security.csrf.token_manager')
-            ->getToken($intention);
+        return (string) $csrfTokenManager->getToken($intention);
     }
 
     /**
@@ -61,12 +62,12 @@ class ControllerTestCase extends TestCase
     /**
      * Extract Json content from the client
      *
-     * @param Client  $client
-     * @param boolean $assoc
+     * @param KernelBrowser $client
+     * @param boolean       $assoc
      *
      * @return array|object|null
      */
-    public static function getJsonContent(Client $client, bool $assoc = true)
+    public static function getJsonContent(KernelBrowser $client, bool $assoc = true)
     {
         return \json_decode($client->getResponse()->getContent(), $assoc, 512, JSON_THROW_ON_ERROR);
     }

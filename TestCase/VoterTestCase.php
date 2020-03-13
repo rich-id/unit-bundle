@@ -46,7 +46,7 @@ class VoterTestCase extends TestCase
     public function vote($subject, $attributes, UserInterface $user = null): int
     {
         if (!$this->voter instanceof VoterInterface) {
-            throw new \LogicException('The voter is not well initialized. Please check your setUp function.');
+            throw new \LogicException('The voter is not well initialized. Please check your "beforeTest" function and set the `voter` property.');
         }
 
         $attributes = (array) $attributes;

@@ -8,7 +8,7 @@ use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
 /**
  * Class WithFixturesTest
  *
- * @package   RichCongress\Bundle\UnitBundle\Tests\TestConfiguration\Annotation
+ * @package   RichCongress\Bundle\UnitBundle\Tests\AnnotationConfiguration\Annotation
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  *

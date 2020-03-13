@@ -2,9 +2,11 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestCase;
 
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestContext;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Class CommandTestCase
@@ -36,7 +38,8 @@ class CommandTestCase extends TestCase
 
         if ($this->command !== null) {
             // Declare the command within the application first
-            if (self::doesTestNeedsContainer()) {
+            if (TestContext::$needContainer) {
+                /** @var KernelInterface $kernel */
                 $kernel = $this->getContainer()->get('kernel');
                 $application = new Application($kernel);
                 $application->add($this->command);

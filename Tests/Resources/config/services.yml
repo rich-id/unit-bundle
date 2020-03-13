@@ -13,3 +13,7 @@ services:
 
     RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\:
         resource: '../../Resources/DataFixture/*'
+
+    dummy_form_type:
+        class: RichCongress\Bundle\UnitBundle\Tests\Resources\Form\DummyFormType
+
