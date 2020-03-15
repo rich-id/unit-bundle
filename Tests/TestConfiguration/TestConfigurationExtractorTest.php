@@ -3,8 +3,10 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\Utility;
 
 use PHPUnit\Framework\TestCase;
+use RichCongress\Bundle\UnitBundle\Exception\MethodNotFoundException;
 use RichCongress\Bundle\UnitBundle\TestCase\ControllerTestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfigurationExtractor;
+use RichCongress\Bundle\UnitBundle\Tests\Command\DebugFixturesCommandTest;
 use RichCongress\Bundle\UnitBundle\Tests\Mock\KernelTestCaseMockTest;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\TestCase\BadDummyRepositoryTestCase;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\TestCase\DummyContainerTestCase;
@@ -49,8 +51,8 @@ class TestConfigurationExtractorTest extends TestCase
         self::assertFalse(TestConfigurationExtractor::doesClassNeedsFixtures(WebTestCaseTest::class));
         self::assertTrue(TestConfigurationExtractor::doesTestNeedsContainer(WebTestCaseTest::class, 'testGetEntityManager'));
         self::assertFalse(TestConfigurationExtractor::doesTestNeedsFixtures(WebTestCaseTest::class, 'testGetEntityManager'));
-        self::assertFalse(TestConfigurationExtractor::doesTestNeedsContainer(WebTestCaseTest::class, 'testDoesClassAndTestNeedsContainerWithNoContainer'));
-        self::assertFalse(TestConfigurationExtractor::doesTestNeedsFixtures(WebTestCaseTest::class, 'testDoesClassAndTestNeedsContainerWithNoContainer'));
+        self::assertFalse(TestConfigurationExtractor::doesTestNeedsContainer(WebTestCaseTest::class, 'testGetContainerWithoutAnnotation'));
+        self::assertFalse(TestConfigurationExtractor::doesTestNeedsFixtures(WebTestCaseTest::class, 'testGetContainerWithoutAnnotation'));
     }
 
     /**
@@ -58,28 +60,12 @@ class TestConfigurationExtractorTest extends TestCase
      */
     public function testClassWithFixtures(): void
     {
-        TestConfigurationExtractor::register(DummyFixturesTestCase::class);
+        TestConfigurationExtractor::register(DebugFixturesCommandTest::class);
 
-        self::assertTrue(TestConfigurationExtractor::doesClassNeedsContainer(DummyFixturesTestCase::class));
-        self::assertTrue(TestConfigurationExtractor::doesClassNeedsFixtures(DummyFixturesTestCase::class));
-        self::assertTrue(TestConfigurationExtractor::doesTestNeedsContainer(DummyFixturesTestCase::class, 'testExecute'));
-        self::assertTrue(TestConfigurationExtractor::doesTestNeedsFixtures(DummyFixturesTestCase::class, 'testExcute'));
-    }
-
-    /**
-     * @return void
-     */
-    public function testClassWithTestWithFixtures(): void
-    {
-        TestConfigurationExtractor::register(FixturesTestCaseTest::class);
-        TestConfigurationExtractor::register(DummyFixturesTestCase::class);
-
-        self::assertTrue(TestConfigurationExtractor::doesClassNeedsContainer(FixturesTestCaseTest::class));
-        self::assertTrue(TestConfigurationExtractor::doesClassNeedsFixtures(FixturesTestCaseTest::class));
-        self::assertTrue(TestConfigurationExtractor::doesTestNeedsContainer(DummyTestWithFixtures::class, 'dummyFunction'));
-        self::assertTrue(TestConfigurationExtractor::doesTestNeedsFixtures(DummyTestWithFixtures::class, 'dummyFunction'));
-        self::assertFalse(TestConfigurationExtractor::doesTestNeedsContainer(FixturesTestCaseTest::class, 'testCheckFixturesEnabledWithoutFixtures'));
-        self::assertFalse(TestConfigurationExtractor::doesTestNeedsFixtures(FixturesTestCaseTest::class, 'testCheckFixturesEnabledWithoutFixtures'));
+        self::assertTrue(TestConfigurationExtractor::doesClassNeedsContainer(DebugFixturesCommandTest::class));
+        self::assertTrue(TestConfigurationExtractor::doesClassNeedsFixtures(DebugFixturesCommandTest::class));
+        self::assertTrue(TestConfigurationExtractor::doesTestNeedsContainer(DebugFixturesCommandTest::class, 'testExecute'));
+        self::assertTrue(TestConfigurationExtractor::doesTestNeedsFixtures(DebugFixturesCommandTest::class, 'testExecute'));
     }
 
     /**
@@ -108,8 +94,8 @@ class TestConfigurationExtractorTest extends TestCase
      */
     public function testGetTestConfigurationForNonExistentMethod(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The method "unknownMethod" has not been parsed. Something went wrong.');
+        $this->expectException(MethodNotFoundException::class);
+        $this->expectExceptionMessage('The method "unknownMethod" does not exist within the class "RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal\FixturesTestCaseTest"');
 
         self::assertTrue(TestConfigurationExtractor::doesTestNeedsContainer(FixturesTestCaseTest::class, 'unknownMethod'));
     }

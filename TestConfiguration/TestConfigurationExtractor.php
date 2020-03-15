@@ -2,7 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestConfiguration;
 
-use Doctrine\Common\Annotations\AnnotationReader;
+use RichCongress\Bundle\UnitBundle\Exception\MethodNotFoundException;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\TestAnnotationInterface;
 
 /**
@@ -77,6 +77,8 @@ class TestConfigurationExtractor
      */
     public static function doesClassNeedsContainer(string $class): bool
     {
+        static::check($class);
+
         /** @var AnnotationConfiguration $classConfiguration */
         $classConfiguration = static::$classConfigurations[$class];
 
@@ -103,6 +105,8 @@ class TestConfigurationExtractor
      */
     public static function doesClassNeedsFixtures(string $class): bool
     {
+        static::check($class);
+
         /** @var AnnotationConfiguration $classConfiguration */
         $classConfiguration = static::$classConfigurations[$class];
 
@@ -130,9 +134,7 @@ class TestConfigurationExtractor
      */
     public static function doesTestNeedsContainer(string $class, string $method): bool
     {
-        if (!array_key_exists($class, static::$classConfigurations)) {
-            return false;
-        }
+        static::check($class, $method);
 
         $classConfiguration = static::$classConfigurations[$class];
         $testConfiguration = static::$testConfigurations[$class][$method];
@@ -148,9 +150,7 @@ class TestConfigurationExtractor
      */
     public static function doesTestNeedsFixtures(string $class, ?string $method): bool
     {
-        if (!array_key_exists($class, static::$classConfigurations)) {
-            return false;
-        }
+        static::check($class, $method);
 
         $classConfiguration = static::$classConfigurations[$class];
         $testConfiguration = static::$testConfigurations[$class][$method];
@@ -188,5 +188,21 @@ class TestConfigurationExtractor
         }
 
         return $configuration;
+    }
+
+    /**
+     * @param string      $class
+     * @param string|null $method
+     *
+     * @return void
+     */
+    protected static function check(string $class, string $method = null): void
+    {
+        // Not parsed yet
+        if (!array_key_exists($class, static::$classConfigurations)) {
+            static::register($class);
+        }
+
+        MethodNotFoundException::checkAndThrow(static::$testConfigurations, $class, $method);
     }
 }

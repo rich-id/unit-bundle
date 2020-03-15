@@ -13,4 +13,5 @@ services:
             $sqliteDatabaseBackup: '@liip_test_fixtures.services_database_backup.sqlite'
 
     RichCongress\Bundle\UnitBundle\Utility\FixturesManager:
-        $databaseToolCollection: '@liip_test_fixtures.services.database_tool_collection'
+        arguments:
+            $databaseToolCollection: '@liip_test_fixtures.services.database_tool_collection'
