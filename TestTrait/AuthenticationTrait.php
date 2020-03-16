@@ -2,6 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestTrait;
 
+use RichCongress\Bundle\UnitBundle\Exception\BadTestRolesException;
 use RichCongress\Bundle\UnitBundle\Exception\FixturesNotEnabledException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\BrowserKit\Cookie;
@@ -122,7 +123,6 @@ trait AuthenticationTrait
      */
     public function rolesProvider(array $expectations, array $extraRoles = []): array
     {
-        FixturesNotEnabledException::checkAndThrow();
         $userRoles = $this->getUserRoles();
         $rolesNames = array_keys($userRoles);
 
@@ -139,6 +139,8 @@ trait AuthenticationTrait
             array_values($userRoles),
             array_values($expectations)
         );
+
+        BadTestRolesException::checkAndThrow($userRoles, $expectations);
 
         return array_merge(array_combine($rolesNames, $mapUserExpectation), $extraRoles);
     }

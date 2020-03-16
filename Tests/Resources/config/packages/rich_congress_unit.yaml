@@ -1,7 +1,6 @@
 rich_congress_unit:
-    mocked_services: RichCongress\Bundle\UnitBundle\Tests\Resources\config\MockedServices
     db_cache:
-        enable: true
+        enable: false
         lifetime: 60
     public_services:
         - 'monolog.logger'

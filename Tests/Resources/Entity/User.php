@@ -46,6 +46,14 @@ class User implements UserInterface
     protected $roles;
 
     /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
      * Returns the roles granted to the user.
      *
      *     public function getRoles()

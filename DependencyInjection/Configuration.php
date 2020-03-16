@@ -29,7 +29,6 @@ class Configuration implements ConfigurationInterface
                         ->integerNode('lifetime')->defaultValue(60)->end()
                     ->end()
                 ->end()
-                ->scalarNode('mocked_services')->defaultNull()->end()
 
                 ->arrayNode('default_stubs')
                     ->children()
@@ -43,7 +42,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
 
                 ->arrayNode('test_roles')
-                ->normalizeKeys(false)
+                    ->normalizeKeys(false)
                     ->useAttributeAsKey('key')
                     ->example(['NotLogged' => '', 'Admin' => 'user_1'])
                     ->scalarPrototype()->end()

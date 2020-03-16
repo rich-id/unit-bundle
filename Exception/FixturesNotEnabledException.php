@@ -27,6 +27,6 @@ class FixturesNotEnabledException extends AbstractCheckAndThrowException
      */
     protected static function check(): bool
     {
-        return TestContext::$needFixtures;
+        return TestContext::$needFixtures === true;
     }
 }

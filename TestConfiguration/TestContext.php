@@ -37,7 +37,8 @@ class TestContext
      */
     public static function parseTest(string $test): void
     {
-        [static::$testClass, static::$testName] = explode('::', $test);
+        $keyname = explode(' ', $test)[0];
+        [static::$testClass, static::$testName] = explode('::', $keyname);
 
         static::$needContainer = TestConfigurationExtractor::doesTestNeedsContainer(static::$testClass, static::$testName);
         static::$needFixtures = TestConfigurationExtractor::doesTestNeedsFixtures(static::$testClass, static::$testName);

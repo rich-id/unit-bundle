@@ -62,6 +62,7 @@ class AuthenticationTraitTest extends TestCase
         parent::tearDown();
 
         self::$container = self::$containerBackup;
+        self::$userRoles = self::$userRolesBackup;
     }
 
     /**
@@ -197,13 +198,13 @@ class AuthenticationTraitTest extends TestCase
      *
      * @return array
      */
-    public function rolesDataProviderWithArray(): array
+    public function rolesEntitiesClass(): array
     {
         return $this->rolesProvider([
             'User1' => User::class,
-            'User2' => [User::class, 'User2'],
+            'User2' => User::class,
         ], [
-            'DummyEntity' => ['entity_1', DummyEntity::class]
+            'DummyEntity' => ['entity_0', DummyEntity::class]
         ]);
     }
 
@@ -212,13 +213,13 @@ class AuthenticationTraitTest extends TestCase
      *
      * @return array
      */
-    public function rolesDataProvider(): array
+    public function rolesDataProviderWithArray(): array
     {
         return $this->rolesProvider([
-            'User1' => User::class,
-            'User2' => User::class,
+            'User1' => [User::class, 2],
+            'User2' => [User::class, 3],
         ], [
-            'DummyEntity' => ['entity_1', DummyEntity::class]
+            'DummyEntity' => ['entity_0', DummyEntity::class, 1]
         ]);
     }
 
@@ -227,20 +228,15 @@ class AuthenticationTraitTest extends TestCase
      */
     public function testDataProvider(): void
     {
-        $dataProvider = $this->rolesProvider([
-            'User1' => User::class,
-            'User2' => User::class,
-        ], [
-            'DummyEntity' => ['entity_1', DummyEntity::class]
-        ]);
+        $dataProvider = $this->rolesEntitiesClass();
 
-        self::assertArrayHasKey('User1', $dataProvider);
-        self::assertArrayHasKey('User2', $dataProvider);
-        self::assertArrayHasKey('DummyEntity', $dataProvider);
+        $expected = [
+            'User1'       => ['user_1', User::class],
+            'User2'       => ['user_2', User::class],
+            'DummyEntity' => ['entity_0', DummyEntity::class],
+        ];
 
-        $data = $dataProvider['User1'];
-        self::assertContains('user_1', $data);
-        self::assertContains(User::class, $data);
+        self::assertEquals($expected, $dataProvider);
     }
 
     /**
@@ -248,31 +244,27 @@ class AuthenticationTraitTest extends TestCase
      */
     public function testDataProviderWithArray(): void
     {
-        $dataProvider = $this->rolesProvider([
-            'User1' => User::class,
-            'User2' => [User::class, 'User2'],
-        ], [
-            'DummyEntity' => ['entity_1', DummyEntity::class]
-        ]);
+        $dataProvider = $this->rolesDataProviderWithArray();
 
-        self::assertArrayHasKey('User1', $dataProvider);
-        self::assertArrayHasKey('User2', $dataProvider);
-        self::assertArrayHasKey('DummyEntity', $dataProvider);
+        $expected = [
+            'User1'       => ['user_1', User::class, 2],
+            'User2'       => ['user_2', User::class, 3],
+            'DummyEntity' => ['entity_0', DummyEntity::class, 1],
+        ];
 
-        $data = $dataProvider['User1'];
-        self::assertContains('user_1', $data);
-        self::assertContains(User::class, $data);
+        self::assertEquals($expected, $dataProvider);
     }
 
     /**
-     * @dataProvider rolesDataProvider
+     * @WithFixtures()
+     * @dataProvider rolesEntitiesClass
      *
-     * @param string      $reference
-     * @param string|null $class
+     * @param string $reference
+     * @param string $class
      *
      * @return void
      */
-    public function testDataProviderInTest(string $reference, ?string $class): void
+    public function testDataProviderInTest(string $reference, string $class): void
     {
         $object = $this->getReference($reference);
 
@@ -280,17 +272,20 @@ class AuthenticationTraitTest extends TestCase
     }
 
     /**
+     * @WithFixtures()
      * @dataProvider rolesDataProviderWithArray
      *
-     * @param string      $reference
-     * @param string|null $class
+     * @param string $reference
+     * @param string $class
+     * @param int    $id
      *
      * @return void
      */
-    public function testDataProviderInTestWithArray(string $reference, ?string $class): void
+    public function testDataProviderInTestWithArray(string $reference, string $class, int $id): void
     {
         $object = $this->getReference($reference);
 
         self::assertInstanceOf($class, $object);
+        self::assertSame($id, $object->getId());
     }
 }

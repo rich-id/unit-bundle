@@ -42,7 +42,8 @@
         },
         "files": [
             "./TestConfiguration/Annotation/WithContainer.php",
-            "./TestConfiguration/Annotation/WithFixtures.php"
+            "./TestConfiguration/Annotation/WithFixtures.php",
+            "./Helper/GlobalNamespaceHelper.php"
         ]
     },
     "autoload-dev": {

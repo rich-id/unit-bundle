@@ -38,13 +38,9 @@ class OverrideServicesUtilityTest extends TestCase
      */
     public function testAddOverrideServiceAndOverrideServices(): void
     {
-        $service1 = new DummyOverrideService();
-        $service2 = new DummyOverrideService();
-        $service3 = new DummyOverrideService();
-
-        $this->utility->addOverrideService($service1);
-        $this->utility->addOverrideService($service2);
-        $this->utility->addOverrideService($service3);
+        $this->utility->addOverrideServiceClass(DummyOverrideService::class);
+        $this->utility->addOverrideServiceClass(DummyOverrideService::class);
+        $this->utility->addOverrideServiceClass(DummyOverrideService::class);
 
         self::assertContains('test.service', $this->utility->getOverridenServiceIds());
     }
