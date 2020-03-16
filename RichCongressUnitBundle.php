@@ -2,6 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\PublicServicesPass;
@@ -38,6 +39,8 @@ class RichCongressUnitBundle extends Bundle
     public function boot(): void
     {
         parent::boot();
+
+        StaticDriver::setKeepStaticConnections(true);
 
         // Autowire everything for the FixturesManager before the first test
         $this->container->get(OverrideServicesUtility::class);

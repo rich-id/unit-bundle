@@ -18,3 +18,13 @@ function debug($object, bool $displayContent = false): void
     flush();
 }
 
+/**
+ * @return void
+ */
+function trace(): void
+{
+    debug(
+        (new \Exception())->getTraceAsString()
+    );
+}
+
