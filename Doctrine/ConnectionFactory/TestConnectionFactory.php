@@ -18,6 +18,23 @@ use Doctrine\DBAL\DBALException;
 class TestConnectionFactory extends ConnectionFactory
 {
     /**
+     * @var ConnectionFactory
+     */
+    private $decoratedFactory;
+
+    /**
+     * TestConnectionFactory constructor.
+     *
+     * @param ConnectionFactory $decoratedFactory
+     */
+    public function __construct(ConnectionFactory $decoratedFactory)
+    {
+        parent::__construct([]);
+
+        $this->decoratedFactory = $decoratedFactory;
+    }
+
+    /**
      * Create a connection by name.
      *
      * @param array         $params
@@ -32,7 +49,7 @@ class TestConnectionFactory extends ConnectionFactory
     {
         $parameters = self::processParameters($params);
 
-        return parent::createConnection($parameters, $config, $eventManager, $mappingTypes);
+        return $this->decoratedFactory->createConnection($parameters, $config, $eventManager, $mappingTypes);
     }
 
     /**
@@ -42,8 +59,14 @@ class TestConnectionFactory extends ConnectionFactory
      */
     protected function processParameters(array $params): array
     {
-        $params['dbName'] = $params['dbName'] ?? 'dbTest';
-        $params['dbName'] .= getenv('TEST_TOKEN');
+        $testToken = getenv('TEST_TOKEN');
+        $params['dbname'] = $params['dbname'] ?? 'dbTest';
+
+        if (\is_string($testToken) && $testToken !== '') {
+            $params['dbname'] .= '_' . $testToken;
+        }
+
+        $params['path'] = \str_replace('__DBNAME__', $params['dbname'], $params['path']);
 
         return $params;
     }

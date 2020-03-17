@@ -2,6 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests\Doctrine\ConnectionFactory;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
 use RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory\TestConnectionFactory;
@@ -23,6 +24,16 @@ class TestConnectionFactoryTest extends TestCase
     protected static $initialTestToken;
 
     /**
+     * @var TestConnectionFactory
+     */
+    protected $factory;
+
+    /**
+     * @var ConnectionFactory
+     */
+    protected $innerFactory;
+
+    /**
      * @return void
      */
     public static function setUpBeforeClass()
@@ -42,6 +53,14 @@ class TestConnectionFactoryTest extends TestCase
         putenv('TEST_TOKEN=' . static::$initialTestToken);
     }
 
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->innerFactory = new ConnectionFactory([]);
+        $this->factory = new TestConnectionFactory($this->innerFactory);
+    }
+
     /**
      * @return void
      *
@@ -51,15 +70,16 @@ class TestConnectionFactoryTest extends TestCase
     {
         $params = [
             'driver' => 'pdo_sqlite',
-            'dbName' => 'TestDatabase',
+            'dbname' => 'TestDatabase',
+            'path'   => '/path/__DBNAME__.db',
         ];
 
         putenv('TEST_TOKEN=');
-        $factory = new TestConnectionFactory([]);
-        $connection = $factory->createConnection($params);
+        $connection = $this->factory->createConnection($params);
         $connectionParams = $connection->getParams();
 
-        self::assertSame('TestDatabase', $connectionParams['dbName']);
+        self::assertSame('TestDatabase', $connectionParams['dbname']);
+        self::assertSame('/path/TestDatabase.db', $connectionParams['path']);
     }
 
     /**
@@ -71,14 +91,15 @@ class TestConnectionFactoryTest extends TestCase
     {
         $params = [
             'driver' => 'pdo_sqlite',
+            'path'   => '/path/__DBNAME__.db',
         ];
 
         putenv('TEST_TOKEN=');
-        $factory = new TestConnectionFactory([]);
-        $connection = $factory->createConnection($params);
+        $connection = $this->factory->createConnection($params);
         $connectionParams = $connection->getParams();
 
-        self::assertSame('dbTest', $connectionParams['dbName']);
+        self::assertSame('dbTest', $connectionParams['dbname']);
+        self::assertSame('/path/dbTest.db', $connectionParams['path']);
     }
 
     /**
@@ -90,15 +111,15 @@ class TestConnectionFactoryTest extends TestCase
     {
         $params = [
             'driver' => 'pdo_sqlite',
-            'dbName' => 'TestDatabase',
+            'dbname' => 'TestDatabase',
+            'path'   => '/path/__DBNAME__.db',
         ];
 
-
         putenv('TEST_TOKEN=1');
-        $factory = new TestConnectionFactory([]);
-        $connection = $factory->createConnection($params);
+        $connection = $this->factory->createConnection($params);
         $connectionParams = $connection->getParams();
 
-        self::assertSame('TestDatabase1', $connectionParams['dbName']);
+        self::assertSame('TestDatabase_1', $connectionParams['dbname']);
+        self::assertSame('/path/TestDatabase_1.db', $connectionParams['path']);
     }
 }

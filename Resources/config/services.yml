@@ -15,3 +15,9 @@ services:
     RichCongress\Bundle\UnitBundle\Utility\FixturesManager:
         arguments:
             $databaseToolCollection: '@liip_test_fixtures.services.database_tool_collection'
+
+    rich_congress_unit.doctrine.dbal.connection_factory:
+        class: RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory\TestConnectionFactory
+        decorates: dama.doctrine.dbal.connection_factory
+        arguments:
+            $decoratedFactory: '@rich_congress_unit.doctrine.dbal.connection_factory.inner'
