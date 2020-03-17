@@ -69,7 +69,7 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
                 'dbal' => [
                     'driver' => 'pdo_sqlite',
                     'user'   => 'test',
-                    'path'   => '%kernel.cache_dir%/test.db',
+                    'path'   => '%kernel.cache_dir%/__DBNAME__.db',
                     'url'    => null,
                     'memory' => false,
                 ],
