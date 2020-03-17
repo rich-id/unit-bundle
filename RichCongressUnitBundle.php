@@ -40,7 +40,6 @@ class RichCongressUnitBundle extends Bundle
     {
         parent::boot();
 
-        StaticDriver::setKeepStaticConnections(true);
 
         // Autowire everything for the FixturesManager before the first test
         $this->container->get(OverrideServicesUtility::class);

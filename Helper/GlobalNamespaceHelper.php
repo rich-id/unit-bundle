@@ -14,8 +14,12 @@ function debug($object, bool $displayContent = false): void
         \var_dump(\get_class($object));
     }
 
-    ob_flush();
-    flush();
+    try {
+        ob_flush();
+        flush();
+    } catch (\Throwable $e) {
+        // Nothing to flush
+    }
 }
 
 /**

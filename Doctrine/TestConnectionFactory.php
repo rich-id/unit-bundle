@@ -1,7 +1,8 @@
 <?php
 
-namespace RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory;
+namespace RichCongress\Bundle\UnitBundle\Doctrine;
 
+use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
@@ -11,7 +12,7 @@ use Doctrine\DBAL\DBALException;
 /**
  * Class TestConnectionFactory
  *
- * @package   RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory
+ * @package   RichCongress\Bundle\UnitBundle\Doctrine
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2020 RichCongress (https://www.richcongress.com)
  */
@@ -48,6 +49,10 @@ class TestConnectionFactory extends ConnectionFactory
     public function createConnection(array $params, Configuration $config = null, EventManager $eventManager = null, array $mappingTypes = []): Connection
     {
         $parameters = self::processParameters($params);
+
+        // Force static driver
+        StaticDriver::setKeepStaticConnections(true);
+        $params['dama.keep_static'] = true;
 
         return $this->decoratedFactory->createConnection($parameters, $config, $eventManager, $mappingTypes);
     }

@@ -7,7 +7,7 @@ use RichCongress\Bundle\UnitBundle\DataFixture\DataFixtureInterface;
 use RichCongress\Bundle\UnitBundle\DataFixture\SqliteDatabaseBackup;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
-use RichCongress\Bundle\UnitBundle\Doctrine\ConnectionFactory\TestConnectionFactory;
+use RichCongress\Bundle\UnitBundle\Doctrine\TestConnectionFactory;
 use RichCongress\Bundle\UnitBundle\Stubs\LoggerStub;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use Symfony\Component\Config\FileLocator;
