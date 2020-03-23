@@ -2,7 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\Command;
 
-use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,18 +19,18 @@ class DebugOverridenServicesCommand extends Command
     public static $defaultName = 'debug:overriden_services';
 
     /**
-     * @var array|OverrideServiceInterface
+     * @var array|string[]
      */
-    protected $overrideService = [];
+    protected $overrideServiceClasses = [];
 
     /**
-     * @param OverrideServiceInterface $overrideServiceClass
+     * @param string $overrideServiceClass
      *
      * @return void
      */
-    public function addOverrideServiceClass(OverrideServiceInterface $overrideServiceClass): void
+    public function addOverrideServiceClass(string $overrideServiceClass): void
     {
-        $this->overrideService[] = $overrideServiceClass;
+        $this->overrideServiceClasses[] = $overrideServiceClass;
     }
 
     /**
@@ -54,13 +53,13 @@ class DebugOverridenServicesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        foreach ($this->overrideService as $overrideService) {
-            $callback = [$overrideService, 'getOverridenServiceNames'];
+        foreach ($this->overrideServiceClasses as $overrideServiceClass) {
+            $callback = [$overrideServiceClass, 'getOverridenServiceNames'];
             $overridenServices = $callback();
             $prefix = "\n   - ";
 
             $io->block(
-                \get_class($overrideService) . $prefix . implode($prefix, $overridenServices),
+                $overrideServiceClass . $prefix . implode($prefix, $overridenServices),
                 null,
                 'fg=black;bg=blue',
                 ' ',
