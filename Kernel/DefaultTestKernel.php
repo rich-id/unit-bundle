@@ -25,31 +25,35 @@ class DefaultTestKernel extends Kernel
 {
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    public const DEFAULT_BUNDLES = [
+        DoctrineBundle::class,
+        DoctrineFixturesBundle::class,
+        FrameworkBundle::class,
+        LiipFunctionalTestBundle::class,
+        LiipTestFixturesBundle::class,
+        DAMADoctrineTestBundle::class,
+        RichCongressUnitBundle::class,
+    ];
+
     /**
      * @return array|iterable|BundleInterface[]
      */
     public function registerBundles(): iterable
     {
         $configDir = $this->getConfigurationDir();
-        $bundles = [
-            new DoctrineBundle(),
-            new DoctrineFixturesBundle(),
-            new FrameworkBundle(),
-            new LiipFunctionalTestBundle(),
-            new LiipTestFixturesBundle(),
-            new DAMADoctrineTestBundle(),
-            new RichCongressUnitBundle(),
-        ];
 
-        foreach ($bundles as $bundle) {
-            yield $bundle;
+        foreach (static::DEFAULT_BUNDLES as $class) {
+            yield new $class();
         }
 
         if ($this->getConfigurationDir() !== null && file_exists($configDir . '/bundles.php')) {
             $contents = require $configDir . '/bundles.php';
 
             foreach ($contents as $class => $envs) {
-                if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+                $appropriateEnv = $envs[$this->environment] ?? $envs['all'] ?? false;
+                $isAlreadyLoaded = array_key_exists($class, static::DEFAULT_BUNDLES);
+
+                if ($appropriateEnv && !$isAlreadyLoaded) {
                     yield new $class();
                 }
             }

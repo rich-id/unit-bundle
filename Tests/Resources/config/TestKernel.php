@@ -30,15 +30,14 @@ class TestKernel extends DefaultTestKernel
     /**
      * Returns an array of bundles to register.
      *
-     * @return array|BundleInterface[] An iterable of bundle instances
+     * @return iterable|BundleInterface[] An iterable of bundle instances
      */
-    public function registerBundles(): array
+    public function registerBundles(): iterable
     {
-        $bundles = parent::registerBundles();
-        $bundles[] = new SecurityBundle();
-        $bundles[] = new EightPointsGuzzleBundle();
+        parent::registerBundles();
 
-        return $bundles;
+        yield new SecurityBundle();
+        yield new EightPointsGuzzleBundle();
     }
 
     /**

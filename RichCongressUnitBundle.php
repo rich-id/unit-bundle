@@ -40,7 +40,6 @@ class RichCongressUnitBundle extends Bundle
     {
         parent::boot();
 
-
         // Autowire everything for the FixturesManager before the first test
         $this->container->get(OverrideServicesUtility::class);
         $this->container->get(FixturesManager::class);
