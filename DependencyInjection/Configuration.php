@@ -12,13 +12,17 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    public const CONFIG_NODE = 'rich_congres_unit';
+
     /**
      * @return TreeBuilder
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('rich_congress_unit');
-        $rootNode = \method_exists(TreeBuilder::class, 'getRootNode') ? $treeBuilder->getRootNode() : $treeBuilder->root('rich_congress_unit');
+        $treeBuilder = new TreeBuilder(self::CONFIG_NODE);
+        $rootNode = \method_exists(TreeBuilder::class, 'getRootNode')
+            ? $treeBuilder->getRootNode()
+            : $treeBuilder->root(self::CONFIG_NODE);
 
         $rootNode
             ->children()

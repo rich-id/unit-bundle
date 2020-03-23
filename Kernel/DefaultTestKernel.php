@@ -12,8 +12,10 @@ use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
@@ -80,7 +82,9 @@ class DefaultTestKernel extends Kernel
     {
         $confDir = $this->getConfigurationDir();
         $loader->load(
-            \Closure::fromCallable([$this, 'configureContainer'])
+            function (ContainerBuilder $containerBuilder) use ($loader) {
+                $this->configureContainer($containerBuilder, $loader);
+            }
         );
 
         if ($confDir === null) {
@@ -96,27 +100,55 @@ class DefaultTestKernel extends Kernel
     /**
      * @param ContainerBuilder $container
      *
+     * @param LoaderInterface  $loader
+     *
      * @return void
      */
-    public function configureContainer(ContainerBuilder $container): void
+    public function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->setParameter('container.dumper.inline_class_loader', true);
+
+        // Configure router
+        $container->loadFromExtension('framework', [
+            'router' => [
+                'resource' => 'kernel::loadRoutes',
+                'type' => 'service',
+            ],
+        ]);
+
+        if (!$container->hasDefinition('kernel')) {
+            $container->register('kernel', static::class)
+                ->setSynthetic(true)
+                ->setPublic(true)
+            ;
+        }
+
+        $kernelDefinition = $container->getDefinition('kernel');
+        $kernelDefinition->addTag('routing.route_loader');
+
+        if ($this instanceof EventSubscriberInterface) {
+            $kernelDefinition->addTag('kernel.event_subscriber');
+        }
+
         $container->addObjectResource($this);
     }
 
     /**
-     * @param RouteCollectionBuilder $routes
+     * @param LoaderInterface $loader
      *
-     * @return void
+     * @return RouteCollection
      *
      * @throws LoaderLoadException
      */
-    protected function configureRoutes(RouteCollectionBuilder $routes): void
+    public function loadRoutes(LoaderInterface $loader): RouteCollection
     {
+        $routes = new RouteCollectionBuilder($loader);
         $confDir = $this->getConfigurationDir();
 
         $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
+
+        return $routes->build();
     }
 }

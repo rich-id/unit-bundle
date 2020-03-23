@@ -61,11 +61,7 @@ class FixturesManager
      */
     public static function loadFixtures(): void
     {
-        if (
-            static::$fixtures !== null
-            || count(static::$fixturesClasses) === 0
-            || !TestConfigurationExtractor::doesContextNeedsFixtures()
-        ) {
+        if (static::$fixtures !== null || !TestConfigurationExtractor::doesContextNeedsFixtures()) {
             return;
         }
 
