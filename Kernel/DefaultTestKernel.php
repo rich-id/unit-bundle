@@ -28,9 +28,10 @@ class DefaultTestKernel extends Kernel
     /**
      * @return array|iterable|BundleInterface[]
      */
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
-        return [
+        $configDir = $this->getConfigurationDir();
+        $bundles = [
             new DoctrineBundle(),
             new DoctrineFixturesBundle(),
             new FrameworkBundle(),
@@ -39,6 +40,20 @@ class DefaultTestKernel extends Kernel
             new DAMADoctrineTestBundle(),
             new RichCongressUnitBundle(),
         ];
+
+        foreach ($bundles as $bundle) {
+            yield $bundle;
+        }
+
+        if ($this->getConfigurationDir() !== null && file_exists($configDir . '/bundles.php')) {
+            $contents = require $configDir . '/bundles.php';
+
+            foreach ($contents as $class => $envs) {
+                if ($envs[$this->environment] ?? $envs['all'] ?? false) {
+                    yield new $class();
+                }
+            }
+        }
     }
 
     /**
