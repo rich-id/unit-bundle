@@ -9,10 +9,12 @@ use Liip\FunctionalTestBundle\LiipFunctionalTestBundle;
 use Liip\TestFixturesBundle\LiipTestFixturesBundle;
 use RichCongress\Bundle\UnitBundle\RichCongressUnitBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Routing\RouteCollectionBuilder;
 
 /**
  * Class DefaultTestKernel
@@ -24,7 +26,6 @@ use Symfony\Component\HttpKernel\Kernel;
 class DefaultTestKernel extends Kernel
 {
     private const CONFIG_EXTS = '.{php,xml,yaml,yml}';
-
     public const DEFAULT_BUNDLES = [
         DoctrineBundle::class,
         DoctrineFixturesBundle::class,
@@ -101,5 +102,21 @@ class DefaultTestKernel extends Kernel
     {
         $container->setParameter('container.dumper.inline_class_loader', true);
         $container->addObjectResource($this);
+    }
+
+    /**
+     * @param RouteCollectionBuilder $routes
+     *
+     * @return void
+     *
+     * @throws LoaderLoadException
+     */
+    protected function configureRoutes(RouteCollectionBuilder $routes): void
+    {
+        $confDir = $this->getConfigurationDir();
+
+        $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
     }
 }
