@@ -52,7 +52,7 @@ class DefaultTestKernel extends Kernel
 
             foreach ($contents as $class => $envs) {
                 $appropriateEnv = $envs[$this->environment] ?? $envs['all'] ?? false;
-                $isAlreadyLoaded = array_key_exists($class, static::DEFAULT_BUNDLES);
+                $isAlreadyLoaded = in_array($class, static::DEFAULT_BUNDLES);
 
                 if ($appropriateEnv && !$isAlreadyLoaded) {
                     yield new $class();
