@@ -2,10 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\Tests;
 
-use EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle;
 use RichCongress\Bundle\UnitBundle\Kernel\DefaultTestKernel;
-use Symfony\Bundle\SecurityBundle\SecurityBundle;
-use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
  * Class TestKernel
@@ -25,19 +22,6 @@ class TestKernel extends DefaultTestKernel
     public function __construct(string $environment, bool $debug)
     {
         parent::__construct('unit_bundle_test', false);
-    }
-
-    /**
-     * Returns an array of bundles to register.
-     *
-     * @return iterable|BundleInterface[] An iterable of bundle instances
-     */
-    public function registerBundles(): iterable
-    {
-        parent::registerBundles();
-
-        yield new SecurityBundle();
-        yield new EightPointsGuzzleBundle();
     }
 
     /**
