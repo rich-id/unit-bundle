@@ -5,6 +5,7 @@ namespace RichCongress\Bundle\UnitBundle;
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\DataFixturesPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServicesPass;
+use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\ParameterBagOverloadingPass;
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\PublicServicesPass;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
@@ -31,6 +32,7 @@ class RichCongressUnitBundle extends Bundle
         $container->addCompilerPass(new DataFixturesPass());
         $container->addCompilerPass(new PublicServicesPass());
         $container->addCompilerPass(new OverrideServicesPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
+        $container->addCompilerPass(new ParameterBagOverloadingPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
     }
 
     /**
