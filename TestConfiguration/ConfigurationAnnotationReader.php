@@ -3,8 +3,6 @@
 namespace RichCongress\Bundle\UnitBundle\TestConfiguration;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\Env;
-use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\AbstractOverloadAnnotation;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\ParameterBag;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\TestAnnotationInterface;
 
@@ -69,13 +67,8 @@ class ConfigurationAnnotationReader
         $annotations = static::getAnnotationReader()->getMethodAnnotations($reflectionMethod);
 
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof Env) {
-                $testConfiguration->envOverloads[$annotation->property] = static::getValueFromAnnotation($annotation);
-                continue;
-            }
-
             if ($annotation instanceof ParameterBag) {
-                $testConfiguration->parameterBagOverloads[$annotation->property] = static::getValueFromAnnotation($annotation);
+                $testConfiguration->overloadParameters[$annotation->property] = static::getValueFromAnnotation($annotation);
                 continue;
             }
         }
@@ -84,11 +77,11 @@ class ConfigurationAnnotationReader
     }
 
     /**
-     * @param AbstractOverloadAnnotation $annotation
+     * @param ParameterBag $annotation
      *
      * @return mixed
      */
-    protected static function getValueFromAnnotation(AbstractOverloadAnnotation $annotation)
+    protected static function getValueFromAnnotation(ParameterBag $annotation)
     {
         if ($annotation->value !== null) {
             return $annotation->value;

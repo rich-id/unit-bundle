@@ -33,12 +33,7 @@ class TestContext
     /**
      * @var array
      */
-    public static $envOverloads;
-
-    /**
-     * @var array
-     */
-    public static $paramConverterOverloads;
+    public static $overloadParameters;
 
     /**
      * @param string $test
@@ -58,7 +53,6 @@ class TestContext
 
         static::$needContainer = TestConfigurationExtractor::doesTestNeedsContainer(static::$testClass, static::$testName);
         static::$needFixtures = TestConfigurationExtractor::doesTestNeedsFixtures(static::$testClass, static::$testName);
-        static::$envOverloads = TestConfigurationExtractor::getEnvOverloads(static::$testClass, static::$testName);
-        static::$paramConverterOverloads = TestConfigurationExtractor::getParamConverterOverloads(static::$testClass, static::$testName);
+        static::$overloadParameters = TestConfigurationExtractor::getOverloadParameters(static::$testClass, static::$testName);
     }
 }

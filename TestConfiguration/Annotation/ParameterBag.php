@@ -11,6 +11,20 @@ namespace RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation;
  *
  * @Annotation
  */
-class ParameterBag extends AbstractOverloadAnnotation
+class ParameterBag
 {
+    /**
+     * @var string
+     */
+    public $property;
+
+    /**
+     * @var mixed
+     */
+    public $value;
+
+    /**
+     * @var string
+     */
+    public $expr;
 }
