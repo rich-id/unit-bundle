@@ -2,6 +2,9 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestConfiguration;
 
+use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\Env;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\ParameterBag;
+
 /**
  * Class AnnotationConfiguration
  *
@@ -20,4 +23,14 @@ class AnnotationConfiguration
      * @var boolean
      */
     public $withFixtures = false;
+
+    /**
+     * @var array
+     */
+    public $envOverloads = [];
+
+    /**
+     * @var array
+     */
+    public $parameterBagOverloads = [];
 }

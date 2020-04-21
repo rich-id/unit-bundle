@@ -32,7 +32,7 @@ class TestConfigurationExtractor
      *     'class' => <AnnotationConfiguration>,
      * ]
      *
-     * @var array
+     * @var array|AnnotationConfiguration[]
      */
     protected static $classConfigurations = [];
 
@@ -156,6 +156,48 @@ class TestConfigurationExtractor
         $testConfiguration = static::$testConfigurations[$class][$method];
 
         return $classConfiguration->withFixtures || $testConfiguration->withFixtures;
+    }
+
+    /**
+     * @param string $class
+     * @param string $method
+     *
+     * @return array
+     */
+    public static function getEnvOverloads(string $class, ?string $method): array
+    {
+        static::check($class, $method);
+
+        $classConfiguration = static::$classConfigurations[$class];
+        $testConfiguration = static::$testConfigurations[$class][$method];
+
+        return array_unique(
+            array_merge(
+                $testConfiguration->envOverloads,
+                $classConfiguration->envOverloads
+            )
+        );
+    }
+
+    /**
+     * @param string $class
+     * @param string $method
+     *
+     * @return array
+     */
+    public static function getParamConverterOverloads(string $class, ?string $method): array
+    {
+        static::check($class, $method);
+
+        $classConfiguration = static::$classConfigurations[$class];
+        $testConfiguration = static::$testConfigurations[$class][$method];
+
+        return array_unique(
+            array_merge(
+                $testConfiguration->envOverloads,
+                $classConfiguration->envOverloads
+            )
+        );
     }
 
     /**

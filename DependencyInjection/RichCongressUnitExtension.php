@@ -10,6 +10,7 @@ use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServices
 use RichCongress\Bundle\UnitBundle\Doctrine\TestConnectionFactory;
 use RichCongress\Bundle\UnitBundle\Stubs\LoggerStub;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\TestContext;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -97,6 +98,11 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
 
         if ($container->getParameter('kernel.environment') === 'unit_bundle_test') {
             $loader->load('../../Tests/Resources/config/services.yml');
+        }
+
+        // Overrides the parameters
+        foreach (TestContext::$paramConverterOverloads as $property => $value) {
+            $container->setParameter($property, $value);
         }
 
         $this->autoconfigure($container);
