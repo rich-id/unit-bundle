@@ -30,7 +30,9 @@ trait MatchAssertionTrait
         foreach ($expected as $expectedKey => $expectedMatch) {
             $testedValue = $tested[$expectedKey];
 
-            if ($expectedMatch instanceof Parameter) {
+            if (is_array($expectedMatch)) {
+                static::assertMatch($expectedMatch, $testedValue);
+            } else if ($expectedMatch instanceof Parameter) {
                 static::assertMatchParameter($expectedMatch, $testedValue);
             } else if ($expectedMatch !== null) {
                 static::assertEquals($expectedMatch, $testedValue);
