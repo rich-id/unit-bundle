@@ -39,7 +39,7 @@ class DebugOverridenServicesCommandTest extends CommandTestCase
      */
     public function testExecute(): void
     {
-        $this->command->addOverrideServiceClass(new LoggerStub());
+        $this->command->addOverrideServiceClass(LoggerStub::class);
         $output = $this->execute();
 
         self::assertStringContainsString(LoggerStub::class, $output);

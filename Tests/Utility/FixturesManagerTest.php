@@ -10,6 +10,7 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Mockery\MockInterface;
 use RichCongress\Bundle\UnitBundle\Stubs\ContainerStub;
 use RichCongress\Bundle\UnitBundle\TestCase\TestCase;
+use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadDummyEntityData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DataFixture\LoadUserData;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\DummyDatabaseTool;
@@ -63,7 +64,7 @@ class FixturesManagerTest extends TestCase
     /**
      * @return void
      */
-    public function testSetFixturesClaasses(): void
+    public function testSetFixturesClasses(): void
     {
         FixturesManagerProxy::setFixturesClasses([
             LoadDummyEntityData::class => '',
@@ -82,15 +83,20 @@ class FixturesManagerTest extends TestCase
      */
     public function testLoadFixturesNoFixtures(): void
     {
-        $this->expectOutputString('');
+        $this->expectOutputRegex(
+            $this->buildRegex(['Database initialization', 'Database initialized!'])
+        );
 
         FixturesManagerProxy::setFixturesClasses([]);
         FixturesManagerProxy::loadFixtures();
 
-        self::assertNull(FixturesManagerProxy::$fixtures);
+        self::assertNotNull(FixturesManagerProxy::$fixtures);
+        self::assertEmpty(FixturesManagerProxy::$fixtures->getIdentities());
     }
 
     /**
+     * @WithFixtures()
+     *
      * @return void
      *
      * @throws \Throwable
@@ -114,6 +120,8 @@ class FixturesManagerTest extends TestCase
     }
 
     /**
+     * @WithFixtures()
+     *
      * @return void
      *
      * @throws \Throwable

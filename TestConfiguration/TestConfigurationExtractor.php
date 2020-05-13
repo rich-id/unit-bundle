@@ -168,13 +168,15 @@ class TestConfigurationExtractor
     {
         static::check($class, $method);
 
+        /** @var AnnotationConfiguration $classConfiguration */
         $classConfiguration = static::$classConfigurations[$class];
+        /** @var AnnotationConfiguration $testConfiguration */
         $testConfiguration = static::$testConfigurations[$class][$method];
 
         return array_unique(
             array_merge(
-                $testConfiguration->envOverloads,
-                $classConfiguration->envOverloads
+                $testConfiguration->overloadParameters,
+                $classConfiguration->overloadParameters
             )
         );
     }

@@ -39,7 +39,7 @@ class DefaultTestKernel extends Kernel
     ];
 
     /**
-     * @return array|iterable|BundleInterface[]
+     * @return array|iterable|\Traversable|BundleInterface[]
      */
     public function registerBundles(): iterable
     {

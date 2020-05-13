@@ -14,6 +14,7 @@ use RichCongress\Bundle\UnitBundle\RichCongressUnitBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 /**
@@ -45,7 +46,7 @@ class AbstractTestKernelTest extends MockeryTestCase
      */
     public function testRegisterBundles(): void
     {
-        $bundles = $this->kernel->registerBundles();
+        $bundles = iterator_to_array($this->kernel->registerBundles());
 
         self::assertCount(7, $bundles);
         self::assertContainsOnlyInstancesOf(BundleInterface::class, $bundles);
@@ -96,10 +97,27 @@ class AbstractTestKernelTest extends MockeryTestCase
      */
     public function testConfigureContainer(): void
     {
+        $loader = \Mockery::mock(LoaderInterface::class);
+        $definition = new Definition();
+
         $container = \Mockery::mock(ContainerBuilder::class);
         $container->shouldReceive('setParameter')->once();
         $container->shouldReceive('addObjectResource')->once();
+        $container->shouldReceive('loadFromExtension')->once();
 
-        $this->kernel->configureContainer($container);
+        $container->shouldReceive('hasDefinition')
+            ->once()
+            ->andReturnFalse();
+
+        $container->shouldReceive('getDefinition')
+            ->once()
+            ->with('kernel')
+            ->andReturn($definition);
+
+        $container->shouldReceive('register')
+            ->once()
+            ->andReturn($definition);
+
+        $this->kernel->configureContainer($container, $loader);
     }
 }
