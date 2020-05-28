@@ -3,7 +3,6 @@
 namespace RichCongress\Bundle\UnitBundle\Tests\TestTrait;
 
 use RichCongress\Bundle\UnitBundle\TestCase\TestCase;
-use RichCongress\Bundle\UnitBundle\TestTrait\Assertion\Parameter;
 
 /**
  * Class SubSetAssertionTraitTest

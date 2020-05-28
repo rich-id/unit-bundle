@@ -2,8 +2,6 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestTrait;
 
-use RichCongress\Bundle\UnitBundle\TestTrait\Assertion\Parameter;
-
 /**
  * Trait SubSetAssertionTrait
  *
