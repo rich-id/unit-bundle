@@ -48,10 +48,11 @@ trait AuthenticationTrait
     /**
      * @param UserInterface|string $user
      * @param KernelBrowser        $client
+     * @param string               $sessionAttribute
      *
      * @return void
      */
-    public function authenticate($user, KernelBrowser $client = null): void
+    public function authenticate($user, KernelBrowser $client = null, string $sessionAttribute = '_security_main'): void
     {
         FixturesNotEnabledException::checkAndThrow();
 
@@ -87,7 +88,7 @@ trait AuthenticationTrait
 
         /** @var SessionInterface $session */
         $session = $container->get('session');
-        $session->set('_security_main', \serialize($token));
+        $session->set($sessionAttribute, \serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
@@ -96,21 +97,15 @@ trait AuthenticationTrait
 
     /**
      * @param UserInterface|string|null $userReference
+     * @param string                    $securityAttribute
      *
      * @return KernelBrowser
      */
-    public function createClientWith($userReference = null): KernelBrowser
+    public function createClientWith($userReference = null, string $securityAttribute = '_security_main'): KernelBrowser
     {
         FixturesNotEnabledException::checkAndThrow();
         $client = self::createClient();
-
-        $user = (is_string($userReference) && $userReference !== '')
-            ? $this->getReference($userReference)
-            : $userReference;
-
-        if ($user instanceof UserInterface) {
-            $this->authenticate($user, $client);
-        }
+        $this->authenticate($userReference, $client, $securityAttribute);
 
         return $client;
     }
