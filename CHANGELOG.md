@@ -1,3 +1,9 @@
+## Unreleased
+
+#### New features
+
+- Add an assertSubSet function to assert that the values of an array is a subset of the values of another (ex: [3, 2, 5] is a subset of [1, 2, 42 => 3, 4, 'some key' => 5]).
+
 ## Version 1.0.2
 
 #### Bug fix
