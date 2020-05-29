@@ -37,4 +37,31 @@ class SubSetAssertionTraitTest extends TestCase
         self::expectException(\PHPUnit\Framework\ExpectationFailedException::class);
         self::assertSubSet($expected, $tested);
     }
+
+    /**
+     * @return void
+     */
+    public function testAssertSubSetShouldPassStrict(): void
+    {
+		$date0 = new \DateTime('@0');
+		$date1 = new \DateTime('@1');
+		$date2 = new \DateTime('@2');
+
+        $tested = [$date0, $date1, $date2];
+        $expected = [$date2, $date1];
+
+        self::assertSubSet($expected, $tested, true);
+    }
+
+    /**
+     * @return void
+     */
+    public function testAssertSubSetShouldFailStrict(): void
+    {
+        $tested = [new \DateTime('@0'), new \DateTime('@1'), new \DateTime('@2')];
+        $expected = [new \DateTime('@2'), new \DateTime('@1')];
+
+        self::expectException(\PHPUnit\Framework\ExpectationFailedException::class);
+        self::assertSubSet($expected, $tested, true);
+    }
 }

@@ -17,10 +17,10 @@ trait SubSetAssertionTrait
      *
      * @return void
      */
-    protected static function assertSubSet(array $expected, array $tested): void
+    protected static function assertSubSet(array $expected, array $tested, bool $strictEquality = false): void
     {
         foreach ($expected as $expectedValue) {
-            static::assertContains($expectedValue, $tested);
+            static::assertContains($expectedValue, $tested, '', false, $strictEquality, $strictEquality);
         }
     }
 }
