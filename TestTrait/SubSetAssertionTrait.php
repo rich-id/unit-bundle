@@ -14,6 +14,7 @@ trait SubSetAssertionTrait
     /**
      * @param array $expected
      * @param array $tested
+     * @param bool  $strictEquality
      *
      * @return void
      */
