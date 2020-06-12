@@ -32,12 +32,14 @@ class Configuration extends AbstractConfiguration
                 ->end()
 
                 ->arrayNode('default_stubs')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('logger')->defaultFalse()->end()
                     ->end()
                 ->end()
 
                 ->arrayNode('public_services')
+                    ->defaultValue([])
                     ->example(['logger', 'App/Repository/UserRepository'])
                     ->scalarPrototype()->end()
                 ->end()
@@ -45,6 +47,7 @@ class Configuration extends AbstractConfiguration
                 ->arrayNode('test_roles')
                     ->normalizeKeys(false)
                     ->useAttributeAsKey('key')
+                    ->defaultValue([])
                     ->example(['NotLogged' => '', 'Admin' => 'user_1'])
                     ->scalarPrototype()->end()
                 ->end()

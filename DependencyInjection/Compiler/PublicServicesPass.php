@@ -23,13 +23,8 @@ class PublicServicesPass extends AbstractCompilerPass
      */
     public function process(ContainerBuilder $container): void
     {
-        $publicServicesConfig = $container->hasParameter('rich_congress_unit.public_services')
-            ? $container->getParameter('rich_congress_unit.public_services')
-            : [];
-
-        $defaultStubsConfig = $container->hasParameter('rich_congress_unit.default_stubs')
-            ? $container->getParameter('rich_congress_unit.default_stubs')
-            : [];
+        $publicServicesConfig = $container->getParameter('rich_congress_unit.public_services');
+        $defaultStubsConfig = $container->getParameter('rich_congress_unit.default_stubs');
 
         $publicServices = array_unique(
             array_merge($publicServicesConfig, array_keys($defaultStubsConfig))
