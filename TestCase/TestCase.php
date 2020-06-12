@@ -5,6 +5,7 @@ namespace RichCongress\Bundle\UnitBundle\TestCase;
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\FixturesTestCase;
 use RichCongress\Bundle\UnitBundle\TestTrait\FixtureCreationTrait;
 use RichCongress\Bundle\UnitBundle\TestTrait\MatchAssertionTrait;
+use RichCongress\Bundle\UnitBundle\TestTrait\SubSetAssertionTrait;
 
 /**
  * Class TestCase
@@ -17,4 +18,5 @@ class TestCase extends FixturesTestCase
 {
     use FixtureCreationTrait;
     use MatchAssertionTrait;
+    use SubSetAssertionTrait;
 }
