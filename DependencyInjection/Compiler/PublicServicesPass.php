@@ -2,7 +2,7 @@
 
 namespace RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use RichCongress\BundleToolbox\Configuration\AbstractCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -12,8 +12,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  */
-class PublicServicesPass implements CompilerPassInterface
+class PublicServicesPass extends AbstractCompilerPass
 {
+    public const PRIORITY = -1000;
+
     /**
      * @param ContainerBuilder $container
      *

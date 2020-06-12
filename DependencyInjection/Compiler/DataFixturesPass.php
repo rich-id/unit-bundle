@@ -3,7 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler;
 
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use RichCongress\BundleToolbox\Configuration\AbstractCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  */
-class DataFixturesPass implements CompilerPassInterface
+class DataFixturesPass extends AbstractCompilerPass
 {
     public const DATA_FIXTURE_TAG = 'rich_congress.unit_bundle.data_fixture';
 

@@ -4,7 +4,7 @@ namespace RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler;
 
 use RichCongress\Bundle\UnitBundle\Command\DebugOverridenServicesCommand;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use RichCongress\BundleToolbox\Configuration\AbstractCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -16,8 +16,9 @@ use Symfony\Component\DependencyInjection\Definition;
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  */
-class OverrideServicesPass implements CompilerPassInterface
+class OverrideServicesPass extends AbstractCompilerPass
 {
+    public const PRIORITY = -100;
     public const OVERRIDE_SERVICE_TAG = 'rich_congress.unit_bundle.override_service';
 
     use PriorityTaggedServiceTrait;

@@ -7,9 +7,7 @@ use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServices
 use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\PublicServicesPass;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
 use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use RichCongress\BundleToolbox\Configuration\AbstractBundle;
 
 /**
  * Class RichCongressUnitBundle
@@ -18,19 +16,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author    Nicolas Guilloux <nguilloux@richcongress.com>
  * @copyright 2014 - 2019 RichCongress (https://www.richcongress.com)
  */
-class RichCongressUnitBundle extends Bundle
+class RichCongressUnitBundle extends AbstractBundle
 {
-    /**
-     * @param ContainerBuilder $container
-     *
-     * @return void
-     */
-    public function build(ContainerBuilder $container): void
-    {
-        $container->addCompilerPass(new DataFixturesPass());
-        $container->addCompilerPass(new PublicServicesPass());
-        $container->addCompilerPass(new OverrideServicesPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
-    }
+    public const COMPILER_PASSES = [
+        DataFixturesPass::class,
+        OverrideServicesPass::class,
+        PublicServicesPass::class,
+    ];
 
     /**
      * @return void

@@ -10,19 +10,19 @@ use RichCongress\Bundle\UnitBundle\DependencyInjection\Compiler\OverrideServices
 use RichCongress\Bundle\UnitBundle\Doctrine\TestConnectionFactory;
 use RichCongress\Bundle\UnitBundle\Stubs\LoggerStub;
 use RichCongress\Bundle\UnitBundle\OverrideService\OverrideServiceInterface;
+use RichCongress\BundleToolbox\Configuration\AbstractExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class RichCongressUnitExtension extends Extension implements PrependExtensionInterface
+class RichCongressUnitExtension extends AbstractExtension implements PrependExtensionInterface
 {
     public const DEFAULT_OVERRIDE_SERVICE = [
         LoggerStub::class,
@@ -86,11 +86,11 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
-        $container->setParameter('rich_congress_unit', $config);
-        $this->setParameters($container, 'rich_congress_unit', $config);
+        $this->parseConfiguration(
+            $container,
+            new Configuration(),
+            $configs
+        );
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
@@ -101,24 +101,6 @@ class RichCongressUnitExtension extends Extension implements PrependExtensionInt
 
         $this->autoconfigure($container);
         $this->addDefaultOverrideServices($container);
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @param string           $name
-     * @param array            $config
-     *
-     * @return void
-     */
-    protected function setParameters(ContainerBuilder $container, $name, array $config): void
-    {
-        foreach ($config as $key => $parameter) {
-            $container->setParameter($name . '.' . $key, $parameter);
-
-            if (is_array($parameter)) {
-                $this->setParameters($container, $name . '.' . $key, $parameter);
-            }
-        }
     }
 
     /**
