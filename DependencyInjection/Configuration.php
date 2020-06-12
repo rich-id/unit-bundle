@@ -12,7 +12,7 @@ use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
  */
 class Configuration extends AbstractConfiguration
 {
-    public const CONFIG_NODE = 'rich_congres_unit';
+    public const CONFIG_NODE = 'rich_congress_unit';
 
     /**
      * @param ArrayNodeDefinition $rootNode
