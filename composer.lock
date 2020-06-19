@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1c4c3520ec93665d3910ed48f4cf5d42",
+    "content-hash": "88cecfbf312c0b087e7adc807f0caf13",
     "packages": [
         {
             "name": "brianium/habitat",
@@ -2761,16 +2761,16 @@
         },
         {
             "name": "richcongress/bundle-toolbox",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/richcongress/bundle-toolbox.git",
-                "reference": "8d25c4d7bf7c370baee00dd406a1a06a21ca1568"
+                "reference": "f28def4682c9e5a440abcd8596f8e92b6de07872"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/richcongress/bundle-toolbox/zipball/8d25c4d7bf7c370baee00dd406a1a06a21ca1568",
-                "reference": "8d25c4d7bf7c370baee00dd406a1a06a21ca1568",
+                "url": "https://api.github.com/repos/richcongress/bundle-toolbox/zipball/f28def4682c9e5a440abcd8596f8e92b6de07872",
+                "reference": "f28def4682c9e5a440abcd8596f8e92b6de07872",
                 "shasum": ""
             },
             "require": {
@@ -2803,7 +2803,7 @@
                 }
             ],
             "description": "A set of classes and tools to quickly build a bundle",
-            "time": "2020-06-12T13:40:10+00:00"
+            "time": "2020-06-19T08:42:33+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
