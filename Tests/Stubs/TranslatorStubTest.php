@@ -61,6 +61,6 @@ class TranslatorStubTest extends TestCase
     public function testTranslateMissingKey(): void
     {
         $result = $this->translator->trans('key');
-        self::assertSame('', $result);
+        self::assertSame('key', $result);
     }
 }
