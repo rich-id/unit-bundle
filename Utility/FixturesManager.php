@@ -55,13 +55,14 @@ class FixturesManager
     }
 
     /**
+     * @param bool $force
      * @return void
      *
      * @throws \Throwable
      */
-    public static function loadFixtures(): void
+    public static function loadFixtures(bool $force = false): void
     {
-        if (static::$fixtures !== null || !TestConfigurationExtractor::doesContextNeedsFixtures()) {
+        if (!$force && (static::$fixtures !== null || !TestConfigurationExtractor::doesContextNeedsFixtures())) {
             return;
         }
 
