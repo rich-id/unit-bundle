@@ -97,17 +97,22 @@ abstract class AbstractEntityProxy implements EntityProxyInterface
 
     /**
      * @param object|mixed $object
+     * @param string       $dateAddPropertyName
+     * @param string       $dateUpdatePropertyName
      *
      * @return object|mixed
      */
-    protected static function setDateAddAndUpdate($object)
-    {
+    protected static function setDateAddAndUpdate(
+        $object,
+        string $dateAddPropertyName = 'dateAdd',
+        string $dateUpdatePropertyName = 'dateUpdate'
+    ) {
         $dateAdd = self::getFaker()->dateTime;
         $dateUpdate = self::getFaker()->dateTimeBetween($dateAdd->format('Y-m-d H:i:s'));
 
         return self::setValues($object, [
-            'dateAdd'    => $dateAdd,
-            'dateUpdate' => $dateUpdate,
+            $dateAddPropertyName    => $dateAdd,
+            $dateUpdatePropertyName => $dateUpdate,
         ]);
     }
 

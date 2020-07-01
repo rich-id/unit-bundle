@@ -115,7 +115,7 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
      *
      * @return void
      */
-    protected function save($object, $references): void
+    protected function save($object, $references = []): void
     {
         foreach ((array) $references as $reference) {
             $this->setReference($reference, $object);
