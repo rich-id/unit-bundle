@@ -23,7 +23,7 @@ abstract class AbstractEntityProxy implements EntityProxyInterface
     /**
      * @return Faker\Generator
      */
-    public static function getFaker(): Faker\Generator
+    protected static function getFaker(): Faker\Generator
     {
         if (self::$faker === null) {
             self::$faker = Faker\Factory::create(static::FAKER_LANG);
@@ -35,22 +35,34 @@ abstract class AbstractEntityProxy implements EntityProxyInterface
     /**
      * @param array $data
      *
-     * @return object
+     * @return object|mixed
      */
-    public static function buildObject(array $data)
+    public static function make(array $data)
     {
-        $object = static::makeDefault();
+        return self::setValues(
+            static::makeDefault(),
+            $data
+        );
+    }
 
-        return self::setValues($object, $data);
+    /**
+     * @param string $class
+     * @param array  $data
+     *
+     * @return object|mixed
+     */
+    protected static function build(string $class, array $data)
+    {
+        return static::setValues(new $class(), $data);
     }
 
     /**
      * @param mixed $object
      * @param array $data
      *
-     * @return object
+     * @return object|mixed
      */
-    public static function setValues($object, array $data)
+    protected static function setValues($object, array $data)
     {
         $reflectionClass = new \ReflectionClass(\get_class($object));
 
@@ -67,9 +79,9 @@ abstract class AbstractEntityProxy implements EntityProxyInterface
      * @param mixed                 $value
      * @param \ReflectionClass|null $reflectionClass
      *
-     * @return object
+     * @return object|mixed
      */
-    public static function setValue($object, string $property, $value, \ReflectionClass $reflectionClass = null)
+    protected static function setValue($object, string $property, $value, \ReflectionClass $reflectionClass = null)
     {
         if ($reflectionClass === null) {
             $reflectionClass = new \ReflectionClass(\get_class($object));
@@ -81,6 +93,22 @@ abstract class AbstractEntityProxy implements EntityProxyInterface
         $reflectionProperty->setValue($object, $value);
 
         return $object;
+    }
+
+    /**
+     * @param object|mixed $object
+     *
+     * @return object|mixed
+     */
+    protected static function setDateAddAndUpdate($object)
+    {
+        $dateAdd = self::getFaker()->dateTime;
+        $dateUpdate = self::getFaker()->dateTimeBetween($dateAdd->format('Y-m-d H:i:s'));
+
+        return self::setValues($object, [
+            'dateAdd'    => $dateAdd,
+            'dateUpdate' => $dateUpdate,
+        ]);
     }
 
     /**
