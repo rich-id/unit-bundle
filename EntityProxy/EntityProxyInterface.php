@@ -12,7 +12,12 @@ namespace RichCongress\Bundle\UnitBundle\EntityProxy;
 interface EntityProxyInterface
 {
     /**
-     * @return static
+     * @return string
      */
-    public static function buildDefault(): self;
+    public static function getEntityClass(): string;
+
+    /**
+     * @return object
+     */
+    public static function makeDefault();
 }

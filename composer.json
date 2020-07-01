@@ -32,6 +32,8 @@
     },
     "require-dev": {
         "eightpoints/guzzle-bundle": "^7.6",
+        "fzaninotto/faker": "^1.9",
+        "infection/infection": "^0.16.4",
         "php-coveralls/php-coveralls": "^2.1",
         "symfony/form": "^4.0",
         "symfony/orm-pack": "^1.0",
