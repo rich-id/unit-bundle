@@ -59,7 +59,7 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
     protected function createObject($references, string $class, array $data)
     {
         $object = self::buildObject($class, $data);
-        $this->referenceAndPersist($references, $object);
+        $this->save($object, $references);
 
         return $object;
     }
@@ -76,7 +76,7 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
 
         self::setValue($object, 'id', null);
         self::setValues($object, $data);
-        $this->referenceAndPersist($references, $object);
+        $this->save($object, $references);
 
         return $object;
     }
@@ -96,7 +96,7 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
 
         self::setValue($object, 'id', null);
         self::setValues($object, $data);
-        $this->referenceAndPersist($references, $object);
+        $this->save($object, $references);
 
         return $object;
     }
@@ -110,12 +110,12 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
     }
 
     /**
-     * @param string|array $references
      * @param object       $object
+     * @param string|array $references
      *
      * @return void
      */
-    private function referenceAndPersist($references, $object): void
+    protected function save($object, $references): void
     {
         foreach ((array) $references as $reference) {
             $this->setReference($reference, $object);
