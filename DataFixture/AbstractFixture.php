@@ -126,4 +126,19 @@ abstract class AbstractFixture extends Fixture implements DataFixtureInterface
             $this->count++;
         }
     }
+
+    /**
+     * @param string                $class
+     * @param array|string|string[] $keynames
+     * @param string                $referencePrefix
+     *
+     * @return void
+     */
+    protected function saveForKeynames($class, $keynames, string $referencePrefix): void
+    {
+        foreach ((array) $keynames as $keyname) {
+            $object = self::buildObject($class, ['keyname' => $keyname]);
+            $this->save($object, $referencePrefix . $keyname);
+        }
+    }
 }
