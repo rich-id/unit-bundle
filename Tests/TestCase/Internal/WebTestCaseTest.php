@@ -57,25 +57,12 @@ class WebTestCaseTest extends WebTestCase
      *
      * @return void
      */
-    public function testGetContainerCreation(): void
-    {
-        self::$container = null;
-        $mockedService = $this->getService('security.token_storage');
-
-        self::assertInstanceOf(TokenStorageInterface::class, $mockedService);
-    }
-
-    /**
-     * @WithContainer
-     *
-     * @return void
-     */
     public function testCreateClientAfterGetContainer(): void
     {
         $container = $this->getContainer();
         $client = self::createClient();
 
-        self::assertSame($container, $client->getContainer());
+        self::assertSame($container, $client->getContainer()->get('test.service_container'));
     }
 
     /**

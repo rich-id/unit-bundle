@@ -133,11 +133,7 @@ class WebTestCase extends BaseWebTestCase
     {
         ContainerNotEnabledException::checkAndThrow();
 
-        if (self::$client === null) {
-            return self::$container;
-        }
-
-        return self::$client->getContainer();
+        return static::$container;
     }
 
     /**
