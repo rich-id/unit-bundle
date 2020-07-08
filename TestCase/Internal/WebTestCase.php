@@ -44,11 +44,6 @@ class WebTestCase extends BaseWebTestCase
     /**
      * @var boolean
      */
-    private static $containerGetBeforeClient = false;
-
-    /**
-     * @var boolean
-     */
     protected static $isTestInititialized = false;
 
     /**
@@ -81,6 +76,7 @@ class WebTestCase extends BaseWebTestCase
             self::createClient();
         }
 
+        static::$isTestInititialized = true;
         $this->executeBeforeTest();
     }
 
@@ -93,6 +89,7 @@ class WebTestCase extends BaseWebTestCase
     {
         $this->executeAfterTest();
         self::$client = null;
+        static::$isTestInititialized = false;
 
         parent::tearDown();
     }
@@ -131,7 +128,9 @@ class WebTestCase extends BaseWebTestCase
      */
     protected function getContainer(): ContainerInterface
     {
-        ContainerNotEnabledException::checkAndThrow();
+        if (static::$isTestInititialized) {
+            ContainerNotEnabledException::checkAndThrow();
+        }
 
         return static::$container;
     }
