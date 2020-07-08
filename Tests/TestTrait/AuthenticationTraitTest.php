@@ -6,8 +6,6 @@ use RichCongress\Bundle\UnitBundle\TestCase\TestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithFixtures;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\DummyEntity;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
-use RichCongress\Bundle\UnitBundle\Utility\OverrideServicesUtility;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -29,11 +27,6 @@ class AuthenticationTraitTest extends TestCase
     protected static $userRolesBackup = [];
 
     /**
-     * @var ContainerInterface
-     */
-    protected static $containerBackup;
-
-    /**
      * @return void
      */
     public static function setUpBeforeClass(): void
@@ -50,18 +43,6 @@ class AuthenticationTraitTest extends TestCase
     {
         parent::setUp();
 
-        self::$userRoles = self::$userRolesBackup;
-        self::$containerBackup = self::$container;
-    }
-
-    /**
-     * @return void
-     */
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        self::$container = self::$containerBackup;
         self::$userRoles = self::$userRolesBackup;
     }
 
@@ -130,23 +111,12 @@ class AuthenticationTraitTest extends TestCase
      */
     public function testAuthenticationWithoutSecurity(): void
     {
-        /** @var User $user */
-        $user = $this->getReference('user_2');
-
-        $containerMock = \Mockery::mock(ContainerInterface::class);
-        $containerMock->shouldReceive('has')
-            ->once()
-            ->with('security.token_storage')
-            ->andReturnFalse();
-
-        $containerMock->shouldReceive('has')
-            ->with(OverrideServicesUtility::class)
-            ->andReturnFalse();
-
-        self::$container = $containerMock;
-
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Fail to authenticate: "security.token_storage" is missing from the container.');
+
+        /** @var User $user */
+        $user = $this->getReference('user_2');
+        $this->getContainer()->set('security.token_storage', new DummyEntity());
 
         $this->authenticate($user);
     }

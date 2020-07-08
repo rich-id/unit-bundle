@@ -7,13 +7,13 @@ use Doctrine\Persistence\ObjectRepository;
 use Liip\FunctionalTestBundle\Test\WebTestCase as BaseWebTestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use RichCongress\Bundle\UnitBundle\Exception\ContainerNotEnabledException;
-use RichCongress\Bundle\UnitBundle\Exception\DuplicatedContainersException;
 use RichCongress\Bundle\UnitBundle\Exception\EntityManagerNotFoundException;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfigurationExtractor;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\TestContext;
 use RichCongress\Bundle\UnitBundle\TestTrait\CommonTestCaseTrait;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -77,11 +77,10 @@ class WebTestCase extends BaseWebTestCase
     {
         parent::setUp();
 
-        if (self::$container === null && TestContext::$needContainer) {
-            self::$container = parent::getContainer();
+        if (TestContext::$needContainer) {
+            self::createClient();
         }
 
-        self::$isTestInititialized = true;
         $this->executeBeforeTest();
     }
 
@@ -93,12 +92,7 @@ class WebTestCase extends BaseWebTestCase
     public function tearDown(): void
     {
         $this->executeAfterTest();
-
-        if (TestContext::$needContainer) {
-            self::$client = null;
-            self::$containerGetBeforeClient = false;
-            self::$isTestInititialized = false;
-        }
+        self::$client = null;
 
         parent::tearDown();
     }
@@ -113,9 +107,20 @@ class WebTestCase extends BaseWebTestCase
      */
     public static function createClient(array $options = [], array $server = []): KernelBrowser
     {
-        DuplicatedContainersException::checkAndThrow(self::$containerGetBeforeClient, self::$client);
+        if (self::$client instanceof AbstractBrowser) {
+            return self::$client;
+        }
+
         self::$client = parent::createClient($options, $server);
 
+        return self::$client;
+    }
+
+    /**
+     * @return AbstractBrowser
+     */
+    protected static function getClient(): AbstractBrowser
+    {
         return self::$client;
     }
 
@@ -126,23 +131,13 @@ class WebTestCase extends BaseWebTestCase
      */
     protected function getContainer(): ContainerInterface
     {
-        if (self::$isTestInititialized) {
-            ContainerNotEnabledException::checkAndThrow();
-        }
+        ContainerNotEnabledException::checkAndThrow();
 
-        if (self::$client !== null) {
-            return self::$client->getContainer();
-        }
-
-        if (self::$isTestInititialized) {
-            self::$containerGetBeforeClient = true;
-        }
-
-        if (self::$container !== null) {
+        if (self::$client === null) {
             return self::$container;
         }
 
-        return parent::getContainer();
+        return self::$client->getContainer();
     }
 
     /**
@@ -202,13 +197,5 @@ class WebTestCase extends BaseWebTestCase
         ContainerNotEnabledException::checkAndThrow();
 
         return $this->runCommand($name, $params, true)->getDisplay();
-    }
-
-    /**
-     * @return boolean
-     */
-    protected static function doesClassNeedsContainer(): bool
-    {
-        return TestConfigurationExtractor::doesClassNeedsContainer(static::class);
     }
 }

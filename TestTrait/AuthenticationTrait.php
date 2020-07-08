@@ -47,12 +47,11 @@ trait AuthenticationTrait
 
     /**
      * @param UserInterface|string $user
-     * @param KernelBrowser        $client
      * @param string               $sessionAttribute
      *
      * @return void
      */
-    public function authenticate($user, KernelBrowser $client = null, string $sessionAttribute = '_security_main'): void
+    public function authenticate($user, string $sessionAttribute = '_security_main'): void
     {
         FixturesNotEnabledException::checkAndThrow();
 
@@ -61,9 +60,10 @@ trait AuthenticationTrait
         }
 
         /** @var ContainerInterface $container */
-        $container = self::$container;
+        $container = $this->getContainer();
+        $tokenStorage = $this->getSecurityTokenStorage();
 
-        if (!$container->has('security.token_storage')) {
+        if ($tokenStorage === null) {
             throw new \LogicException('Fail to authenticate: "security.token_storage" is missing from the container.');
         }
 
@@ -76,23 +76,13 @@ trait AuthenticationTrait
         $tokenStorage = $container->get('security.token_storage');
         $tokenStorage->setToken($token);
 
-        if ($client === null) {
-            return;
-        }
-
-        /** @var ContainerInterface $container */
-        $container = $client->getContainer();
-        /** @var TokenStorageInterface $tokenStorage */
-        $tokenStorage = $container->get('security.token_storage');
-        $tokenStorage->setToken($token);
-
         /** @var SessionInterface $session */
         $session = $container->get('session');
         $session->set($sessionAttribute, \serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
-        $client->getCookieJar()->set($cookie);
+        static::getClient()->getCookieJar()->set($cookie);
     }
 
     /**
@@ -104,10 +94,9 @@ trait AuthenticationTrait
     public function createClientWith($userReference = null, string $securityAttribute = '_security_main'): KernelBrowser
     {
         FixturesNotEnabledException::checkAndThrow();
-        $client = self::createClient();
-        $this->authenticate($userReference, $client, $securityAttribute);
+        $this->authenticate($userReference, $securityAttribute);
 
-        return $client;
+        return static::getClient();
     }
 
     /**
@@ -147,13 +136,22 @@ trait AuthenticationTrait
      */
     protected function authenticationTearDown(): void
     {
-        /** @var ContainerInterface $container */
-        $container = $this->getContainer();
+        $tokenStorage = $this->getSecurityTokenStorage();
 
-        if ($container->has('security.token_storage')) {
-            /** @var TokenStorageInterface $tokenStorage */
-            $tokenStorage = $container->get('security.token_storage');
+        if ($tokenStorage !== null) {
             $tokenStorage->setToken(null);
         }
+    }
+
+    /**
+     * @return TokenStorageInterface|null
+     */
+    private function getSecurityTokenStorage(): ?TokenStorageInterface
+    {
+        $tokenStorage = $this->getContainer()->has('security.token_storage')
+            ? $this->getContainer()->get('security.token_storage')
+            : null;
+
+        return $tokenStorage instanceof TokenStorageInterface ? $tokenStorage : null;
     }
 }

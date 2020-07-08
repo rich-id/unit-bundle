@@ -4,10 +4,8 @@ namespace RichCongress\Bundle\UnitBundle\Tests\TestCase\Internal;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use GuzzleHttp\Client;
 use Mockery\MockInterface;
 use RichCongress\Bundle\UnitBundle\Exception\ContainerNotEnabledException;
-use RichCongress\Bundle\UnitBundle\Exception\DuplicatedContainersException;
 use RichCongress\Bundle\UnitBundle\TestCase\Internal\WebTestCase;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\Annotation\WithContainer;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Command\DummyCommand;
@@ -74,11 +72,10 @@ class WebTestCaseTest extends WebTestCase
      */
     public function testCreateClientAfterGetContainer(): void
     {
-        $this->getContainer();
+        $container = $this->getContainer();
+        $client = self::createClient();
 
-        $this->expectException(DuplicatedContainersException::class);
-
-        self::createClient();
+        self::assertSame($container, $client->getContainer());
     }
 
     /**
@@ -88,11 +85,10 @@ class WebTestCaseTest extends WebTestCase
      */
     public function testCreateTwoClientsInSameTest(): void
     {
-        self::createClient();
+        $client1 = self::createClient();
+        $client2 = self::createClient();
 
-        $this->expectException(DuplicatedContainersException::class);
-
-        self::createClient();
+        self::assertSame($client1, $client2);
     }
 
     /**

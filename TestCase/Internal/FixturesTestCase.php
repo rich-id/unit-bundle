@@ -2,12 +2,10 @@
 
 namespace RichCongress\Bundle\UnitBundle\TestCase\Internal;
 
-use Doctrine\ORM\EntityManagerInterface;
 use RichCongress\Bundle\UnitBundle\Exception\FixturesNotEnabledException;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\TestContext;
 use RichCongress\Bundle\UnitBundle\TestTrait\AuthenticationTrait;
 use RichCongress\Bundle\UnitBundle\Utility\FixturesManager;
-use RichCongress\Bundle\UnitBundle\Utility\TestConfigurationExtractor;
 
 /**
  * Class FixtureTestCase
@@ -49,12 +47,10 @@ class FixturesTestCase extends WebTestCase
     protected function getReference(string $reference)
     {
         FixturesNotEnabledException::checkAndThrow();
-
         $object = FixturesManager::getReference($reference);
-        /** @var EntityManagerInterface $entityManager */
+        $identity = FixturesManager::getIdentity($reference);
         $entityManager = $this->getManager();
         $meta = $entityManager->getClassMetadata(\get_class($object));
-        $identity = FixturesManager::getIdentity($reference);
 
         if ($identity !== null && !$entityManager->contains($object)) {
             $object = $entityManager->getReference(
@@ -67,5 +63,4 @@ class FixturesTestCase extends WebTestCase
 
         return $object;
     }
-
 }
