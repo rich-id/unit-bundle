@@ -81,8 +81,11 @@ class SecurityStub extends Security
         }
 
         $class = new \ReflectionClass($this->user);
-        $property = $class->getProperty('roles');
-        $property->setAccessible(true);
-        $property->setValue($this->user, $roles);
+
+        if ($class->hasProperty('roles')) {
+            $property = $class->getProperty('roles');
+            $property->setAccessible(true);
+            $property->setValue($this->user, $roles);
+        }
     }
 }
