@@ -58,7 +58,7 @@ class WebTestCase extends BaseWebTestCase
         parent::__construct($name, $data, $dataName);
         TestConfigurationExtractor::register(static::class);
 
-        if (TestConfigurationExtractor::doesClassNeedsContainer(static::class)) {
+        if (self::$container === null && TestConfigurationExtractor::doesClassNeedsContainer(static::class)) {
             self::$container = parent::getContainer();
         }
     }
