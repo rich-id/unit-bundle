@@ -6,6 +6,7 @@ This version of the bundle requires Symfony 4.4+ and PHP 7.3+.
 [![Package version](https://img.shields.io/packagist/v/richcongress/unit-bundle)](https://packagist.org/packages/richcongress/unit-bundle)
 [![Build Status](https://img.shields.io/travis/richcongress/unit-bundle.svg?branch=master)](https://travis-ci.org/richcongress/unit-bundle?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/richcongress/unit-bundle/badge.svg?branch=master)](https://coveralls.io/github/richcongress/unit-bundle?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/1df9f4c17a4f8d54a73b/maintainability)](https://codeclimate.com/github/richcongress/unit-bundle/maintainability)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/richcongress/unit-bundle/issues)
 [![License](https://img.shields.io/badge/license-MIT-red.svg)](LICENSE.md)
 

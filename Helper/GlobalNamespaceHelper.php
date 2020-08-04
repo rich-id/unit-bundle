@@ -8,11 +8,11 @@
  */
 function debug($object, bool $displayContent = false): void
 {
-    if (!\is_object($object) || $displayContent) {
-        \var_dump($object);
-    } else {
-        \var_dump(\get_class($object));
+    if (!$displayContent && is_object($object)) {
+        $object = \get_class($object);
     }
+
+    \var_dump($object);
 
     try {
         ob_flush();

@@ -58,6 +58,15 @@ class RichCongressUnitExtension extends AbstractExtension implements PrependExte
             ]
         );
 
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return void
+     */
+    protected function prependDoctrine(ContainerBuilder $container): void
+    {
         $container->setParameter(
             'doctrine.dbal.connection_factory.class',
             TestConnectionFactory::class

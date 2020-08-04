@@ -80,5 +80,9 @@ trait MatchAssertionTrait
         if ($parameter->choice !== null) {
             self::assertContains($testedValue, $parameter->choice);
         }
+
+        if ($parameter->class !== null) {
+            self::assertInstanceOf($parameter->class, $testedValue);
+        }
     }
 }

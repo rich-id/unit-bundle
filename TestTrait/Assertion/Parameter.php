@@ -19,6 +19,11 @@ class Parameter
     /**
      * @var string
      */
+    public $class;
+
+    /**
+     * @var string
+     */
     public $regex;
 
     /**
@@ -88,6 +93,19 @@ class Parameter
     {
         $parameter = new static();
         $parameter->choice = $choice;
+
+        return $parameter;
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return static
+     */
+    public static function instanceOf(string $class): self
+    {
+        $parameter = new static();
+        $parameter->class = $class;
 
         return $parameter;
     }
