@@ -33,11 +33,16 @@ abstract class AbstractEntityProxy implements EntityProxyInterface
     }
 
     /**
+     * @return object
+     */
+    abstract protected static function makeDefault();
+
+    /**
      * @param array $data
      *
      * @return object|mixed
      */
-    public static function make(array $data)
+    public static function make(array $data = [])
     {
         return self::setValues(
             static::makeDefault(),

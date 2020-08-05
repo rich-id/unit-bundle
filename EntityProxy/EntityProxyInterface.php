@@ -12,7 +12,9 @@ namespace RichCongress\Bundle\UnitBundle\EntityProxy;
 interface EntityProxyInterface
 {
     /**
+     * @param array $data
+     *
      * @return object
      */
-    public static function makeDefault();
+    public static function make(array $data = []);
 }
