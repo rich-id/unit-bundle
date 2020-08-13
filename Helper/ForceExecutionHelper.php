@@ -22,11 +22,11 @@ class ForceExecutionHelper
     /**
      * @param object|string $object
      * @param string        $method
-     * @param array         $args
+     * @param array|mixed   $args
      *
      * @return mixed
      */
-    public static function executeMethod($object, string $method, array $args = [])
+    public static function executeMethod($object, string $method, $args = [])
     {
         if (!is_object($object) || !is_string($object)) {
             throw new \InvalidArgumentException('The first argument must be an object or a class name');
@@ -44,7 +44,7 @@ class ForceExecutionHelper
         $reflectionMethod->setAccessible(true);
         $value = $reflectionMethod->invokeArgs(
             $reflectionMethod->isStatic() ? $reflectionClass->getName() : $object,
-            $args
+            is_array($args) ? $args : [$args]
         );
         $reflectionMethod->setAccessible(false);
 
@@ -53,14 +53,14 @@ class ForceExecutionHelper
 
     /**
      * @param object|string $object
-     * @param string        $property
+     * @param string        $propertyName
      * @param mixed         $value
      *
      * @return void
      */
     public static function setValue($object, string $propertyName, $value): void
     {
-        if (!is_object($object) || !is_string($object)) {
+        if (!is_object($object) && !is_string($object)) {
             throw new \InvalidArgumentException('The first argument must be an object or a class name');
         }
 
