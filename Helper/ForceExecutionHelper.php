@@ -28,8 +28,13 @@ class ForceExecutionHelper
      */
     public static function executeMethod($object, string $method, $args = [])
     {
-        if (!is_object($object) || !is_string($object)) {
-            throw new \InvalidArgumentException('The first argument must be an object or a class name');
+        if (!is_object($object) && !is_string($object)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The first argument must be an object or a class name, %s given.',
+                    \gettype($object)
+                )
+            );
         }
 
         $reflectionClass = new \ReflectionClass($object);
@@ -61,7 +66,12 @@ class ForceExecutionHelper
     public static function setValue($object, string $propertyName, $value): void
     {
         if (!is_object($object) && !is_string($object)) {
-            throw new \InvalidArgumentException('The first argument must be an object or a class name');
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The first argument must be an object or a class name, %s given.',
+                    \gettype($object)
+                )
+            );
         }
 
         $reflectionClass = new \ReflectionClass($object);
