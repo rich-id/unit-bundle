@@ -6,6 +6,7 @@ use RichCongress\Bundle\UnitBundle\Stubs\ValidationContextStub;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ValidatorBuilder;
 
 /**
  * Class ConstraintTestCase
@@ -50,6 +51,10 @@ class ConstraintTestCase extends TestCase
             $this->constraint = $this->validator;
         }
 
+        if (!$this->validator instanceof ConstraintValidatorInterface) {
+            $this->validator = (new ValidatorBuilder())->getValidator();
+        }
+
         if ($this->validator instanceof  ConstraintValidatorInterface) {
             $this->validator->initialize($this->context);
         }
@@ -66,8 +71,8 @@ class ConstraintTestCase extends TestCase
      */
     public function validate($value): ConstraintViolationListInterface
     {
-        $this->validator->validate($value, $this->constraint);
+        $violations = $this->validator->validate($value, $this->constraint);
 
-        return $this->context->getViolations();
+        return $violations ?? $this->context->getViolations();
     }
 }
