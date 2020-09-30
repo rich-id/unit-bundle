@@ -83,7 +83,6 @@ class WebTestCase extends BaseWebTestCase
     {
         $this->executeAfterTest();
         self::$client = null;
-        static::$isTestInititialized = false;
 
         parent::tearDown();
     }
@@ -122,9 +121,7 @@ class WebTestCase extends BaseWebTestCase
      */
     protected function getContainer(): ContainerInterface
     {
-        if (static::$isTestInititialized) {
-            ContainerNotEnabledException::checkAndThrow();
-        }
+        ContainerNotEnabledException::checkAndThrow();
 
         return static::$container;
     }
