@@ -5,6 +5,7 @@ namespace RichCongress\Bundle\UnitBundle\TestCase;
 use RichCongress\Bundle\UnitBundle\Stubs\ValidationContextStub;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorBuilder;
 
@@ -67,7 +68,7 @@ class ConstraintTestCase extends TestCase
     /**
      * @param mixed $value
      *
-     * @return ConstraintViolationListInterface
+     * @return ConstraintViolationListInterface|ConstraintViolationInterface[]
      */
     public function validate($value): ConstraintViolationListInterface
     {

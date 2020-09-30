@@ -32,6 +32,23 @@ class Parameter
     public $choice;
 
     /**
+     * @var bool
+     */
+    public $isNullable = false;
+
+    /**
+     * @param bool $isNullable
+     *
+     * @return $this
+     */
+    public function isNullable(bool $isNullable = true): self
+    {
+        $this->isNullable = $isNullable;
+
+        return $this;
+    }
+
+    /**
      * @return static
      */
     public static function string(): self

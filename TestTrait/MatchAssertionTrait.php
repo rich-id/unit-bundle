@@ -46,30 +46,9 @@ trait MatchAssertionTrait
      *
      * @return void
      */
-    protected static function assertMatchParameter(Parameter $parameter, $testedValue): void
+    private static function assertMatchParameter(Parameter $parameter, $testedValue): void
     {
-        // Type test
-        switch ($parameter->type) {
-            case 'string':
-                self::assertIsString($testedValue);
-                break;
-
-            case 'integer':
-                self::assertIsInt($testedValue);
-                break;
-
-            case 'float':
-                self::assertIsFloat($testedValue);
-                break;
-
-            case 'array':
-                self::assertIsArray($testedValue);
-                break;
-
-            case 'boolean':
-                self::assertIsBool($testedValue);
-                break;
-        }
+        static::assertTypeAndInstanceParameter($parameter, $testedValue);
 
         // Regex test
         if ($parameter->regex !== null) {
@@ -79,6 +58,43 @@ trait MatchAssertionTrait
         // Choice test
         if ($parameter->choice !== null) {
             self::assertContains($testedValue, $parameter->choice);
+        }
+    }
+
+    /**
+     * @param Parameter $parameter
+     * @param mixed     $testedValue
+     *
+     * @return void
+     */
+    private static function assertTypeAndInstanceParameter(Parameter $parameter, $testedValue): void
+    {
+        if ($testedValue === null && $parameter->isNullable) {
+            self::assertNull($testedValue);
+            return;
+        }
+
+        // Type test
+        switch ($parameter->type) {
+            case 'string':
+                self::assertIsString($testedValue);
+                return;
+
+            case 'integer':
+                self::assertIsInt($testedValue);
+                return;
+
+            case 'float':
+                self::assertIsFloat($testedValue);
+                return;
+
+            case 'array':
+                self::assertIsArray($testedValue);
+                return;
+
+            case 'boolean':
+                self::assertIsBool($testedValue);
+                return;
         }
 
         if ($parameter->class !== null) {

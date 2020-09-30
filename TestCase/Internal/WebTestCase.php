@@ -42,11 +42,6 @@ class WebTestCase extends BaseWebTestCase
     private static $client;
 
     /**
-     * @var boolean
-     */
-    protected static $isTestInititialized = false;
-
-    /**
      * WebTestCase constructor.
      *
      * @param string|null $name
@@ -76,7 +71,6 @@ class WebTestCase extends BaseWebTestCase
             self::createClient();
         }
 
-        static::$isTestInititialized = true;
         $this->executeBeforeTest();
     }
 
