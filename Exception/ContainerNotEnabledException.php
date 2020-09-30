@@ -27,6 +27,6 @@ class ContainerNotEnabledException extends AbstractCheckAndThrowException
      */
     protected static function check(): bool
     {
-        return TestContext::$needContainer;
+        return TestContext::$needContainer === true;
     }
 }

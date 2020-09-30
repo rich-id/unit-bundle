@@ -127,6 +127,16 @@ class WebTestCase extends BaseWebTestCase
     }
 
     /**
+     * @internal Used by the component that requires an early container
+     *
+     * @return ContainerInterface
+     */
+    protected function getParentContainer(): ContainerInterface
+    {
+        return parent::getContainer();
+    }
+
+    /**
      * Gets the entity manager
      *
      * @return EntityManagerInterface

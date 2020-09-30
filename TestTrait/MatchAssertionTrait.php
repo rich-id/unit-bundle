@@ -31,7 +31,7 @@ trait MatchAssertionTrait
         // The content of each key is then tested
         foreach ($expected as $expectedKey => $expectedMatch) {
             $testedValue = $tested[$expectedKey];
-            $totalIndex = $previousIndex !== null ? $previousIndex . '/' . $testedValue : (string) $testedValue;
+            $totalIndex = $previousIndex !== null ? $previousIndex . '/' . $expectedKey : (string) $expectedKey;
 
             if (is_array($expectedMatch)) {
                 static::assertMatch($expectedMatch, $testedValue, $totalIndex);
