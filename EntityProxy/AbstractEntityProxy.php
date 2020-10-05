@@ -13,6 +13,7 @@ use Faker;
  */
 abstract class AbstractEntityProxy implements EntityProxyInterface
 {
+    public const ENTITY_CLASS = '';
     public const FAKER_LANG = 'fr_FR';
 
     /**
