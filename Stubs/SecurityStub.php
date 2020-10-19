@@ -3,6 +3,7 @@
 namespace RichCongress\Bundle\UnitBundle\Stubs;
 
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Security;
@@ -29,14 +30,18 @@ class SecurityStub extends Security
 
     /**
      * SecurityStub constructor.
+     *
+     * @param ContainerInterface|null $container
      */
-    public function __construct()
+    public function __construct(ContainerInterface $container = null)
     {
         $this->tokenStorage = new TokenStorage();
         $this->setUser(null);
 
-        $container = new ContainerStub();
-        $container->set('security.token_storage', $this->tokenStorage);
+        if ($container === null) {
+            $container = new ContainerStub();
+            $container->set('security.token_storage', $this->tokenStorage);
+        }
 
         parent::__construct($container);
     }
