@@ -59,5 +59,18 @@ class OverrideServicesPass extends AbstractCompilerPass
         foreach ($overrideServicesCallback() as $overridenServiceName) {
             $definition->setDecoratedService($overridenServiceName);
         }
+
+        $reflectionClass = new \ReflectionClass($class);
+        $reflectionMethod = $reflectionClass->getConstructor();
+
+        if ($reflectionMethod === null) {
+            return;
+        }
+
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            if ($reflectionParameter->getName() === 'innerService') {
+                $definition->setArgument('$innerService', $class . '.inner');
+            }
+        }
     }
 }
