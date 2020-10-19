@@ -42,12 +42,16 @@ class OverrideServicesPass extends AbstractCompilerPass
         foreach ($taggedServices as $service) {
             $definition = $container->findDefinition($service);
             $class = $definition->getClass();
+            $reflectionClass = new \ReflectionClass($class);
             static::decorateServices($definition);
-            $innerService = $class . '.inner';
 
             $utilityDefinition->addMethodCall('addOverrideServiceClass', [$class]);
             $commandDefinition->addMethodCall('addOverrideServiceClass', [$class]);
-            $definition->addMethodCall('setInnerService', [new Reference($innerService)]);
+
+            if ($reflectionClass->hasMethod('setInnerService')) {
+                $innerService = $class . '.inner';
+                $definition->addMethodCall('setInnerService', [new Reference($innerService)]);
+            }
         }
     }
 
