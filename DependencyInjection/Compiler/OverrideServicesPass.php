@@ -8,6 +8,7 @@ use RichCongress\BundleToolbox\Configuration\AbstractCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PriorityTaggedServiceTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class OverrideServicesPass
@@ -40,10 +41,13 @@ class OverrideServicesPass extends AbstractCompilerPass
 
         foreach ($taggedServices as $service) {
             $definition = $container->findDefinition($service);
+            $class = $definition->getClass();
             static::decorateServices($definition);
+            $innerService = $class . '.inner';
 
-            $utilityDefinition->addMethodCall('addOverrideServiceClass', [$definition->getClass()]);
-            $commandDefinition->addMethodCall('addOverrideServiceClass', [$definition->getClass()]);
+            $utilityDefinition->addMethodCall('addOverrideServiceClass', [$class]);
+            $commandDefinition->addMethodCall('addOverrideServiceClass', [$class]);
+            $definition->addMethodCall('setInnerService', [new Reference($innerService)]);
         }
     }
 
@@ -58,19 +62,6 @@ class OverrideServicesPass extends AbstractCompilerPass
 
         foreach ($overrideServicesCallback() as $overridenServiceName) {
             $definition->setDecoratedService($overridenServiceName);
-        }
-
-        $reflectionClass = new \ReflectionClass($class);
-        $reflectionMethod = $reflectionClass->getConstructor();
-
-        if ($reflectionMethod === null) {
-            return;
-        }
-
-        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
-            if ($reflectionParameter->getName() === 'innerService') {
-                $definition->setArgument('$innerService', $class . '.inner');
-            }
         }
     }
 }
