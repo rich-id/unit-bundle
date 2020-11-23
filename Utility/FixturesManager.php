@@ -5,10 +5,12 @@ namespace RichCongress\Bundle\UnitBundle\Utility;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use RichCongress\Bundle\UnitBundle\Event\FixturesLoadedEvent;
 use RichCongress\Bundle\UnitBundle\Resources\Stub\KernelTestCaseStub;
 use RichCongress\Bundle\UnitBundle\TestConfiguration\TestConfigurationExtractor;
 use RichCongress\Bundle\UnitBundle\TextUi\Output;
 use RichCongress\Bundle\UnitBundle\TextUi\Timer;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class FixturesManager
@@ -23,6 +25,9 @@ class FixturesManager
      * @var DatabaseToolCollection
      */
     protected static $databaseToolCollection;
+
+    /** @var EventDispatcherInterface|null */
+    protected static $eventDispatcher;
 
     /**
      * @var ReferenceRepository
@@ -39,9 +44,10 @@ class FixturesManager
      *
      * @param DatabaseToolCollection $databaseToolCollection
      */
-    public function __construct(DatabaseToolCollection $databaseToolCollection)
+    public function __construct(DatabaseToolCollection $databaseToolCollection, EventDispatcherInterface $eventDispatcher = null)
     {
         static::$databaseToolCollection = $databaseToolCollection;
+        static::$eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -83,6 +89,11 @@ class FixturesManager
         }
 
         static::displayFixturesLoaded();
+
+        if (static::$eventDispatcher !== null) {
+            $event = new FixturesLoadedEvent();
+            static::$eventDispatcher->dispatch($event);
+        }
     }
 
     /**
