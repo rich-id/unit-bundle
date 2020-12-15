@@ -70,8 +70,9 @@ class ConstraintTestCase extends TestCase
      *
      * @return ConstraintViolationListInterface|ConstraintViolationInterface[]
      */
-    public function validate($value): ConstraintViolationListInterface
+    public function validate($value, $object = null): ConstraintViolationListInterface
     {
+        $this->context->setNode($value, $object, null, null);
         $violations = $this->validator->validate($value, $this->constraint);
 
         return $violations ?? $this->context->getViolations();
