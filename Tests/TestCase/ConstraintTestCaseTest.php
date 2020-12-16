@@ -6,6 +6,8 @@ use RichCongress\Bundle\UnitBundle\Stubs\ValidationContextStub;
 use RichCongress\Bundle\UnitBundle\TestCase\ConstraintTestCase;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Validator\DummyConstraint;
 use RichCongress\Bundle\UnitBundle\Tests\Resources\Validator\DummyConstraintValidator;
+use RichCongress\Bundle\UnitBundle\Tests\Resources\Validator\DummyConstraintWithObject;
+use RichCongress\Bundle\UnitBundle\Tests\Resources\Validator\DummyConstraintWithObjectValidator;
 
 /**
  * Class ConstraintTestCaseTest
@@ -68,5 +70,19 @@ class ConstraintTestCaseTest extends ConstraintTestCase
         $this->constraint->makeItFail = true;
 
         self::assertCount(1, $this->validate(''));
+    }
+
+    /**
+     * @return void
+     */
+    public function testValidatePropertyWithObjectInContext(): void
+    {
+        $this->constraint = new DummyConstraintWithObject();
+        $this->validator = new DummyConstraintWithObjectValidator();
+        $this->setUp();
+
+        self::assertEmpty($this->validate('', (object) ['makeItFail' => false]));
+
+        self::assertCount(1, $this->validate('', (object) ['makeItFail' => true]));
     }
 }
