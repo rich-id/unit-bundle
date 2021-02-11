@@ -20,7 +20,7 @@
         "liip/functional-test-bundle": "^3.0",
         "liip/test-fixtures-bundle": "^1.0",
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5",
         "richcongress/bundle-toolbox": "^1.0",
         "symfony/config": "^4.0",
         "symfony/console": "^4.0",
