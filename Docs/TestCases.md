@@ -61,6 +61,21 @@ class ConstraintTest extends ConstraintTestCase
 }
 ```
 
+Property constraints can access the object containing the value we are trying to validate from the context: `$this->constraint->getObject()`. To provide that object in your test you can pass it as the second argument of the `$this->validate()` function provided by the ConstraintTestCase:
+
+```php
+class ConstraintTest extends ConstraintTestCase
+{
+    public function testValidate(): void
+    {
+        $object = // ...
+
+        $violations = $this->validate($object->property, $object);
+
+        self::assertEmpty($violations);
+    }
+}
+```
 
 ### ControllerTestCase
 

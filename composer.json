@@ -27,6 +27,7 @@
         "symfony/dependency-injection": "^4.0",
         "symfony/phpunit-bridge": "^4.0",
         "symfony/serializer": "^4.0",
+        "symfony/translation-contracts": "^1.0|^2.0",
         "symfony/validator": "^4.0",
         "symfony/yaml": "^4.0"
     },

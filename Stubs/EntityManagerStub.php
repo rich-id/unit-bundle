@@ -41,6 +41,21 @@ class EntityManagerStub implements EntityManagerInterface
     public $persisted = [];
 
     /**
+     * @var bool
+     */
+    public $hasBeginTransaction = false;
+
+    /**
+     * @var bool
+     */
+    public $hasCommit = false;
+
+    /**
+     * @var bool
+     */
+    public $hasRollback = false;
+
+    /**
      * @return void
      */
     public function flush()
@@ -161,7 +176,7 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function beginTransaction()
     {
-        // TODO: Implement beginTransaction() method.
+        $this->hasBeginTransaction = true;
     }
 
     /**
@@ -181,7 +196,7 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function commit()
     {
-        // TODO: Implement commit() method.
+        $this->hasCommit = true;
     }
 
     /**
@@ -191,7 +206,7 @@ class EntityManagerStub implements EntityManagerInterface
      */
     public function rollback()
     {
-        // TODO: Implement rollback() method.
+        $this->hasRollback = true;
     }
 
     /**
