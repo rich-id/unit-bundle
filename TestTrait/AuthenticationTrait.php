@@ -33,10 +33,10 @@ trait AuthenticationTrait
      */
     public function getUserRoles(): array
     {
-        /** @var ContainerInterface $container */
-        $container = $this->getParentContainer();
-
         if (self::$userRoles === null) {
+            /** @var ContainerInterface $container */
+            $container = $this->getParentContainer();
+
             self::$userRoles = $container->hasParameter('rich_congress_unit.test_roles')
                 ? $container->getParameter('rich_congress_unit.test_roles')
                 : [];
