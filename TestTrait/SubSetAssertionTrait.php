@@ -21,7 +21,11 @@ trait SubSetAssertionTrait
     protected static function assertSubSet(array $expected, array $tested, bool $strictEquality = false): void
     {
         foreach ($expected as $expectedValue) {
-            static::assertContains($expectedValue, $tested, '', false, $strictEquality, $strictEquality);
+            if ($strictEquality) {
+                static::assertContainsEquals($expectedValue, $tested);
+            } else {
+                static::assertContains($expectedValue, $tested);
+            }
         }
     }
 }
